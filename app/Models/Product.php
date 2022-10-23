@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Product extends Model
 {
     public $timestamps = false;
     protected $hidden = ['pivot'];
 
-    protected $table = 'users';
+    protected $table = 'products';
     
     use HasFactory;
 }
