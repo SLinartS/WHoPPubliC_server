@@ -13,4 +13,14 @@ class LocationHistory extends Model
     protected $table = 'location_history';
     
     use HasFactory;
+
+    public function floor()
+    {
+        return $this->belongsTo(Floor::class, 'floor_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }

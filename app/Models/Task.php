@@ -13,4 +13,20 @@ class Task extends Model
     protected $table = 'tasks';
     
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'products_tasks', 'task_id', 'product_id');
+    }
+
+    public function points()
+    {
+        return $this->belongsToMany(Point::class, 'tasks_points', 'task_id', 'points_id');
+    }
+
 }

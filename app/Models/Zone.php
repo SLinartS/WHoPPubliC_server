@@ -13,4 +13,9 @@ class Zone extends Model
     protected $table = 'zones';
     
     use HasFactory;
+
+    public function sections()
+    {
+        return $this->hasMany(Section::class, 'zone_id', 'id');
+    }
 }

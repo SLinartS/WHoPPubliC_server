@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('article', 30);
             $table->string('title', 100);
             $table->string('author', 50);
-            $table->string('category', 50);
             $table->integer('year_of_publication');
             $table->integer('number');
             $table->date('print_date');
@@ -26,6 +25,7 @@ return new class extends Migration
             $table->string('publishing_house', 100);
             $table->boolean('stored');
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('category_id')->constrained('categories');
         });
     }
 

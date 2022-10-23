@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('points', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 10);
+            $table->string('title', 15);
             $table->boolean('is_acceptance');
         });
     }

@@ -14,6 +14,14 @@ class Block extends Model
     
     use HasFactory;
 
+    public function floors()
+    {
+        return $this->hasMany(Floor::class, 'block_id', 'id');
+    }
 
+    public function section()
+    {
+        return $this->belongsTo(Section::class, 'section_id', 'id');
+    }
 
 }
