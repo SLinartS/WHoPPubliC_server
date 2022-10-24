@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('task_types', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 15);
-            $table->date('date_start');
-            $table->date('date_end');
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('task_type_id')->constrained('task_types');
+            $table->string('type', 20)->unique();
         });
     }
 
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('task_types');
     }
 };

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ZoneController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/map', [ZoneController::class, 'index']);
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/tasks/{type}', [TaskController::class, 'index']);
 
 Route::get('/test', [TaskController::class, 'test']);
 

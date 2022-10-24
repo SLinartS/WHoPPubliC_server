@@ -19,6 +19,11 @@ class Task extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function tasktype()
+    {
+        return $this->belongsTo(TaskType::class, 'task_type_id', 'id');
+    }
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'products_tasks', 'task_id', 'product_id');
@@ -26,7 +31,7 @@ class Task extends Model
 
     public function points()
     {
-        return $this->belongsToMany(Point::class, 'tasks_points', 'task_id', 'points_id');
+        return $this->belongsToMany(Point::class, 'tasks_points', 'task_id', 'point_id');
     }
 
 }

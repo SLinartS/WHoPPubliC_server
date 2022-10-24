@@ -24,7 +24,7 @@ class TaskFactory extends Factory
             'date_start' => fake()->date(),
             'date_end' => fake()->date(),
             'user_id' => fake()->numberBetween(1, 1),
-            'is_acceptance' => fake()->numberBetween(0, 1),
+            'task_type_id' => fake()->numberBetween(1, 2),
         ];
     }
 }

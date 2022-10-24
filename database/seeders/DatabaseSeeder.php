@@ -16,8 +16,10 @@ use App\Models\Role;
 use App\Models\Section;
 use App\Models\Task;
 use App\Models\TaskPoint;
+use App\Models\TaskType;
 use App\Models\User;
 use App\Models\Zone;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -32,6 +34,14 @@ class DatabaseSeeder extends Seeder
         Role::factory()->count(3)->create();
         User::factory()->create();
 
+        TaskType::factory()->count(2)
+            ->state(
+                (new Sequence(
+                    ['type' => 'acceptance'],
+                    ['type' => 'shipment']
+                ))
+            )->create();
+
         Task::factory()->count(10)->create();
         Category::factory()->count(5)->create();
         Product::factory()->count(10)->create();
@@ -40,37 +50,28 @@ class DatabaseSeeder extends Seeder
         Zone::factory()->count(3)->create();
         Section::factory()->count(6)->create();
         Block::factory()->count(12)->create();
-        Floor::factory()->count(24)->create();
+        Floor::factory()->count(48)
+            ->state(
+                new Sequence(
+                    ['block_id' => 1],
+                    ['block_id' => 2],
+                    ['block_id' => 3],
+                    ['block_id' => 4],
+                    ['block_id' => 5],
+                    ['block_id' => 6],
+                    ['block_id' => 7],
+                    ['block_id' => 8],
+                    ['block_id' => 9],
+                    ['block_id' => 10],
+                    ['block_id' => 11],
+                    ['block_id' => 12],
+                )
+            )->create();
 
         ProductFloor::factory()->count(10)->create();
         LocationHistory::factory()->count(10)->create();
 
         Point::factory()->count(10)->create();
         TaskPoint::factory()->count(10)->create();
-
-        // Post::factory(5)
-        //     ->state(
-        //         new Sequence(
-        //             ["img_url" => "postimages/testimg.png"],
-        //             ["img_url" => "postimages/testimg2.png"],
-        //             ["img_url" => "postimages/testimg3.jpg"]
-        //         )
-        //     )
-        //     ->create();
-        // Chapter::factory(10)
-        //     ->state(
-        //         new Sequence(["number" => 1], ["number" => 2], ["number" => 3])
-        //     )
-        //     ->state(
-        //         new Sequence(
-        //             ["post_id" => 1],
-        //             ["post_id" => 2],
-        //             ["post_id" => 3],
-        //             ["post_id" => 4],
-        //             ["post_id" => 5]
-        //         )
-        //     )
-        //     ->create();
-
     }
 }
