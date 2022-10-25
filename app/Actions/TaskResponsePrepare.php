@@ -11,7 +11,7 @@ class TaskResponsePrepare
   {
     $response = [
       'data' => [],
-      'tableHeaders' => []
+      'tableHeader' => []
     ];
 
     foreach ($tasks as $task) {
@@ -27,7 +27,7 @@ class TaskResponsePrepare
         'operatorLogin' => $task->user->email,
       ]);
 
-      $response['tableHeaders'] = [
+      $response['tableHeader'] = [
         'Id',
         'Название',
         'Осталось времени',

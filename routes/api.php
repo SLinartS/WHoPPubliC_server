@@ -17,12 +17,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// MAP
 Route::get('/map', [ZoneController::class, 'index']);
+
+// PRODUCTS
 Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{taskId}', [ProductController::class, 'getProductsOfTask']);
+
+// TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);
 
-Route::get('/test', [TaskController::class, 'test']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::get('/test', [TaskController::class, 'test']);
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });

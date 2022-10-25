@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
 class ZoneResponsePrepare
@@ -10,28 +11,35 @@ class ZoneResponsePrepare
   public function __invoke(Collection $zones, Collection $sections, Collection $blocks, Collection $floors)
   {
     $response = [];
-    
+
     foreach ($zones as $zoneKey => $zone) {
-      array_push($response, [
-        'id' => $zone->id,
-        'zoneLetter' => $zone->letter,
-        'sections' => [],
-      ]);
       $sections = $zone->sections;
-
-      foreach ($sections as $sectionKey => $section) {
-        array_push($response[$zoneKey]['sections'], [
-          'id' => $section->id,
-          'floorsNumber' => 0,
-          'blocks' => [],
+      if (count($sections) > 0) {
+        array_push($response, [
+          'id' => $zone->id,
+          'zoneLetter' => $zone->letter,
+          'sections' => [],
         ]);
-        $blocks = $section->blocks;
 
-        foreach ($blocks as $blockKey => $block) {
-          array_push($response[$zoneKey]['sections'][$sectionKey]['blocks'], [
-            'id' => $block->id,
-          ]);
-          $response[$zoneKey]['sections'][$sectionKey]['floorsNumber'] = count($block->floors); 
+        foreach ($sections as $sectionKey => $section) {
+          $blocks = $section->blocks;
+          if (count($blocks) > 0) {
+            $lastIndexZone = count($response)-1;
+            array_push($response[$lastIndexZone]['sections'], [
+              'id' => $section->id,
+              'floorsNumber' => 0,
+              'blocks' => [],
+            ]);
+
+            foreach ($blocks as $blockKey => $block) {
+
+              $lastIndexSection = count($response[$lastIndexZone]['sections'])-1;
+              array_push($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'], [
+                'id' => $block->id,
+              ]);
+              $response[$lastIndexZone]['sections'][$lastIndexSection]['floorsNumber'] = count($block->floors);
+            }
+          }
         }
       }
     }

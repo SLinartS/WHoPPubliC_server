@@ -11,7 +11,7 @@ class ProductResponsePrepare
   {
     $response = [
       'data' => [],
-      'tableHeaders' => []
+      'tableHeader' => []
     ];
 
     foreach ($products as $product) {
@@ -29,7 +29,7 @@ class ProductResponsePrepare
       array_push($response['data'], $item);
     }
 
-    $response['tableHeaders'] = [
+    $response['tableHeader'] = [
       'Id',
       'Артикул',
       'Название',
