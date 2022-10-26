@@ -30,7 +30,7 @@ class ProductResponsePrepare
     }
 
     $response['tableHeader'] = [
-      'Id',
+      'ID',
       'Артикул',
       'Название',
       'Автор',

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaskController;
-use App\Http\Controllers\ZoneController;
+use App\Http\Controllers\MapController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,17 +18,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 // MAP
-Route::get('/map', [ZoneController::class, 'index']);
+Route::get('/map', [MapController::class, 'index']);
 
 // PRODUCTS
 Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{taskId}', [ProductController::class, 'getProductsOfTask']);
+Route::get('/products/{taskTitle}', [ProductController::class, 'getProductsOfTask']);
+Route::post('/products', [ProductController::class, 'addProduct']);
 
 // TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);
-
-
-// Route::get('/test', [TaskController::class, 'test']);
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::post('/tasks', [TaskController::class, 'addTask']);
+Route::delete('/tasks/{taskTitle}', [TaskController::class, 'deleteTask']);

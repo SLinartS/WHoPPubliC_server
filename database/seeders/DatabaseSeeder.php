@@ -17,6 +17,7 @@ use App\Models\Section;
 use App\Models\Task;
 use App\Models\TaskPoint;
 use App\Models\TaskType;
+use App\Models\TypeOfTask;
 use App\Models\User;
 use App\Models\Zone;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -34,7 +35,7 @@ class DatabaseSeeder extends Seeder
         Role::factory()->count(3)->create();
         User::factory()->create();
 
-        TaskType::factory()->count(2)
+        TypeOfTask::factory()->count(2)
             ->state(
                 (new Sequence(
                     ['type' => 'acceptance'],

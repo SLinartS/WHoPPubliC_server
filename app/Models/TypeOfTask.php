@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TaskType extends Model
+class TypeOfTask extends Model
 {
     public $timestamps = false;
     protected $hidden = ['pivot'];
 
-    protected $table = 'task_types';
+    protected $table = 'types_of_tasks';
 
     use HasFactory;
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'task_type_id', 'id');
+        return $this->hasMany(Task::class, 'type_id', 'id');
     }
 }

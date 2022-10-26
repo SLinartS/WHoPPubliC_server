@@ -19,9 +19,9 @@ class Task extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function tasktype()
+    public function type()
     {
-        return $this->belongsTo(TaskType::class, 'task_type_id', 'id');
+        return $this->belongsTo(TypeOfTask::class, 'type_id', 'id');
     }
 
     public function products()

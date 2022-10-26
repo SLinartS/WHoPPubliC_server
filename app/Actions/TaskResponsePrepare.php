@@ -28,7 +28,7 @@ class TaskResponsePrepare
       ]);
 
       $response['tableHeader'] = [
-        'Id',
+        'ID',
         'Название',
         'Осталось времени',
         'Дата начала',

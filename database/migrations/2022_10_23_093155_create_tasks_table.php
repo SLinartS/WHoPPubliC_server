@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('date_start');
             $table->date('date_end');
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('task_type_id')->constrained('task_types');
+            $table->foreignId('type_id')->constrained('types_of_tasks');
         });
     }
 

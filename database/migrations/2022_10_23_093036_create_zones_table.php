@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('zones', function (Blueprint $table) {
             $table->id();
-            $table->string('letter', 2);
+            $table->string('letter', 2)->unique();
         });
     }
 

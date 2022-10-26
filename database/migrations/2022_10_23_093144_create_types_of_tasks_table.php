@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('task_types', function (Blueprint $table) {
+        Schema::create('types_of_tasks', function (Blueprint $table) {
             $table->id();
             $table->string('type', 20)->unique();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_types');
+        Schema::dropIfExists('types_of_tasks');
     }
 };

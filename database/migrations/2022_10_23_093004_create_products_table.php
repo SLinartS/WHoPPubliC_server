@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('article', 30);
+            $table->string('article', 30)->unique();
             $table->string('title', 100);
             $table->string('author', 50);
             $table->integer('year_of_publication');

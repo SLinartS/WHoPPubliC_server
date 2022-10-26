@@ -5,7 +5,7 @@ namespace App\Actions;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
-class ZoneResponsePrepare
+class MapResponsePrepare
 {
 
   public function __invoke(Collection $zones, Collection $sections, Collection $blocks, Collection $floors)
