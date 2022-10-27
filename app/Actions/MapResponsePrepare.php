@@ -12,7 +12,7 @@ class MapResponsePrepare
   {
     $response = [];
 
-    foreach ($zones as $zoneKey => $zone) {
+    foreach ($zones as $zone) {
       $sections = $zone->sections;
       if (count($sections) > 0) {
         array_push($response, [
@@ -21,23 +21,31 @@ class MapResponsePrepare
           'sections' => [],
         ]);
 
-        foreach ($sections as $sectionKey => $section) {
+        foreach ($sections as $section) {
           $blocks = $section->blocks;
           if (count($blocks) > 0) {
-            $lastIndexZone = count($response)-1;
+            $lastIndexZone = count($response) - 1;
             array_push($response[$lastIndexZone]['sections'], [
               'id' => $section->id,
-              'floorsNumber' => 0,
               'blocks' => [],
             ]);
 
-            foreach ($blocks as $blockKey => $block) {
+            foreach ($blocks as $block) {
+              $floors = $block->floors;
+              if (count($floors) > 0) {
+                $lastIndexSection = count($response[$lastIndexZone]['sections']) - 1;
+                array_push($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'], [
+                  'id' => $block->id,
+                  'floors' => []
+                ]);
 
-              $lastIndexSection = count($response[$lastIndexZone]['sections'])-1;
-              array_push($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'], [
-                'id' => $block->id,
-              ]);
-              $response[$lastIndexZone]['sections'][$lastIndexSection]['floorsNumber'] = count($block->floors);
+                foreach ($floors as $floor) {
+                  $lastIndexBlock = count($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks']) - 1;
+                  array_push($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'], [
+                    'id' => $floor->id,
+                  ]);
+                }
+              }
             }
           }
         }

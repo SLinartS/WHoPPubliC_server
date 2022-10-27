@@ -21,7 +21,7 @@ class ZoneFactory extends Factory
     public function definition()
     {
         return [
-            'letter' => fake()->randomLetter(),
+            'letter' => strtoupper(fake()->randomLetter()),
         ];
     }
 }
