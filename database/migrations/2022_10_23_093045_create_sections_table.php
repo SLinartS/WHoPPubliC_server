@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
+            $table->integer('number');
             $table->foreignId('zone_id')->constrained('zones');
+            $table->unique(['number', 'zone_id']);
         });
     }
 

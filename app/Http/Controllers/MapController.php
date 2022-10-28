@@ -13,10 +13,10 @@ class MapController extends Controller
 {
     public function index(MapResponsePrepare $mapResponsePrepare)
     {
-        $zones = Zone::select('id', 'letter')->get();
-        $sections = Section::select('id', 'zone_id')->get();
-        $blocks = Block::select('id', 'section_id')->get();
-        $floors = Floor::select('id', 'block_id')->get();
+        $zones = Zone::select('id', 'number', 'letter')->get();
+        $sections = Section::select('id', 'number', 'zone_id')->get();
+        $blocks = Block::select('id', 'number', 'section_id')->get();
+        $floors = Floor::select('id', 'number', 'block_id')->get();
 
         $response = $mapResponsePrepare($zones, $sections, $blocks, $floors);
 

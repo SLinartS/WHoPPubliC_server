@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('floors', function (Blueprint $table) {
             $table->id();
+            $table->integer('capacity');
+            $table->integer('number');
             $table->foreignId('block_id')->constrained('blocks');
+            $table->unique(['number', 'block_id']);
         });
     }
 

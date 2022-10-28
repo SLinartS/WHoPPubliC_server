@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('blocks', function (Blueprint $table) {
             $table->id();
+            $table->integer('number');
             $table->foreignId('section_id')->constrained('sections');
+            $table->unique(['number', 'section_id']);
         });
     }
 

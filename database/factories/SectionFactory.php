@@ -22,6 +22,7 @@ class SectionFactory extends Factory
     {
         return [
             'zone_id' => fake()->numberBetween(1,3),
+            'number' => fake()->numberBetween(1,6),
         ];
     }
 }

@@ -49,23 +49,86 @@ class DatabaseSeeder extends Seeder
         ProductTask::factory()->count(10)->create();
 
         Zone::factory()->count(3)->create();
-        Section::factory()->count(6)->create();
-        Block::factory()->count(12)->create();
+        Section::factory()->count(6)
+            ->state(
+                new Sequence(
+                    ['zone_id' => 1, 'number' => 1],
+                    ['zone_id' => 2, 'number' => 1],
+                    ['zone_id' => 3, 'number' => 1],
+                    ['zone_id' => 1, 'number' => 2],
+                    ['zone_id' => 2, 'number' => 2],
+                    ['zone_id' => 3, 'number' => 2],
+                )
+            )->create();
+
+        Block::factory()->count(12)
+            ->state(
+                new Sequence(
+                    ['section_id' => 1, 'number' => 1],
+                    ['section_id' => 2, 'number' => 1],
+                    ['section_id' => 3, 'number' => 1],
+                    ['section_id' => 4, 'number' => 1],
+                    ['section_id' => 5, 'number' => 1],
+                    ['section_id' => 6, 'number' => 1],
+                    ['section_id' => 1, 'number' => 2],
+                    ['section_id' => 2, 'number' => 2],
+                    ['section_id' => 3, 'number' => 2],
+                    ['section_id' => 4, 'number' => 2],
+                    ['section_id' => 5, 'number' => 2],
+                    ['section_id' => 6, 'number' => 2],
+                )
+            )->create();
         Floor::factory()->count(48)
             ->state(
                 new Sequence(
-                    ['block_id' => 1],
-                    ['block_id' => 2],
-                    ['block_id' => 3],
-                    ['block_id' => 4],
-                    ['block_id' => 5],
-                    ['block_id' => 6],
-                    ['block_id' => 7],
-                    ['block_id' => 8],
-                    ['block_id' => 9],
-                    ['block_id' => 10],
-                    ['block_id' => 11],
-                    ['block_id' => 12],
+                    ['block_id' => 1, 'number' => 1],
+                    ['block_id' => 2, 'number' => 1],
+                    ['block_id' => 3, 'number' => 1],
+                    ['block_id' => 4, 'number' => 1],
+                    ['block_id' => 5, 'number' => 1],
+                    ['block_id' => 6, 'number' => 1],
+                    ['block_id' => 7, 'number' => 1],
+                    ['block_id' => 8, 'number' => 1],
+                    ['block_id' => 9, 'number' => 1],
+                    ['block_id' => 10, 'number' => 1],
+                    ['block_id' => 11, 'number' => 1],
+                    ['block_id' => 12, 'number' => 1],
+                    ['block_id' => 1, 'number' => 2],
+                    ['block_id' => 2, 'number' => 2],
+                    ['block_id' => 3, 'number' => 2],
+                    ['block_id' => 4, 'number' => 2],
+                    ['block_id' => 5, 'number' => 2],
+                    ['block_id' => 6, 'number' => 2],
+                    ['block_id' => 7, 'number' => 2],
+                    ['block_id' => 8, 'number' => 2],
+                    ['block_id' => 9, 'number' => 2],
+                    ['block_id' => 10, 'number' => 2],
+                    ['block_id' => 11, 'number' => 2],
+                    ['block_id' => 12, 'number' => 2],
+                    ['block_id' => 1, 'number' => 3],
+                    ['block_id' => 2, 'number' => 3],
+                    ['block_id' => 3, 'number' => 3],
+                    ['block_id' => 4, 'number' => 3],
+                    ['block_id' => 5, 'number' => 3],
+                    ['block_id' => 6, 'number' => 3],
+                    ['block_id' => 7, 'number' => 3],
+                    ['block_id' => 8, 'number' => 3],
+                    ['block_id' => 9, 'number' => 3],
+                    ['block_id' => 10, 'number' => 3],
+                    ['block_id' => 11, 'number' => 3],
+                    ['block_id' => 12, 'number' => 3],
+                    ['block_id' => 1, 'number' => 4],
+                    ['block_id' => 2, 'number' => 4],
+                    ['block_id' => 3, 'number' => 4],
+                    ['block_id' => 4, 'number' => 4],
+                    ['block_id' => 5, 'number' => 4],
+                    ['block_id' => 6, 'number' => 4],
+                    ['block_id' => 7, 'number' => 4],
+                    ['block_id' => 8, 'number' => 4],
+                    ['block_id' => 9, 'number' => 4],
+                    ['block_id' => 10, 'number' => 4],
+                    ['block_id' => 11, 'number' => 4],
+                    ['block_id' => 12, 'number' => 4],
                 )
             )->create();
 
