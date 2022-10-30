@@ -46,6 +46,7 @@ class MapResponsePrepare
                   $lastIndexBlock = count($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks']) - 1;
                   array_push($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'], [
                     'id' => $floor->id,
+                    'active' => false,
                     'number' => $floor->number
                   ]);
                 }
@@ -63,11 +64,10 @@ class MapResponsePrepare
 
       for ($is = 0; $is < count($response[0]['sections']); $is++) {
         usort($response[$iz]['sections'][$is]['blocks'], fn ($a, $b) => $a['number'] - $b['number']);
-      
+
         for ($ib = 0; $ib < count($response[0]['sections'][0]['blocks']); $ib++) {
           usort($response[$iz]['sections'][$is]['blocks'][$ib]['floors'], fn ($a, $b) => $b['number'] - $a['number']);
         }
-      
       }
     }
     return $response;
