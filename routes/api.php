@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\PointController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 // MAP
 Route::get('/map', [MapController::class, 'index']);
+Route::get('/points/{pointType}', [PointController::class, 'index']);
 
 // PRODUCTS
 Route::get('/products', [ProductController::class, 'index']);
