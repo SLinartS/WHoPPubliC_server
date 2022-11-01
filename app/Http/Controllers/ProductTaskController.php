@@ -10,12 +10,12 @@ use Throwable;
 
 class ProductTaskController extends Controller
 {
-    public function addProductTaskLink(string $taskTitle, string $productId)
+    public function addProductTaskLink(string $taskArticle, string $productId)
     {
         try {
             $taskController = new TaskController;
 
-            $taskId = $taskController->getTaskIdByTitle($taskTitle);
+            $taskId = $taskController->getTaskIdByArticle($taskArticle);
             if ($taskId['error']) {
                 return response($taskId['data'], 404);
             }

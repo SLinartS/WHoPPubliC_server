@@ -22,12 +22,12 @@ class ProductController extends Controller
         return response()->json($response, 200);
     }
 
-    public function getProductsOfTask($taskTitle, ProductResponsePrepare $productResponsePrepare)
+    public function getProductsOfTask($taskArticle, ProductResponsePrepare $productResponsePrepare)
     {
         try {
             $taskController = new TaskController;
 
-            $taskId = $taskController->getTaskIdByTitle($taskTitle);
+            $taskId = $taskController->getTaskIdByArticle($taskArticle);
             if ($taskId['error']) {
                 return response($taskId['data'], 404);
             }
@@ -61,7 +61,7 @@ class ProductController extends Controller
             $product->print_date = $request->printDate;
             $product->printing_house = $request->printingHouse;
             $product->publishing_house = $request->publishingHouse;
-            $product->stored = $request->stored;
+            $product->stored = false;
             $product->user_id = $request->userId;
             $product->category_id = $request->category;
 
@@ -69,7 +69,7 @@ class ProductController extends Controller
 
             $productId = Product::select('id')->where('article', $request->article)->first();
 
-            $error = $productTaskController->addProductTaskLink($request->taskTitle, $productId->id);
+            $error = $productTaskController->addProductTaskLink($request->taskArticle, $productId->id);
             if ($error === false) {
                 return response('The product has been added', 200);
             }

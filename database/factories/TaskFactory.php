@@ -20,7 +20,7 @@ class TaskFactory extends Factory
     public function definition()
     {
         return [
-            'title' => fake()->word(),
+            'article' => fake()->unique()->word(),
             'date_start' => fake()->date(),
             'date_end' => fake()->date(),
             'user_id' => fake()->numberBetween(1, 1),

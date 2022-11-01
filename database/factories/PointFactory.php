@@ -22,7 +22,7 @@ class PointFactory extends Factory
     {
         return [
             'title' => fake()->word(),
-            'type' => fake()->numberBetween(0,1)
+            'is_acceptance' => fake()->numberBetween(0,1)
         ];
     }
 }

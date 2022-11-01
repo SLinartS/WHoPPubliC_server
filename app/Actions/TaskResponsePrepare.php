@@ -20,7 +20,7 @@ class TaskResponsePrepare
 
       array_push($response['data'], [
         'id' => $task->id,
-        'title' => $task->title,
+        'article' => $task->article,
         'deadlines' => $deadline . ' дней',
         'dateStart' => $task->date_start,
         'dateEnd' => $task->date_end,
@@ -29,7 +29,7 @@ class TaskResponsePrepare
 
       $response['tableHeader'] = [
         'ID',
-        'Название',
+        'Артикул',
         'Осталось времени',
         'Дата начала',
         'Дата окончания',

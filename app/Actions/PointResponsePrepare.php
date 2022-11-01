@@ -9,16 +9,22 @@ class PointResponsePrepare
 {
   public function __invoke(Collection $points)
   {
-    $response = [];
+    $response = [
+      'acceptance' => [],
+      'shipment' => [],
+    ];
 
     foreach ($points as $point) {
       $item = [
         'id' => $point->id,
         'title' => $point->title,
       ];
-      array_push($response, $item);
+      if ($point->is_acceptance === 1) {
+        array_push($response['acceptance'], $item);
+      } else {
+        array_push($response['shipment'], $item);
+      }
     }
-
 
     return $response;
   }

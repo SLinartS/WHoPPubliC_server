@@ -17,10 +17,10 @@ class TaskController extends Controller
         $tasks = null;
         switch ($type) {
             case 'acceptance':
-                $tasks = Task::select('id', 'title', 'date_start', 'date_end', 'user_id')->where("type_id", 1)->get();
+                $tasks = Task::select('id', 'article', 'date_start', 'date_end', 'user_id')->where("type_id", 1)->get();
                 break;
             case 'shipment':
-                $tasks = Task::select('id', 'title', 'date_start', 'date_end', 'user_id')->where("type_id", 2)->get();
+                $tasks = Task::select('id', 'article', 'date_start', 'date_end', 'user_id')->where("type_id", 2)->get();
                 break;
             default:
                 return response('Unknown tasks type', 404);
@@ -53,10 +53,10 @@ class TaskController extends Controller
         }
     }
 
-    public function deleteTask($taskTitle)
+    public function deleteTask($taskArticle)
     {
         try {
-            $taskId = $this->getTaskIdByTitle($taskTitle);
+            $taskId = $this->getTaskIdByArticle($taskArticle);
             if ($taskId['error']) {
                 return response($taskId['data'], 404);
             }
@@ -67,17 +67,17 @@ class TaskController extends Controller
                 $task->delete();
                 return response('The task has been deleted', 200);
             }
-            return response("A task with this title ($taskTitle) does not exist", 404);
+            return response("A task with this title ($taskArticle) does not exist", 404);
             
         } catch (Throwable $th) {
             return response($th->getMessage(), 422);
         }
     }
 
-    public function getTaskIdByTitle(string $taskTitle)
+    public function getTaskIdByArticle(string $taskArticle)
     {
         try {
-            $taskId = Task::select('id')->where('title', $taskTitle)->first()->id;
+            $taskId = Task::select('id')->where('article', $taskArticle)->first()->id;
 
             return [
                 'error' => false,
@@ -86,7 +86,7 @@ class TaskController extends Controller
         } catch (Throwable $th) {
             return [
                 'error' => true,
-                'data' => "A task with this title ('$taskTitle') does not exist"
+                'data' => "A task with this article ('$taskArticle') does not exist"
             ];
         }
     }

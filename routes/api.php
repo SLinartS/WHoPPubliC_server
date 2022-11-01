@@ -20,14 +20,14 @@ use Illuminate\Support\Facades\Route;
 
 // MAP
 Route::get('/map', [MapController::class, 'index']);
-Route::get('/points/{pointType}', [PointController::class, 'index']);
+Route::get('/points', [PointController::class, 'index']);
 
 // PRODUCTS
 Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{taskTitle}', [ProductController::class, 'getProductsOfTask']);
+Route::get('/products/{taskArticle}', [ProductController::class, 'getProductsOfTask']);
 Route::post('/products', [ProductController::class, 'addProduct']);
 
 // TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);
 Route::post('/tasks', [TaskController::class, 'addTask']);
-Route::delete('/tasks/{taskTitle}', [TaskController::class, 'deleteTask']);
+Route::delete('/tasks/{taskArticle}', [TaskController::class, 'deleteTask']);
