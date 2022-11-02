@@ -31,21 +31,39 @@ class TaskController extends Controller
         return response()->json($response, 200);
     }
 
-    public function addTask(Request $request)
+    public function addTask(Request $request, ProductTaskController $productTaskController, TaskPointController $taskPointController)
     {
+        $fields = $request->fields;
+        $arrays = $request->arrays;
         try {
-            $dateToday = date('Y-m-d');
-            $dateTomorrow = new DateTime('tomorrow');
-            $dateTomorrow = $dateTomorrow->format('Y-m-d');
-
             $task = new Task;
-            $task->title = $request->title;
-            $task->date_start = $dateToday;
-            $task->date_end = $dateTomorrow;
-            $task->user_id = $request->userId;
-            $task->type_id = $request->typeId;
+            $task->article = $fields["article"];
+            $task->date_start = $fields["dateStart"];
+            $task->date_end = $fields["dateEnd"];;
+            $task->user_id = $fields["userId"];
+            $task->type_id = $fields["typeId"];
 
             $task->save();
+
+            try {
+                $taskId = Task::select('id')->where('article', $fields["article"])->first()['id'];
+
+                for ($i = 0; $i < count($arrays["products"]); $i++) {
+                    $error = $productTaskController->addProductTaskLink($taskId, $arrays["products"][$i]);
+                    if ($error) {
+                        throw new Exception($error);
+                    }
+                }
+
+                for ($i = 0; $i < count($arrays["points"]); $i++) {
+                    $error = $taskPointController->addTaskPointLink($taskId, $arrays["points"][$i]);
+                    if ($error) {
+                        throw new Exception($error);
+                    }
+                }
+            } catch (Throwable $th) {
+                return response($th->getMessage(), 422);
+            }
 
             return response('The task has been added', 200);
         } catch (Throwable $th) {
@@ -63,12 +81,11 @@ class TaskController extends Controller
 
             $task = Task::where('id', $taskId['data'])->first();
 
-            if(count($task) > 0) {
+            if (count($task) > 0) {
                 $task->delete();
                 return response('The task has been deleted', 200);
             }
             return response("A task with this title ($taskArticle) does not exist", 404);
-            
         } catch (Throwable $th) {
             return response($th->getMessage(), 422);
         }
