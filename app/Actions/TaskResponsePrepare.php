@@ -24,7 +24,7 @@ class TaskResponsePrepare
         'deadlines' => $deadline . ' дней',
         'dateStart' => $task->date_start,
         'dateEnd' => $task->date_end,
-        'operatorLogin' => $task->user->email,
+        'operatorLogin' => $task->user->name,
       ]);
 
       $response['tableHeader'] = [

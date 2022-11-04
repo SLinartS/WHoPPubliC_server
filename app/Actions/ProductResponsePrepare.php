@@ -20,10 +20,11 @@ class ProductResponsePrepare
         'article' => $product->article,
         'title' => $product->title,
         'author' => $product->author,
+        'category' => $product->category,
         'yearOfPublication' => $product->year_of_publication,
         'number' => $product->number,
         'printDate' => $product->print_date,
-        'category' => $product->category,
+
       ];
 
       array_push($response['data'], $item);
@@ -34,10 +35,10 @@ class ProductResponsePrepare
       'Артикул',
       'Название',
       'Автор',
-      'Год',
-      'Число',
+      'Категория',
+      'Год издательства',
+      'Количество',
       'Дата печати',
-      'Категория'
     ];
 
     return $response;

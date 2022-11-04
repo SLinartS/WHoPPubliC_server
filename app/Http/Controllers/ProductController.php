@@ -62,7 +62,7 @@ class ProductController extends Controller
                 $product->publishing_house = $products[$i]['publishingHouse'];
                 $product->stored = false;
                 $product->user_id = $request->userId;
-                $product->category_id = $request->categoryId;
+                $product->category_id = $request->$products[$i]['categoryId'];
 
                 $product->save();
 

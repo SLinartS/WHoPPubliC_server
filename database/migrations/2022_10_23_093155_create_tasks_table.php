@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('article', 15);
+            $table->string('article', 15)->unique();
             $table->date('date_start');
             $table->date('date_end');
             $table->foreignId('user_id')->constrained('users');
