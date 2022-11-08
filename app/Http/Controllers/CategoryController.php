@@ -17,7 +17,7 @@ class CategoryController extends Controller
 
             return response()->json($response, 200);
         } catch (\Throwable $th) {
-            response($th->getMessage(), 422);
+            response($th, 422);
         }
     }
 }

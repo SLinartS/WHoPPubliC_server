@@ -20,7 +20,7 @@ class TaskPointController extends Controller
 
             return false;
         } catch (Throwable $th) {
-            return $th->getMessage();
+            return $th;
         }
     }
 }

@@ -17,10 +17,10 @@ class TaskController extends Controller
         $tasks = null;
         switch ($type) {
             case 'acceptance':
-                $tasks = Task::select('id', 'article', 'date_start', 'date_end', 'user_id')->where("type_id", 1)->get();
+                $tasks = Task::select('id', 'article', 'date_start', 'date_end', 'user_id')->where('type_id', 1)->get();
                 break;
             case 'shipment':
-                $tasks = Task::select('id', 'article', 'date_start', 'date_end', 'user_id')->where("type_id", 2)->get();
+                $tasks = Task::select('id', 'article', 'date_start', 'date_end', 'user_id')->where('type_id', 2)->get();
                 break;
             default:
                 return response('Unknown tasks type', 404);
@@ -37,37 +37,37 @@ class TaskController extends Controller
         $arrays = $request->arrays;
         try {
             $task = new Task;
-            $task->article = $fields["article"];
-            $task->date_start = $fields["dateStart"];
-            $task->date_end = $fields["dateEnd"];;
-            $task->user_id = $fields["userId"];
-            $task->type_id = $fields["typeId"];
+            $task->article = $fields['article']['value'];
+            $task->date_start = $fields['dateStart']['value'];
+            $task->date_end = $fields['dateEnd']['value'];;
+            $task->user_id = $fields['userId']['value'];
+            $task->type_id = $fields['typeId']['value'];
 
             $task->save();
 
             try {
-                $taskId = Task::select('id')->where('article', $fields["article"])->first()['id'];
+                $taskId = Task::select('id')->where('article', $fields['article']['value'])->first()['id'];
 
-                for ($i = 0; $i < count($arrays["products"]); $i++) {
-                    $error = $productTaskController->addProductTaskLink($taskId, $arrays["products"][$i]);
+                for ($i = 0; $i < count($arrays['products']['value']); $i++) {
+                    $error = $productTaskController->addProductTaskLink($taskId, $arrays['products']['value'][$i]);
                     if ($error) {
                         throw new Exception($error);
                     }
                 }
 
-                for ($i = 0; $i < count($arrays["points"]); $i++) {
-                    $error = $taskPointController->addTaskPointLink($taskId, $arrays["points"][$i]);
+                for ($i = 0; $i < count($arrays['points']['value']); $i++) {
+                    $error = $taskPointController->addTaskPointLink($taskId, $arrays['points']['value'][$i]);
                     if ($error) {
                         throw new Exception($error);
                     }
                 }
             } catch (Throwable $th) {
-                return response($th->getMessage(), 422);
+                return response($th, 422);
             }
 
             return response('The task has been added', 200);
         } catch (Throwable $th) {
-            return response($th->getMessage(), 422);
+            return response($th, 422);
         }
     }
 
@@ -85,9 +85,9 @@ class TaskController extends Controller
                 $task->delete();
                 return response('The task has been deleted', 200);
             }
-            return response("A task with this title ($taskArticle) does not exist", 404);
+            return response('A task with this title ($taskArticle) does not exist', 404);
         } catch (Throwable $th) {
-            return response($th->getMessage(), 422);
+            return response($th, 422);
         }
     }
 

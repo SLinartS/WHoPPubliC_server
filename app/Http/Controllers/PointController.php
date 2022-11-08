@@ -17,7 +17,7 @@ class PointController extends Controller
 
             return response()->json($response, 200);
         } catch (Throwable $th) {
-            return response($th->getMessage(), 500);
+            return response($th, 500);
         }
     }
 }

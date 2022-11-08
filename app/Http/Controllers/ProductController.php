@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
 use Throwable;
 
 class ProductController extends Controller
@@ -52,21 +53,21 @@ class ProductController extends Controller
             $productsIds = [];
             for ($i = 0; $i < count($products); $i++) {
                 $product = new Product;
-                $product->article = $products[$i]['article'];
-                $product->title = $products[$i]['title'];
-                $product->author = $products[$i]['author'];
-                $product->year_of_publication = $products[$i]['yearOfPublication'];
-                $product->number = $products[$i]['number'];
-                $product->print_date = $products[$i]['printDate'];
-                $product->printing_house = $products[$i]['printingHouse'];
-                $product->publishing_house = $products[$i]['publishingHouse'];
+                $product->article = $products[$i]['article']['value'];
+                $product->title = $products[$i]['title']['value'];
+                $product->author = $products[$i]['author']['value'];
+                $product->year_of_publication = $products[$i]['yearOfPublication']['value'];
+                $product->number = $products[$i]['number']['value'];
+                $product->print_date = $products[$i]['printDate']['value'];
+                $product->printing_house = $products[$i]['printingHouse']['value'];
+                $product->publishing_house = $products[$i]['publishingHouse']['value'];
                 $product->stored = false;
                 $product->user_id = $request->userId;
-                $product->category_id = $request->$products[$i]['categoryId'];
+                $product->category_id = $products[$i]['categoryId']['value'];
 
                 $product->save();
 
-                $productId = Product::select('id')->where('article', $products[$i]['article'])->first()['id'];
+                $productId = Product::select('id')->where('article', $products[$i]['article']['value'])->first()['id'];
                 array_push($productsIds, $productId);
             }
 
@@ -76,7 +77,7 @@ class ProductController extends Controller
                 'productIds' => $productsIds
             ], 200);
         } catch (Throwable $th) {
-            return response($th->getMessage(), 422);
+            return response($th, 422);
         }
     }
 }
