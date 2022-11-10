@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\ProductResponsePrepare;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductFloor;
 use Exception;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
@@ -14,7 +15,7 @@ class ProductController extends Controller
 {
     public function index(ProductResponsePrepare $productResponsePrepare)
     {
-        $products = Product::select('id', 'article', 'title', 'author', 'year_of_publication', 'number', 'print_date',)
+        $products = Product::select('id', 'article', 'title', 'author', 'year_of_publication', 'number', 'print_date')
             ->addSelect(['category' => Category::select('title')->whereColumn('id', 'category_id')])
             ->get();
 
@@ -46,11 +47,13 @@ class ProductController extends Controller
         }
     }
 
-    public function addProduct(Request $request, ProductTaskController $productTaskController)
+    public function addProduct(Request $request, ProductFloor $productFloor)
     {
         try {
             $products = $request->products;
-            $productsIds = [];
+            $warehousePoints = $request->warehousePoints;
+
+            $productIds = [];
             for ($i = 0; $i < count($products); $i++) {
                 $product = new Product;
                 $product->article = $products[$i]['article']['value'];
@@ -68,13 +71,23 @@ class ProductController extends Controller
                 $product->save();
 
                 $productId = Product::select('id')->where('article', $products[$i]['article']['value'])->first()['id'];
-                array_push($productsIds, $productId);
+                array_push($productIds, $productId);
             }
 
+            for ($productIndex = 0; $productIndex < count($productIds); $productIndex++) {
+                for ($whpIndex = 0; $whpIndex < count($warehousePoints); $whpIndex++) {
+                    if ($warehousePoints[$whpIndex])
+                        $error = $productFloor->addProductFloorLink($productIds[$productIndex], $warehousePoints[$whpIndex]);
+                }
+
+                if ($error) {
+                    throw new Exception($error);
+                }
+            }
 
             return response()->json([
                 'message' => 'The products has been added',
-                'productIds' => $productsIds
+                'productIds' => $productIds
             ], 200);
         } catch (Throwable $th) {
             return response($th, 422);

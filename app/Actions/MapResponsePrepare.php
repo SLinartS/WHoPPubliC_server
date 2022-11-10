@@ -4,13 +4,22 @@ namespace App\Actions;
 
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class MapResponsePrepare
 {
 
-  public function __invoke(Collection $zones, Collection $sections, Collection $blocks, Collection $floors)
-  {
+  public function __invoke(
+    Collection $zones,
+    Collection $sections,
+    Collection $blocks,
+    Collection $floors,
+    Collection $productsFloors,
+    Collection $products
+  ) {
     $response = [];
+    $localProductsFloors = $productsFloors;
+    $localProducts = $products;
 
     foreach ($zones as $zone) {
       $sections = $zone->sections;
@@ -43,11 +52,15 @@ class MapResponsePrepare
                 ]);
 
                 foreach ($floors as $floor) {
+                  $freeFloorSpace = $this->countFreeFloorSpace($localProductsFloors, $localProducts, $floor);
+
                   $lastIndexBlock = count($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks']) - 1;
                   array_push($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'], [
                     'id' => $floor->id,
                     'active' => false,
-                    'number' => $floor->number
+                    'number' => $floor->number,
+                    'capacity' => $floor->capacity,
+                    'freeSpace' => $freeFloorSpace,
                   ]);
                 }
               }
@@ -57,6 +70,12 @@ class MapResponsePrepare
       }
     }
 
+    $response = $this->sortMap($response);
+    return $response;
+  }
+
+  private function sortMap(array $response)
+  {
     usort($response, fn ($a, $b) => $a['number'] - $b['number']);
 
     for ($iz = 0; $iz < count($response); $iz++) {
@@ -71,5 +90,24 @@ class MapResponsePrepare
       }
     }
     return $response;
+  }
+
+  private function countFreeFloorSpace(
+    Collection $localProductsFloors,
+    Collection $localProducts,
+    Model $floor,
+  ) {
+    $freeFloorSpace = $floor->capacity;
+    foreach ($localProductsFloors as $productFloor) {
+      if ($productFloor->floor_id === $floor->id) {
+        foreach ($localProducts as $localProduct) {
+          if ($localProduct['id'] === $productFloor->product_id) {
+            $freeFloorSpace = $floor->capacity - $localProduct['number'];
+          }
+        }
+      }
+    }
+
+    return $freeFloorSpace;
   }
 }

@@ -21,7 +21,7 @@ class FloorFactory extends Factory
     public function definition()
     {
         return [
-            'capacity' => fake()->numberBetween(100,300),
+            'capacity' => fake()->numberBetween(300, 400),
             'number' => fake()->numberBetween(1,4),
             'block_id' => fake()->numberBetween(1,12),
         ];
