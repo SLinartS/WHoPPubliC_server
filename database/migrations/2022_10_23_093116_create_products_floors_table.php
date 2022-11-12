@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('products_floors', function (Blueprint $table) {
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('floor_id')->constrained('floors');
+            $table->integer('occupied_space');
             $table->primary(['product_id', 'floor_id']);
         });
     }

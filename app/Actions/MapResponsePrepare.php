@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Http\Controllers\Utils\FloorUtils;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -13,13 +14,10 @@ class MapResponsePrepare
     Collection $zones,
     Collection $sections,
     Collection $blocks,
-    Collection $floors,
-    Collection $productsFloors,
-    Collection $products
+    Collection $floors
   ) {
     $response = [];
-    $localProductsFloors = $productsFloors;
-    $localProducts = $products;
+    $floorUtils = new FloorUtils;
 
     foreach ($zones as $zone) {
       $sections = $zone->sections;
@@ -52,7 +50,7 @@ class MapResponsePrepare
                 ]);
 
                 foreach ($floors as $floor) {
-                  $freeFloorSpace = $this->countFreeFloorSpace($localProductsFloors, $localProducts, $floor);
+                  $freeFloorSpace = $floorUtils->countFreeFloorSpace($floor->id);
 
                   $lastIndexBlock = count($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks']) - 1;
                   array_push($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'], [
@@ -90,24 +88,5 @@ class MapResponsePrepare
       }
     }
     return $response;
-  }
-
-  private function countFreeFloorSpace(
-    Collection $localProductsFloors,
-    Collection $localProducts,
-    Model $floor,
-  ) {
-    $freeFloorSpace = $floor->capacity;
-    foreach ($localProductsFloors as $productFloor) {
-      if ($productFloor->floor_id === $floor->id) {
-        foreach ($localProducts as $localProduct) {
-          if ($localProduct['id'] === $productFloor->product_id) {
-            $freeFloorSpace = $floor->capacity - $localProduct['number'];
-          }
-        }
-      }
-    }
-
-    return $freeFloorSpace;
   }
 }

@@ -25,23 +25,11 @@ class MapController extends Controller
             $blocks = Block::select('id', 'number', 'section_id')->get();
             $floors = Floor::select('id', 'number', 'block_id', 'capacity')->get();
 
-
-            $productsFloors = $productFloorUtils->index();
-
-            $productIds = [];
-            foreach ($productsFloors as $productFloor) {
-                array_push($productIds, $productFloor->product_id);
-            };
-
-            $products = $productUtils->getProductsNumbersByIds($productIds);
-
             $response = $mapResponsePrepare(
                 $zones,
                 $sections,
                 $blocks,
-                $floors,
-                $productsFloors,
-                $products
+                $floors
             );
 
             return response()->json($response, 200);

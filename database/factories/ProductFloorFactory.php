@@ -21,8 +21,9 @@ class ProductFloorFactory extends Factory
     public function definition()
     {
         return [
-            'product_id' => fake()->numberBetween(1,10),
-            'floor_id' => fake()->numberBetween(1,24)
+            'product_id' => fake()->numberBetween(1, 10),
+            'floor_id' => fake()->numberBetween(1, 24),
+            'occupied_space' => 1,
         ];
     }
 }

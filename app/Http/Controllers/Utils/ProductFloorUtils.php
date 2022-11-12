@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Utils;
 
 use App\Http\Controllers\Controller;
+use App\Models\Floor;
+use App\Models\Product;
 use App\Models\ProductFloor;
+use Exception;
 use Illuminate\Http\Request;
 use Throwable;
 
@@ -20,19 +23,50 @@ class ProductFloorUtils extends Controller
         }
     }
 
-    public function addProductFloorLink(string $productId, string $floorId)
+    public function addProductFloorLinks(array $productIds, array $floorIds)
     {
         try {
-            $productFloor = new ProductFloor;
+            $floorUtils = new FloorUtils;
+            for ($productIndex = 0; $productIndex < count($productIds); $productIndex++) {
+                $productId = $productIds[$productIndex];
+                $initialNumberOfProduct = $numberOfProduct = Product::select('number')->where('id', $productId)->first()->number;
+                $addedNumberOfProduct = 0;
 
-            $productFloor->product_id = $productId;
-            $productFloor->floor_id = $floorId;
+                $indexOfFloor = 0;
+                while ($indexOfFloor < count($floorIds)) {
 
-            $productFloor->save();
+                    $floorId = $floorIds[$indexOfFloor];
+                    $freeSpaceOfFloor = $floorUtils->countFreeFloorSpace($floorId);
 
+                    if ($initialNumberOfProduct < $freeSpaceOfFloor) {
+                        $this->addProductFloorLink($productId, $floorId, $initialNumberOfProduct - $addedNumberOfProduct);
+                        break;
+
+                    } elseif ($numberOfProduct <= $freeSpaceOfFloor) {
+                        $this->addProductFloorLink($productId, $floorId, $numberOfProduct);
+                        $addedNumberOfProduct += $numberOfProduct;
+                        if ($addedNumberOfProduct === $initialNumberOfProduct) {
+                            break;
+                        }
+                        $numberOfProduct = $initialNumberOfProduct - $addedNumberOfProduct;
+                        $indexOfFloor++;
+                    } else {
+                        $numberOfProduct = $freeSpaceOfFloor;
+                    }
+                }
+            }
             return false;
         } catch (Throwable $th) {
-            return $th;
+            throw $th;
         }
     }
+
+    public function addProductFloorLink(int $productId, int $floorId, int $occupiedSpace) {
+        $productFloor = new ProductFloor;
+        $productFloor->product_id = $productId;
+        $productFloor->floor_id = $floorId;
+        $productFloor->occupied_space = $occupiedSpace;
+        $productFloor->save();
+    }
+
 }

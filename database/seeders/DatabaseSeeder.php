@@ -45,7 +45,12 @@ class DatabaseSeeder extends Seeder
 
         Task::factory()->count(10)->create();
         Category::factory()->count(5)->create();
-        Product::factory()->count(10)->create();
+        Product::factory()->count(10)
+            ->state(
+                new Sequence(
+                    ['number' => 100],
+                )
+            )->create();
         ProductTask::factory()->count(10)->create();
 
         Zone::factory()->count(3)->create();
@@ -81,58 +86,72 @@ class DatabaseSeeder extends Seeder
         Floor::factory()->count(48)
             ->state(
                 new Sequence(
-                    ['block_id' => 1, 'number' => 1],
-                    ['block_id' => 2, 'number' => 1],
-                    ['block_id' => 3, 'number' => 1],
-                    ['block_id' => 4, 'number' => 1],
-                    ['block_id' => 5, 'number' => 1],
-                    ['block_id' => 6, 'number' => 1],
-                    ['block_id' => 7, 'number' => 1],
-                    ['block_id' => 8, 'number' => 1],
-                    ['block_id' => 9, 'number' => 1],
-                    ['block_id' => 10, 'number' => 1],
-                    ['block_id' => 11, 'number' => 1],
-                    ['block_id' => 12, 'number' => 1],
-                    ['block_id' => 1, 'number' => 2],
-                    ['block_id' => 2, 'number' => 2],
-                    ['block_id' => 3, 'number' => 2],
-                    ['block_id' => 4, 'number' => 2],
-                    ['block_id' => 5, 'number' => 2],
-                    ['block_id' => 6, 'number' => 2],
-                    ['block_id' => 7, 'number' => 2],
-                    ['block_id' => 8, 'number' => 2],
-                    ['block_id' => 9, 'number' => 2],
-                    ['block_id' => 10, 'number' => 2],
-                    ['block_id' => 11, 'number' => 2],
-                    ['block_id' => 12, 'number' => 2],
-                    ['block_id' => 1, 'number' => 3],
-                    ['block_id' => 2, 'number' => 3],
-                    ['block_id' => 3, 'number' => 3],
-                    ['block_id' => 4, 'number' => 3],
-                    ['block_id' => 5, 'number' => 3],
-                    ['block_id' => 6, 'number' => 3],
-                    ['block_id' => 7, 'number' => 3],
-                    ['block_id' => 8, 'number' => 3],
-                    ['block_id' => 9, 'number' => 3],
-                    ['block_id' => 10, 'number' => 3],
-                    ['block_id' => 11, 'number' => 3],
-                    ['block_id' => 12, 'number' => 3],
-                    ['block_id' => 1, 'number' => 4],
-                    ['block_id' => 2, 'number' => 4],
-                    ['block_id' => 3, 'number' => 4],
-                    ['block_id' => 4, 'number' => 4],
-                    ['block_id' => 5, 'number' => 4],
-                    ['block_id' => 6, 'number' => 4],
-                    ['block_id' => 7, 'number' => 4],
-                    ['block_id' => 8, 'number' => 4],
-                    ['block_id' => 9, 'number' => 4],
-                    ['block_id' => 10, 'number' => 4],
-                    ['block_id' => 11, 'number' => 4],
-                    ['block_id' => 12, 'number' => 4],
+                    ['block_id' => 1, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 2, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 3, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 4, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 5, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 6, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 7, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 8, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 9, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 10, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 11, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 12, 'number' => 1, 'capacity' => 300],
+                    ['block_id' => 1, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 2, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 3, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 4, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 5, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 6, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 7, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 8, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 9, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 10, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 11, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 12, 'number' => 2, 'capacity' => 300],
+                    ['block_id' => 1, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 2, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 3, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 4, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 5, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 6, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 7, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 8, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 9, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 10, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 11, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 12, 'number' => 3, 'capacity' => 300],
+                    ['block_id' => 1, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 2, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 3, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 4, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 5, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 6, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 7, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 8, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 9, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 10, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 11, 'number' => 4, 'capacity' => 300],
+                    ['block_id' => 12, 'number' => 4, 'capacity' => 300],
                 )
             )->create();
 
-        ProductFloor::factory()->count(10)->create();
+        ProductFloor::factory()->count(10)
+            ->state(
+                new Sequence(
+                    ['product_id' => 1, 'floor_id' => 1, 'occupied_space' => 100],
+                    ['product_id' => 2, 'floor_id' => 1, 'occupied_space' => 100],
+                    ['product_id' => 3, 'floor_id' => 2, 'occupied_space' => 100],
+                    ['product_id' => 4, 'floor_id' => 3, 'occupied_space' => 100],
+                    ['product_id' => 5, 'floor_id' => 4, 'occupied_space' => 100],
+                    ['product_id' => 6, 'floor_id' => 5, 'occupied_space' => 100],
+                    ['product_id' => 7, 'floor_id' => 5, 'occupied_space' => 100],
+                    ['product_id' => 8, 'floor_id' => 6, 'occupied_space' => 100],
+                    ['product_id' => 9, 'floor_id' => 7, 'occupied_space' => 100],
+                    ['product_id' => 10, 'floor_id' => 8, 'occupied_space' => 100],
+                )
+            )->create();
         LocationHistory::factory()->count(10)->create();
 
         Point::factory()->count(10)->create();

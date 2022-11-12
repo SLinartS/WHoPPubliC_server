@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ProductResponsePrepare;
+use App\Http\Controllers\Utils\ProductFloorUtils;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductFloor;
@@ -47,7 +48,7 @@ class ProductController extends Controller
         }
     }
 
-    public function addProduct(Request $request, ProductFloor $productFloor)
+    public function addProduct(Request $request, ProductFloorUtils $productFloorUtils)
     {
         try {
             $products = $request->products;
@@ -74,23 +75,15 @@ class ProductController extends Controller
                 array_push($productIds, $productId);
             }
 
-            for ($productIndex = 0; $productIndex < count($productIds); $productIndex++) {
-                for ($whpIndex = 0; $whpIndex < count($warehousePoints); $whpIndex++) {
-                    if ($warehousePoints[$whpIndex])
-                        $error = $productFloor->addProductFloorLink($productIds[$productIndex], $warehousePoints[$whpIndex]);
-                }
-
-                if ($error) {
-                    throw new Exception($error);
-                }
-            }
+            $productFloorUtils->addProductFloorLinks($productIds, $warehousePoints);
 
             return response()->json([
                 'message' => 'The products has been added',
                 'productIds' => $productIds
             ], 200);
+
         } catch (Throwable $th) {
-            return response($th, 422);
+            return response()->json(['message' => $th->getMessage()], 422);
         }
     }
 }
