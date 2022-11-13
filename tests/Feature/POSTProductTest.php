@@ -29,11 +29,49 @@ class POSTProductTest extends TestCase
                             "errors" => []
                         ],
                         "categoryId" => [
-                            "value" => fake()->numberBetween(1,5),
+                            "value" => fake()->numberBetween(1, 5),
                             "errors" => []
                         ],
                         "number" => [
-                            "value" => fake()->numberBetween(300,550),
+                            "value" => fake()->numberBetween(300, 550),
+                            "errors" => []
+                        ],
+                        "printDate" => [
+                            "value" => "2011-11-11",
+                            "errors" => []
+                        ],
+                        "printingHouse" => [
+                            "value" => fake()->sentence(2, false),
+                            "errors" => []
+                        ],
+                        "publishingHouse" => [
+                            "value" => fake()->sentence(2, false),
+                            "errors" => []
+                        ],
+                        "title" => [
+                            "value" => fake()->sentence(3, false),
+                            "errors" => []
+                        ],
+                        "yearOfPublication" => [
+                            "value" => "2012",
+                            "errors" => []
+                        ]
+                    ],
+                    [
+                        "article" => [
+                            "value" => fake()->word(),
+                            "errors" => []
+                        ],
+                        "author" => [
+                            "value" => fake()->name(),
+                            "errors" => []
+                        ],
+                        "categoryId" => [
+                            "value" => fake()->numberBetween(1, 5),
+                            "errors" => []
+                        ],
+                        "number" => [
+                            "value" => fake()->numberBetween(300, 550),
                             "errors" => []
                         ],
                         "printDate" => [
@@ -59,7 +97,7 @@ class POSTProductTest extends TestCase
                     ]
                 ],
                 "userId" => "1",
-                "warehousePoints" => [1, 13, 19]
+                "warehousePoints" => [1, 13, 19, 20, 15, 16]
             ]
         );
         $response->assertStatus(200);
