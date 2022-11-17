@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Actions\TaskResponsePrepare;
+use App\Models\ProductTask;
 use App\Models\Task;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Throwable;
+
+use function PHPUnit\Framework\isEmpty;
 
 class TaskController extends Controller
 {
@@ -56,7 +59,7 @@ class TaskController extends Controller
                 }
 
                 for ($i = 0; $i < count($arrays['points']['value']); $i++) {
-                    $error = $taskPointController->addTaskPointLink($taskId, $arrays['points']['value'][$i]);
+                    $error = $taskPointController->addLink($taskId, $arrays['points']['value'][$i]);
                     if ($error) {
                         throw new Exception($error);
                     }
@@ -71,21 +74,31 @@ class TaskController extends Controller
         }
     }
 
-    public function deleteTask($taskArticle)
-    {
+    public function deleteTask(
+        string $taskId,
+        ProductTaskController $productTaskController,
+        TaskPointController $taskPointController
+    ) {
         try {
-            $taskId = $this->getTaskIdByArticle($taskArticle);
-            if ($taskId['error']) {
-                return response($taskId['data'], 404);
-            }
+            $task = Task::select('id')->where('id', $taskId)->first();
+            if ($task) {
 
-            $task = Task::where('id', $taskId['data'])->first();
+                try {
+                    $productTaskController->deleteLinksByTaskId($taskId);
+                } catch (\Throwable $th) {
+                    return response($th, 500);
+                }
 
-            if (count($task) > 0) {
+                try {
+                    $taskPointController->deleteLinksByTaskId($taskId);
+                } catch (\Throwable $th) {
+                    return response($th, 500);
+                }
+
                 $task->delete();
                 return response('The task has been deleted', 200);
             }
-            return response('A task with this title ($taskArticle) does not exist', 404);
+            return response("A task with this id ($taskId) does not exist", 404);
         } catch (Throwable $th) {
             return response($th, 422);
         }

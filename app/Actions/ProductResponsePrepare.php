@@ -21,7 +21,6 @@ class ProductResponsePrepare
         'title' => $product->title,
         'author' => $product->author,
         'category' => $product->category,
-        'yearOfPublication' => $product->year_of_publication,
         'number' => $product->number,
         'printDate' => $product->print_date,
 
@@ -36,7 +35,6 @@ class ProductResponsePrepare
       'Название',
       'Автор',
       'Категория',
-      'Год издательства',
       'Количество',
       'Дата печати',
     ];

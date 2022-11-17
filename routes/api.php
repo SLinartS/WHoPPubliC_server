@@ -34,4 +34,4 @@ Route::post('/products', [ProductController::class, 'addProduct']);
 // TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);
 Route::post('/tasks', [TaskController::class, 'addTask']);
-Route::delete('/tasks/{taskArticle}', [TaskController::class, 'deleteTask']);
+Route::delete('/tasks/{taskId}', [TaskController::class, 'deleteTask']);

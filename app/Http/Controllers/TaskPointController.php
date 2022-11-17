@@ -8,7 +8,7 @@ use Throwable;
 
 class TaskPointController extends Controller
 {
-    public function addTaskPointLink(string $taskId, string $pointId)
+    public function addLink(string $taskId, string $pointId)
     {
         try {
             $taskPoint = new TaskPoint;
@@ -21,6 +21,15 @@ class TaskPointController extends Controller
             return false;
         } catch (Throwable $th) {
             return $th;
+        }
+    }
+
+    public function deleteLinksByTaskId(string $taksId)
+    {
+        try {
+            $productsTasks = TaskPoint::where('task_id', $taksId)->delete();
+        } catch (Throwable $th) {
+            throw $th;
         }
     }
 }

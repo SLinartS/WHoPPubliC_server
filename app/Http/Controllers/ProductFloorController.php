@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Utils;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Floor;
+use App\Http\Controllers\Utils\FloorUtils;
 use App\Models\Product;
 use App\Models\ProductFloor;
-use Exception;
-use Illuminate\Http\Request;
 use Throwable;
 
-class ProductFloorUtils extends Controller
+class ProductFloorController extends Controller
 {
     public function index()
     {
@@ -65,7 +63,7 @@ class ProductFloorUtils extends Controller
         }
     }
 
-    public function addProductFloorLink(int $productId, int $floorId, int $occupiedSpace)
+    private function addProductFloorLink(int $productId, int $floorId, int $occupiedSpace)
     {
         $productFloor = new ProductFloor;
         $productFloor->product_id = $productId;
