@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Utils;
 
 use App\Http\Controllers\Controller;
 use App\Models\Floor;
-use App\Models\Product;
 use App\Models\ProductFloor;
-use Illuminate\Database\Eloquent\Model;
 
 class FloorUtils extends Controller
 {

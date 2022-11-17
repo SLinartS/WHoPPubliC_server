@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskPoint;
-use Illuminate\Http\Request;
 use Throwable;
 
 class TaskPointController extends Controller

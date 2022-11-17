@@ -3,9 +3,7 @@
 namespace App\Actions;
 
 use App\Http\Controllers\Utils\FloorUtils;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class MapResponsePrepare
 {

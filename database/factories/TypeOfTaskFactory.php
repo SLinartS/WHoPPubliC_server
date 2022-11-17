@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\TaskType;
 use App\Models\TypeOfTask;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

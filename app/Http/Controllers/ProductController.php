@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\ProductResponsePrepare;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductFloor;
-use Exception;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Return_;
 use Throwable;
 
 class ProductController extends Controller

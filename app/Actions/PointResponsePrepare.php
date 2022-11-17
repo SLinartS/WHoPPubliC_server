@@ -2,7 +2,6 @@
 
 namespace App\Actions;
 
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
 class PointResponsePrepare
