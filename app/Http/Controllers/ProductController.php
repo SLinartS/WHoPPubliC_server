@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\LocationHistory;
 use App\Models\Product;
 use App\Models\ProductFloor;
+use App\Models\ProductPoint;
 use Exception;
 use Illuminate\Http\Request;
 use Throwable;
@@ -121,6 +122,7 @@ class ProductController extends Controller
         try {
             ProductFloor::whereIn('product_id', $productIds)->delete();
             LocationHistory::whereIn('product_id', $productIds)->delete();
+            ProductPoint::whereIn('product_id', $productIds)->delete();
             Product::whereIn('id', $productIds)->delete();
         } catch (Throwable $th) {
             throw $th;

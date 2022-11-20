@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\TaskResponsePrepare;
 use App\Models\Task;
+use App\Models\TaskFloor;
 use Illuminate\Http\Request;
 use Exception;
 use Throwable;
@@ -92,17 +93,25 @@ class TaskController extends Controller
             if ($task) {
                 try {
                     $productIds = $productTaskController->deleteLinksByTaskId($taskId);
-                } catch (\Throwable $th) {
-                    return response($th, 500);
+                } catch (Throwable $th) {
+                    throw $th;
+                }
+
+                try {
+                    TaskFloor::where('task_id', $taskId)->delete();
+                } catch (Throwable $th) {
+                    throw $th;
                 }
 
                 if ($request->query('deleteProducts')) {
                     try {
                         $productController->deleteProductsByIds($productIds);
-                    } catch (\Throwable $th) {
-                        return response($th, 500);
+                    } catch (Throwable $th) {
+                        throw $th;
                     }
                 }
+
+
 
                 $task->delete();
                 return response('The task has been deleted', 200);
