@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Actions\ProductResponsePrepare;
 use App\Models\Category;
+use App\Models\LocationHistory;
 use App\Models\Product;
+use App\Models\ProductFloor;
 use Illuminate\Http\Request;
 use Throwable;
 
@@ -44,7 +46,7 @@ class ProductController extends Controller
         }
     }
 
-    public function addProduct(Request $request, ProductFloorController $productFloorController)
+    public function addProducts(Request $request, ProductFloorController $productFloorController)
     {
         try {
             $products = $request->products;
@@ -79,6 +81,28 @@ class ProductController extends Controller
             ], 200);
         } catch (Throwable $th) {
             return response()->json(['message' => $th->getMessage()], 422);
+        }
+    }
+
+    public function deleteProduct(array $productId)
+    {
+        try {
+            ProductFloor::where('product_id', $productId)->delete();
+            LocationHistory::where('product_id', $productId)->delete();
+            Product::where('id', $productId)->delete();
+        } catch (Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function deleteProductsByIds(array $productIds)
+    {
+        try {
+            ProductFloor::whereIn('product_id', $productIds)->delete();
+            LocationHistory::whereIn('product_id', $productIds)->delete();
+            Product::whereIn('id', $productIds)->delete();
+        } catch (Throwable $th) {
+            throw $th;
         }
     }
 }

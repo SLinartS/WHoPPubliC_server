@@ -16,11 +16,19 @@ class ProductTaskController extends Controller
             throw $th;
         }
     }
-    
+
     public function deleteLinksByTaskId(string $taksId)
     {
         try {
+            $productIds = ProductTask::select('product_id')->where('task_id', $taksId)->get();
+            $productIds = array_map(
+                function ($object) {
+                    return $object['product_id'];
+                },
+                $productIds->toArray()
+            );
             ProductTask::where('task_id', $taksId)->delete();
+            return $productIds;
         } catch (Throwable $th) {
             throw $th;
         }

@@ -72,15 +72,16 @@ class TaskController extends Controller
 
     public function deleteTask(
         string $taskId,
+        Request $request,
         ProductTaskController $productTaskController,
-        TaskPointController $taskPointController
+        TaskPointController $taskPointController,
+        ProductController $productController
     ) {
         try {
             $task = Task::select('id')->where('id', $taskId)->first();
             if ($task) {
-
                 try {
-                    $productTaskController->deleteLinksByTaskId($taskId);
+                    $productIds = $productTaskController->deleteLinksByTaskId($taskId);
                 } catch (\Throwable $th) {
                     return response($th, 500);
                 }
@@ -89,6 +90,14 @@ class TaskController extends Controller
                     $taskPointController->deleteLinksByTaskId($taskId);
                 } catch (\Throwable $th) {
                     return response($th, 500);
+                }
+
+                if ($request->query('deleteProducts')) {
+                    try {
+                        $productController->deleteProductsByIds($productIds);
+                    } catch (\Throwable $th) {
+                        return response($th, 500);
+                    }
                 }
 
                 $task->delete();

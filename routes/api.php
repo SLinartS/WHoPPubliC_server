@@ -29,7 +29,7 @@ Route::get('/points', [PointController::class, 'index']);
 // PRODUCTS
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{taskId}', [ProductController::class, 'getProductsOfTask']);
-Route::post('/products', [ProductController::class, 'addProduct']);
+Route::post('/products', [ProductController::class, 'addProducts']);
 
 // TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);
