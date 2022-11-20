@@ -30,10 +30,15 @@ class TaskController extends Controller
         return response()->json($response, 200);
     }
 
-    public function addTask(Request $request, ProductTaskController $productTaskController, TaskPointController $taskPointController)
-    {
+    public function addTask(
+        Request $request,
+        TaskFloorController $taskFloorController,
+        ProductTaskController $productTaskController
+    ) {
         $fields = $request->fields;
-        $arrays = $request->arrays;
+        $products = $request->products;
+        $warehousePoints = $request->warehousePoints;
+
         try {
             $task = new Task;
             $task->article = $fields['article']['value'];
@@ -47,22 +52,28 @@ class TaskController extends Controller
             try {
                 $taskId = Task::select('id')->where('article', $fields['article']['value'])->first()['id'];
 
-                for ($i = 0; $i < count($arrays['products']['value']); $i++) {
-                    $error = $productTaskController->addProductTaskLink($taskId, $arrays['products']['value'][$i]);
-                    if ($error) {
-                        throw new Exception($error);
+                try {
+                    for ($i = 0; $i < count($products); $i++) {
+                        $error = $productTaskController->addLink($taskId, $products[$i]);
+                        if ($error) {
+                            throw new Exception($error);
+                        }
                     }
+                } catch (\Throwable $th) {
+                    throw $th;
                 }
 
-                for ($i = 0; $i < count($arrays['points']['value']); $i++) {
-                    $error = $taskPointController->addLink($taskId, $arrays['points']['value'][$i]);
-                    if ($error) {
-                        throw new Exception($error);
-                    }
+
+                try {
+                    $taskFloorController->addLinks($taskId, $warehousePoints);
+                } catch (Throwable $th) {
+                    throw $th;
                 }
             } catch (Throwable $th) {
                 return response($th, 422);
             }
+
+
 
             return response('The task has been added', 200);
         } catch (Throwable $th) {
@@ -74,7 +85,6 @@ class TaskController extends Controller
         string $taskId,
         Request $request,
         ProductTaskController $productTaskController,
-        TaskPointController $taskPointController,
         ProductController $productController
     ) {
         try {
@@ -82,12 +92,6 @@ class TaskController extends Controller
             if ($task) {
                 try {
                     $productIds = $productTaskController->deleteLinksByTaskId($taskId);
-                } catch (\Throwable $th) {
-                    return response($th, 500);
-                }
-
-                try {
-                    $taskPointController->deleteLinksByTaskId($taskId);
                 } catch (\Throwable $th) {
                     return response($th, 500);
                 }

@@ -19,7 +19,7 @@ class PointResponsePrepare
         'title' => $point->title,
         'active' => false
       ];
-      if ($point->is_acceptance === 1) {
+      if ($point->type_id === 1) {
         array_push($response['acceptance'], $item);
       } else {
         array_push($response['shipment'], $item);

@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tasks_points', function (Blueprint $table) {
-            $table->foreignId('task_id')->constrained('tasks');
-            $table->foreignId('point_id')->constrained('points');
-            $table->primary(['task_id', 'point_id']);
+        Schema::create('types_of_points', function (Blueprint $table) {
+            $table->id();
+            $table->string('type', 20)->unique();
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks_points');
+        Schema::dropIfExists('types_of_points');
     }
 };

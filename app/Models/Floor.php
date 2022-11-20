@@ -28,4 +28,9 @@ class Floor extends Model
     {
         return $this->belongsToMany(Product::class, 'products_floors', 'floor_id', 'product_id');
     }
+
+    public function tasks()
+    {
+        return $this->belongsToMany(Product::class, 'tasks_floors', 'floor_id', 'task_id');
+    }
 }

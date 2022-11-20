@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\LocationHistory;
 use App\Models\Product;
 use App\Models\ProductFloor;
+use Exception;
 use Illuminate\Http\Request;
 use Throwable;
 
@@ -46,41 +47,61 @@ class ProductController extends Controller
         }
     }
 
-    public function addProducts(Request $request, ProductFloorController $productFloorController)
-    {
+    public function addProducts(
+        Request $request,
+        // ProductFloorController $productFloorController,
+        ProductPointController $productPointController
+    ) {
         try {
             $products = $request->products;
-            $warehousePoints = $request->warehousePoints;
+            // return response()->json(['data' => $products], 500);
+            // $warehousePoints = $request->warehousePoints;
+            // $points = $request->points;
 
             $productIds = [];
             for ($i = 0; $i < count($products); $i++) {
+                $fields = $products[$i]['fields'];
+
                 $product = new Product;
-                $product->article = $products[$i]['article']['value'];
-                $product->title = $products[$i]['title']['value'];
-                $product->author = $products[$i]['author']['value'];
-                $product->year_of_publication = $products[$i]['yearOfPublication']['value'];
-                $product->number = $products[$i]['number']['value'];
-                $product->print_date = $products[$i]['printDate']['value'];
-                $product->printing_house = $products[$i]['printingHouse']['value'];
-                $product->publishing_house = $products[$i]['publishingHouse']['value'];
-                $product->stored = false;
+                $product->article = $fields['article']['value'];
+                $product->title = $fields['title']['value'];
+                $product->author = $fields['author']['value'];
+                $product->year_of_publication = $fields['yearOfPublication']['value'];
+                $product->number = $fields['number']['value'];
+                $product->print_date = $fields['printDate']['value'];
+                $product->printing_house = $fields['printingHouse']['value'];
+                $product->publishing_house = $fields['publishingHouse']['value'];
                 $product->user_id = $request->userId;
-                $product->category_id = $products[$i]['categoryId']['value'];
+                $product->category_id = $fields['categoryId']['value'];
 
                 $product->save();
 
-                $productId = Product::select('id')->where('article', $products[$i]['article']['value'])->first()['id'];
+                $productId = Product::select('id')->where('article', $fields['article']['value'])->first()['id'];
+
                 array_push($productIds, $productId);
+
+                try {
+                    $productPointController->addLinks($productIds, $products[$i]['points']);
+                } catch (Throwable $th) {
+                    throw $th;
+                }
             }
 
-            $productFloorController->addProductFloorLinks($productIds, $warehousePoints);
+
+            
+            // try {
+            //     $productFloorController->addLinks($productIds, $warehousePoints);
+            // } catch (Throwable $th) {
+            //     throw $th;
+            // }
+            
 
             return response()->json([
                 'message' => 'The products has been added',
                 'productIds' => $productIds
             ], 200);
         } catch (Throwable $th) {
-            return response()->json(['message' => $th->getMessage()], 422);
+            return response($th, 422);
         }
     }
 

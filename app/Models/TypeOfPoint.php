@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Point extends Model
+class TypeOfPoint extends Model
 {
     public $timestamps = false;
     protected $hidden = ['pivot'];
 
-    protected $table = 'points';
-    
+    protected $table = 'types_of_points';
+
     use HasFactory;
 
-    public function products()
+    public function points()
     {
-        return $this->belongsToMany(Point::class, 'products_points', 'point_id', 'product_id');
+        return $this->hasMany(Point::class, 'type_id', 'id');
     }
 }

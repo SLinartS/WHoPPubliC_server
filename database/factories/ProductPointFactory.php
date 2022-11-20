@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\TaskPoint;
+use App\Models\ProductPoint;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TaskPoint>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProductPoint>
  */
-class TaskPointFactory extends Factory
+class ProductPointFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,12 +16,12 @@ class TaskPointFactory extends Factory
      * @return array<string, mixed>
      */
 
-    protected $model = TaskPoint::class;
+    protected $model = ProductPoint::class;
 
     public function definition()
     {
         return [
-            'task_id' => fake()->numberBetween(1,10),
+            'product_id' => fake()->numberBetween(1,10),
             'point_id' => fake()->numberBetween(1,10),
         ];
     }

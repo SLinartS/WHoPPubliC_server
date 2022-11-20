@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('points', function (Blueprint $table) {
-            $table->id();
-            $table->string('title', 15);
-            $table->foreignId('type_id')->constrained('types_of_points');
+        Schema::create('products_points', function (Blueprint $table) {
+            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('point_id')->constrained('points');
+            $table->primary(['product_id', 'point_id']);
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('points');
+        Schema::dropIfExists('products_points');
     }
 };

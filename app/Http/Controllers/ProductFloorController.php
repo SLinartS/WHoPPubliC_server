@@ -21,7 +21,7 @@ class ProductFloorController extends Controller
         }
     }
 
-    public function addProductFloorLinks(array $productIds, array $floorIds)
+    public function addLinks(array $productIds, array $floorIds)
     {
         try {
             $floorUtils = new FloorUtils;
@@ -42,10 +42,10 @@ class ProductFloorController extends Controller
                     }
 
                     if ($initialNumberOfProduct <= $freeSpaceOfFloor) {
-                        $this->addProductFloorLink($productId, $floorId, $initialNumberOfProduct - $addedNumberOfProduct);
+                        $this->addLink($productId, $floorId, $initialNumberOfProduct - $addedNumberOfProduct);
                         break;
                     } elseif ($numberOfProduct <= $freeSpaceOfFloor) {
-                        $this->addProductFloorLink($productId, $floorId, $numberOfProduct);
+                        $this->addLink($productId, $floorId, $numberOfProduct);
                         $addedNumberOfProduct += $numberOfProduct;
                         if ($addedNumberOfProduct === $initialNumberOfProduct) {
                             break;
@@ -63,7 +63,7 @@ class ProductFloorController extends Controller
         }
     }
 
-    private function addProductFloorLink(int $productId, int $floorId, int $occupiedSpace)
+    private function addLink(int $productId, int $floorId, int $occupiedSpace)
     {
         $productFloor = new ProductFloor;
         $productFloor->product_id = $productId;

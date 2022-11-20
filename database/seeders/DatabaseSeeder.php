@@ -11,12 +11,15 @@ use App\Models\LocationHistory;
 use App\Models\Point;
 use App\Models\Product;
 use App\Models\ProductFloor;
+use App\Models\ProductPoint;
 use App\Models\ProductTask;
 use App\Models\Role;
 use App\Models\Section;
 use App\Models\Task;
+use App\Models\TaskFloor;
 use App\Models\TaskPoint;
 use App\Models\TaskType;
+use App\Models\TypeOfPoint;
 use App\Models\TypeOfTask;
 use App\Models\User;
 use App\Models\Zone;
@@ -42,6 +45,16 @@ class DatabaseSeeder extends Seeder
                     ['type' => 'shipment']
                 ))
             )->create();
+
+        TypeOfPoint::factory()->count(2)
+            ->state(
+                (new Sequence(
+                    ['type' => 'acceptance'],
+                    ['type' => 'shipment']
+                ))
+            )->create();
+
+        Point::factory()->count(10)->create();
 
         Task::factory()->count(10)->create();
         Category::factory()->count(5)->create();
@@ -154,7 +167,8 @@ class DatabaseSeeder extends Seeder
             )->create();
         LocationHistory::factory()->count(10)->create();
 
-        Point::factory()->count(10)->create();
-        TaskPoint::factory()->count(10)->create();
+
+        ProductPoint::factory()->count(10)->create();
+        TaskFloor::factory()->count(10)->create();
     }
 }

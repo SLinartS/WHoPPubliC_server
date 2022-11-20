@@ -11,7 +11,7 @@ class PointController extends Controller
     public function index(PointResponsePrepare $pointResponsePrepare)
     {
         try {
-            $points = Point::select('id', 'title', 'is_acceptance')->get();
+            $points = Point::select('id', 'title', 'type_id')->get();
             $response = $pointResponsePrepare($points);
 
             return response()->json($response, 200);

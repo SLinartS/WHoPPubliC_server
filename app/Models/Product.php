@@ -38,4 +38,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Floor::class, 'products_floors', 'product_id', 'floor_id');
     }
+
+    public function points()
+    {
+        return $this->belongsToMany(Point::class, 'products_points', 'product_id', 'point_id');
+    }
 }

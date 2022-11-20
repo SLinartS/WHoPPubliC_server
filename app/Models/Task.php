@@ -29,9 +29,8 @@ class Task extends Model
         return $this->belongsToMany(Product::class, 'products_tasks', 'task_id', 'product_id');
     }
 
-    public function points()
+    public function floors()
     {
-        return $this->belongsToMany(Point::class, 'tasks_points', 'task_id', 'point_id');
+        return $this->belongsToMany(Floor::class, 'tasks_floors', 'task_id', 'floor_id');
     }
-
 }
