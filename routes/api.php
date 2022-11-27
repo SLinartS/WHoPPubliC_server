@@ -30,6 +30,7 @@ Route::get('/points', [PointController::class, 'index']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{taskId}', [ProductController::class, 'getProductsOfTask']);
 Route::post('/products', [ProductController::class, 'addProducts']);
+Route::delete('/products/{productId}', [ProductController::class, 'deleteProduct']);
 
 // TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);

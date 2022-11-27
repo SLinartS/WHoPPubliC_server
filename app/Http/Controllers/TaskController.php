@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\TaskResponsePrepare;
+use App\Http\Controllers\Utils\ProductUtils;
 use App\Models\Task;
 use App\Models\TaskFloor;
 use Illuminate\Http\Request;
@@ -86,7 +87,7 @@ class TaskController extends Controller
         string $taskId,
         Request $request,
         ProductTaskController $productTaskController,
-        ProductController $productController
+        ProductUtils $productUtils
     ) {
         try {
             $task = Task::select('id')->where('id', $taskId)->first();
@@ -105,7 +106,7 @@ class TaskController extends Controller
 
                 if ($request->query('deleteProducts')) {
                     try {
-                        $productController->deleteProductsByIds($productIds);
+                        $productUtils->deleteProductsByProductIds($productIds);
                     } catch (Throwable $th) {
                         throw $th;
                     }

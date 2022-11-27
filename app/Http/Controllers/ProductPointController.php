@@ -7,29 +7,16 @@ use Throwable;
 
 class ProductPointController extends Controller
 {
-    public function addLinks(
-        array $productIds,
-        array $pointIds
-    ) {
+    public function addLink(int $productId, int $pointId)
+    {
         try {
-            for ($pointIndex = 0; $pointIndex < 1; $pointIndex++) {
-                for ($productIndex = 0; $productIndex < count($productIds); $productIndex++) {
-                    $this->addLink($productIds[$productIndex], $pointIds[$pointIndex]);
-                }
-            }
-
-            return false;
+            $productFloor = new ProductPoint;
+            $productFloor->product_id = $productId;
+            $productFloor->point_id = $pointId;
+            $productFloor->save();
         } catch (Throwable $th) {
             throw $th;
         }
-    }
-
-    private function addLink(int $productId, int $pointId)
-    {
-        $productFloor = new ProductPoint;
-        $productFloor->product_id = $productId;
-        $productFloor->point_id = $pointId;
-        $productFloor->save();
     }
 
     public function deleteLinksByProductId(string $taksId)
@@ -37,7 +24,7 @@ class ProductPointController extends Controller
         try {
             ProductPoint::where('task_id', $taksId)->delete();
         } catch (Throwable $th) {
-            throw $th;
+            throw response()->json(['message' => $th->getMessage()]);
         }
     }
 }
