@@ -20,14 +20,15 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'article' => fake()->unique()->word(),
+            'article' => fake()->unique()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
             'title' => fake()->word(),
             'author' => fake()->name(),
-            'year_of_publication' => fake()->randomNumber(4, true),
+            'year_of_publication' => fake()->year(),
             'number' => fake()->numberBetween(100, 200),
             'print_date' => fake()->date(),
             'printing_house' => fake()->sentence(2),
             'publishing_house' => fake()->sentence(2),
+            'is_active' => true,
             'user_id' => fake()->numberBetween(1, 1),
             'category_id' => fake()->numberBetween(1, 5),
         ];

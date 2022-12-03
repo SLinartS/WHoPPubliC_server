@@ -20,9 +20,12 @@ class TaskFactory extends Factory
     public function definition()
     {
         return [
-            'article' => fake()->unique()->word(),
+            'article' => fake()->unique()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
             'date_start' => fake()->date(),
             'date_end' => fake()->date(),
+            'time_completion' => fake()->date() . ' ' . fake()->time(),
+            'is_active' => false,
+            'is_available' => false,
             'user_id' => fake()->numberBetween(1, 1),
             'type_id' => fake()->numberBetween(1, 2),
         ];

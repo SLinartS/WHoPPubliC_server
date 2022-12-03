@@ -20,6 +20,16 @@ class User extends Model
         return $this->hasMany(Task::class, 'user_id', 'id');
     }
 
+    public function work_schedules()
+    {
+        return $this->hasMany(WorkSchedule::class, 'user_id', 'id');
+    }
+
+    public function authorizations_history()
+    {
+        return $this->hasMany(AuthorizationHistory::class, 'user_id', 'id');
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class, 'user_id', 'id');
@@ -29,4 +39,5 @@ class User extends Model
     {
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
+
 }

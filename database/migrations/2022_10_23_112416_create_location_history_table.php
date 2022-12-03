@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('location_history', function (Blueprint $table) {
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('floor_id')->constrained('floors');
+            $table->foreignId('point_id')->constrained('points');
             $table->dateTime('time');
             $table->primary(['product_id', 'floor_id']);
         });

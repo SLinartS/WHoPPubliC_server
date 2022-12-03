@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\AuthorizationHistory;
 use App\Models\Block;
 use App\Models\Category;
 use App\Models\Floor;
@@ -17,11 +18,10 @@ use App\Models\Role;
 use App\Models\Section;
 use App\Models\Task;
 use App\Models\TaskFloor;
-use App\Models\TaskPoint;
-use App\Models\TaskType;
 use App\Models\TypeOfPoint;
 use App\Models\TypeOfTask;
 use App\Models\User;
+use App\Models\WorkSchedule;
 use App\Models\Zone;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
@@ -35,8 +35,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Role::factory()->count(3)->create();
-        User::factory()->create();
+        Role::factory()->count(3)
+            ->state(
+                (new Sequence(
+                    ['title' => 'Администратор'],
+                    ['title' => 'Оператор склада'],
+                    ['title' => 'Работник склада'],
+                ))
+            )
+            ->create();
+        User::factory()->count(10)->create();
+
+        WorkSchedule::factory()->count(10)->create();
+        AuthorizationHistory::factory()->count(10)->create();
 
         TypeOfTask::factory()->count(2)
             ->state(
@@ -57,7 +68,18 @@ class DatabaseSeeder extends Seeder
         Point::factory()->count(10)->create();
 
         Task::factory()->count(10)->create();
-        Category::factory()->count(5)->create();
+
+        Category::factory()->count(5)
+            ->state(
+                (new Sequence(
+                    ['title' => 'Учебная литература для ВУЗов'],
+                    ['title' => 'Учебная литература для СУЗов'],
+                    ['title' => 'Учебная литература (школы)'],
+                    ['title' => 'Художественная литература'],
+                    ['title' => 'Художественная литература (детская)'],
+                ))
+            )->create();
+
         Product::factory()->count(10)
             ->state(
                 new Sequence(
@@ -165,7 +187,7 @@ class DatabaseSeeder extends Seeder
                     ['product_id' => 10, 'floor_id' => 8, 'occupied_space' => 100],
                 )
             )->create();
-        LocationHistory::factory()->count(10)->create();
+        LocationHistory::factory()->count(5)->create();
 
 
         ProductPoint::factory()->count(10)->create();

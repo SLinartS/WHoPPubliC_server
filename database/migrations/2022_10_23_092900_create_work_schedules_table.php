@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('points', function (Blueprint $table) {
+        Schema::create('work_schedules', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 30);
-            $table->foreignId('type_id')->constrained('types_of_points');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->string('day_of_week');
+            $table->foreignId('user_id')->constrained('users');
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('points');
+        Schema::dropIfExists('work_schedules');
     }
 };

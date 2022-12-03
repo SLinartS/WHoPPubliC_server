@@ -23,6 +23,7 @@ class LocationHistoryFactory extends Factory
         return [
             'product_id' => fake()->numberBetween(1,10),
             'floor_id' => fake()->numberBetween(1,24),
+            'point_id' => fake()->numberBetween(1,10),
             'time' => fake()->dateTime()
         ];
     }

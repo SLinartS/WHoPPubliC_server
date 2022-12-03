@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('article', 30)->unique();
+            $table->string('article', 10)->unique();
             $table->string('title', 100);
             $table->string('author', 50);
             $table->integer('year_of_publication');
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('print_date');
             $table->string('printing_house', 100);
             $table->string('publishing_house', 100);
+            $table->boolean('is_active');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('category_id')->constrained('categories');
         });
