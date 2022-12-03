@@ -22,9 +22,8 @@ class WorkScheduleFactory extends Factory
         return [
             'start_time' => '08:00:00',
             'end_time' => '20:00:00',
-            'day_of_week' => 'testDayOfWeek',
+            'day_of_week' => 0,
             'user_id' => 1
-            
         ];
     }
 }

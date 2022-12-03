@@ -20,7 +20,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'article' => fake()->unique()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
+            'article' => fake()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
             'title' => fake()->word(),
             'author' => fake()->name(),
             'year_of_publication' => fake()->year(),

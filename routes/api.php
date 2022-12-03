@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdditiveCriterionController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaskController;
@@ -35,4 +36,6 @@ Route::delete('/products/{productId}', [ProductController::class, 'deleteProduct
 // TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);
 Route::post('/tasks', [TaskController::class, 'addTask']);
-Route::delete('/tasks/{taskId}', [TaskController::class, 'deleteTask']);
+
+// ADDITIVE CRITERION
+Route::get('/additive-criterion', [AdditiveCriterionController::class, 'index']);

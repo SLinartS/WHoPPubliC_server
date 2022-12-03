@@ -22,7 +22,7 @@ class ZoneFactory extends Factory
     {
         return [
             'number' => fake()->unique()->numberBetween(1,3),
-            'letter' => strtoupper(fake()->randomLetter()),
+            'letter' => strtoupper(fake()->unique()->randomLetter()),
             
         ];
     }

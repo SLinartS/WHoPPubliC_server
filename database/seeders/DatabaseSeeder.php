@@ -46,14 +46,47 @@ class DatabaseSeeder extends Seeder
             ->create();
         User::factory()->count(10)->create();
 
-        WorkSchedule::factory()->count(10)->create();
-        AuthorizationHistory::factory()->count(10)->create();
+        for ($i = 1; $i <= 10; $i++) {
+            WorkSchedule::factory()->count(7)
+                ->state(
+                    (new Sequence(
+                        ['user_id' => $i, 'day_of_week' => 0],
+                        ['user_id' => $i, 'day_of_week' => 1],
+                        ['user_id' => $i, 'day_of_week' => 2],
+                        ['user_id' => $i, 'day_of_week' => 3],
+                        ['user_id' => $i, 'day_of_week' => 4],
+                        ['user_id' => $i, 'day_of_week' => 5],
+                        ['user_id' => $i, 'day_of_week' => 6],
+                    ))
+                )->create();
+        }
 
-        TypeOfTask::factory()->count(2)
+        AuthorizationHistory::factory()->count(12)
+            ->state(
+                (new Sequence(
+                    // 06
+                    ['user_id' => 1, 'time_authorization' => '2021-06-18 8:00:00'],
+                    ['user_id' => 1, 'time_authorization' => '2021-06-18 15:00:00'],
+                    ['user_id' => 3, 'time_authorization' => '2021-06-20 8:00:00'],
+                    ['user_id' => 4, 'time_authorization' => '2021-06-21 10:00:00'],
+                    ['user_id' => 4, 'time_authorization' => '2021-06-22 11:00:00'],
+                    ['user_id' => 5, 'time_authorization' => '2021-06-23 9:00:00'],
+                    // 07
+                    ['user_id' => 1, 'time_authorization' => '2021-07-18 10:00:00'],
+                    ['user_id' => 2, 'time_authorization' => '2021-07-18 15:00:00'],
+                    ['user_id' => 4, 'time_authorization' => '2021-07-20 8:00:00'],
+                    ['user_id' => 6, 'time_authorization' => '2021-07-21 7:00:00'],
+                    ['user_id' => 6, 'time_authorization' => '2021-07-22 11:00:00'],
+                    ['user_id' => 6, 'time_authorization' => '2021-07-23 8:00:00'],
+                ))
+            )->create();
+
+        TypeOfTask::factory()->count(3)
             ->state(
                 (new Sequence(
                     ['type' => 'acceptance'],
-                    ['type' => 'shipment']
+                    ['type' => 'shipment'],
+                    ['type' => 'intro'],
                 ))
             )->create();
 
@@ -67,7 +100,121 @@ class DatabaseSeeder extends Seeder
 
         Point::factory()->count(10)->create();
 
-        Task::factory()->count(10)->create();
+        Task::factory()->count(18)
+            ->state(
+                (new Sequence(
+                    // 06
+                    [
+                        'date_start' => '2021-06-17 10:00:00',
+                        'date_end' => '2021-06-18 08:00:00',
+                        'time_completion' => '2021-06-19 09:00:00',
+                        'type_id' => 1
+                    ],
+                    [
+                        'date_start' => '2021-06-17 10:00:00',
+                        'date_end' => '2021-06-19 17:00:00',
+                        'time_completion' => '2021-06-19 17:00:00',
+                        'type_id' => 1
+                    ],
+                    [
+                        'date_start' => '2021-06-17 10:00:00',
+                        'date_end' => '2021-06-18 8:00:00',
+                        'time_completion' => '2021-06-18 09:00:00',
+                        'type_id' => 1
+                    ],
+                    [
+                        'date_start' => '2021-06-17 10:00:00',
+                        'date_end' => '2021-06-18 12:00:00',
+                        'time_completion' => '2021-06-19 10:00:00',
+                        'type_id' => 2
+                    ],
+                    [
+                        'date_start' => '2021-06-17 10:00:00',
+                        'date_end' => '2021-06-18 14:00:00',
+                        'time_completion' => '2021-06-18 13:00:00',
+                        'type_id' => 2
+                    ],
+                    [
+                        'date_start' => '2021-06-17 10:00:00',
+                        'date_end' => '2021-06-19 20:00:00',
+                        'time_completion' => '2021-06-20 08:00:00',
+                        'type_id' => 2
+                    ],
+                    [
+                        'date_start' => '2021-06-17 10:00:00',
+                        'date_end' => '2021-06-18 18:00:00',
+                        'time_completion' => '2021-06-19 09:00:00',
+                        'type_id' => 3
+                    ],
+                    [
+                        'date_start' => '2021-06-17 10:00:00',
+                        'date_end' => '2021-06-18 15:00:00',
+                        'time_completion' => '2021-06-18 13:00:00',
+                        'type_id' => 3
+                    ],
+                    [
+                        'date_start' => '2021-06-17 10:00:00',
+                        'date_end' => '2021-06-18 08:00:00',
+                        'time_completion' => '2021-06-19 09:00:00',
+                        'type_id' => 3
+                    ],
+                    // 07
+                    [
+                        'date_start' => '2021-07-17 10:00:00',
+                        'date_end' => '2021-07-18 14:00:00',
+                        'time_completion' => '2021-07-19 9:00:00',
+                        'type_id' => 1
+                    ],
+                    [
+                        'date_start' => '2021-07-17 10:00:00',
+                        'date_end' => '2021-07-19 17:00:00',
+                        'time_completion' => '2021-07-19 17:00:00',
+                        'type_id' => 1
+                    ],
+                    [
+                        'date_start' => '2021-07-17 10:00:00',
+                        'date_end' => '2021-07-18 8:00:00',
+                        'time_completion' => '2021-07-18 09:00:00',
+                        'type_id' => 1
+                    ],
+                    [
+                        'date_start' => '2021-07-17 10:00:00',
+                        'date_end' => '2021-07-18 12:00:00',
+                        'time_completion' => '2021-07-19 10:00:00',
+                        'type_id' => 2
+                    ],
+                    [
+                        'date_start' => '2021-07-17 10:00:00',
+                        'date_end' => '2021-07-18 12:00:00',
+                        'time_completion' => '2021-07-18 18:00:00',
+                        'type_id' => 2
+                    ],
+                    [
+                        'date_start' => '2021-07-17 10:00:00',
+                        'date_end' => '2021-07-19 22:00:00',
+                        'time_completion' => '2021-07-20 08:00:00',
+                        'type_id' => 2
+                    ],
+                    [
+                        'date_start' => '2021-07-17 10:00:00',
+                        'date_end' => '2021-07-18 18:00:00',
+                        'time_completion' => '2021-07-18 16:00:00',
+                        'type_id' => 3
+                    ],
+                    [
+                        'date_start' => '2021-07-17 10:00:00',
+                        'date_end' => '2021-07-18 15:00:00',
+                        'time_completion' => '2021-07-18 13:00:00',
+                        'type_id' => 3
+                    ],
+                    [
+                        'date_start' => '2021-07-17 10:00:00',
+                        'date_end' => '2021-07-19 15:00:00',
+                        'time_completion' => '2021-07-19 14:00:00',
+                        'type_id' => 3
+                    ],
+                ))
+            )->create();
 
         Category::factory()->count(5)
             ->state(

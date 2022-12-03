@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('article', 15)->unique();
-            $table->date('date_start');  //TODO Заменить на time
-            $table->date('date_end'); //TODO Заменить на time
-            $table->date('time_completion');
+            $table->dateTime('date_start');  //TODO Заменить на time
+            $table->dateTime('date_end'); //TODO Заменить на time
+            $table->dateTime('time_completion');
             $table->boolean('is_active');
             $table->boolean('is_available');
             $table->foreignId('user_id')->constrained('users');
