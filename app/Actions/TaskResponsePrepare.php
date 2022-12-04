@@ -16,12 +16,12 @@ class TaskResponsePrepare
 
     foreach ($tasks as $task) {
 
-      $deadline = ((strtotime($task->date_end) - strtotime($task->date_start)) / 86400);
+      $deadline = ((strtotime($task->date_end) - strtotime($task->date_start)) / 3600);
 
       array_push($response['data'], [
         'id' => $task->id,
         'article' => $task->article,
-        'deadlines' => $deadline . ' дней',
+        'deadlines' => $deadline . ' часов',
         'dateStart' => $task->date_start,
         'dateEnd' => $task->date_end,
         'operatorLogin' => $task->user->name,

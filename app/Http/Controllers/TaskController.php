@@ -38,14 +38,16 @@ class TaskController extends Controller
         ProductTaskController $productTaskController
     ) {
         $fields = $request->fields;
-        $products = $request->products;
-        $warehousePoints = $request->warehousePoints;
+        $productIds = $request->productIds;
+        $warehousePointIds = $request->warehousePointIds;
 
         try {
             $task = new Task;
             $task->article = $fields['article']['value'];
             $task->date_start = $fields['dateStart']['value'];
-            $task->date_end = $fields['dateEnd']['value'];;
+            $task->date_end = $fields['dateEnd']['value'];
+            $task->is_active = false;
+            $task->is_available = true;
             $task->user_id = $fields['userId']['value'];
             $task->type_id = $fields['typeId']['value'];
 
@@ -55,8 +57,8 @@ class TaskController extends Controller
                 $taskId = Task::select('id')->where('article', $fields['article']['value'])->first()['id'];
 
                 try {
-                    for ($i = 0; $i < count($products); $i++) {
-                        $error = $productTaskController->addLink($taskId, $products[$i]);
+                    for ($i = 0; $i < count($productIds); $i++) {
+                        $error = $productTaskController->addLink($taskId, $productIds[$i]);
                         if ($error) {
                             throw new Exception($error);
                         }
@@ -65,12 +67,12 @@ class TaskController extends Controller
                     throw $th;
                 }
 
-
                 try {
-                    $taskFloorController->addLinks($taskId, $warehousePoints);
+                    $taskFloorController->addLinks($taskId, $warehousePointIds);
                 } catch (Throwable $th) {
                     throw $th;
                 }
+
             } catch (Throwable $th) {
                 return response($th, 422);
             }

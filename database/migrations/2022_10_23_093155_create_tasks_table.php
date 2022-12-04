@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('article', 15)->unique();
             $table->dateTime('date_start');  //TODO Заменить на time
             $table->dateTime('date_end'); //TODO Заменить на time
-            $table->dateTime('time_completion');
+            $table->dateTime('time_completion')->nullable();
             $table->boolean('is_active');
             $table->boolean('is_available');
             $table->foreignId('user_id')->constrained('users');

@@ -36,6 +36,7 @@ Route::delete('/products/{productId}', [ProductController::class, 'deleteProduct
 // TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);
 Route::post('/tasks', [TaskController::class, 'addTask']);
+Route::delete('/tasks/{taskId}', [TaskController::class, 'deleteTask']);
 
 // ADDITIVE CRITERION
 Route::get('/additive-criterion', [AdditiveCriterionController::class, 'index']);

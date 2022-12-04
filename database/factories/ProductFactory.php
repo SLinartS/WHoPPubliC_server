@@ -21,7 +21,7 @@ class ProductFactory extends Factory
     {
         return [
             'article' => fake()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
-            'title' => fake()->word(),
+            'title' => fake()->sentence(3, true),
             'author' => fake()->name(),
             'year_of_publication' => fake()->year(),
             'number' => fake()->numberBetween(100, 200),
