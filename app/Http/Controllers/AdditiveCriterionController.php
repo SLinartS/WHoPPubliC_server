@@ -1,16 +1,16 @@
 <?php
 
+
+
 namespace App\Http\Controllers;
 
-use App\Actions\AdditiveCriterionResponsePrepare;
+use App\Actions\AdditiveCriterion\AdditiveCriterionCount;
 use App\Models\AuthorizationHistory;
 use App\Models\Task;
-use Illuminate\Http\Request;
-
 
 class AdditiveCriterionController extends Controller
 {
-    public function index(AdditiveCriterionResponsePrepare $additiveCriterionResponsePrepare,)
+    public function index(AdditiveCriterionCount $additiveCriterionCount)
     {
         $lastMonth = [
             'placementTasks' => [],
@@ -72,8 +72,15 @@ class AdditiveCriterionController extends Controller
             $currentMonth['intraWarehouseTasks']->count();
 
 
-        $response = $additiveCriterionResponsePrepare($lastMonth, $currentMonth);
+        $response = $additiveCriterionCount($lastMonth, $currentMonth);
 
-        return response()->json($response, 200);
+        return response()->json(
+            [
+                'message' => 'Perfomance report have been created',
+                'criterias' => $response['criterias'],
+                'fileName' => $response['fileData']
+            ],
+            200
+        );
     }
 }

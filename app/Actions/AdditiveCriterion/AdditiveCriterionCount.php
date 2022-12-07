@@ -1,39 +1,39 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\AdditiveCriterion;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-class AdditiveCriterionResponsePrepare
+class AdditiveCriterionCount
 {
-
   public function __invoke(array $lastMonth, array $currentMonth)
   {
-    $lastMonthCritery = $this->countСriterias($lastMonth);
+    $lastMonthCriteria = $this->countСriterias($lastMonth);
 
-    $currentMonthCritery = $this->countСriterias($currentMonth);
+    $currentMonthCriteria = $this->countСriterias($currentMonth);
 
     [
       'lastMonthNormalizeCriteria' => $lastMonthNormalizeCriteria,
       'currentMonthNormalizeCriteria' => $currentMonthNormalizeCriteria
-    ] = $this->normalizeCriterias($lastMonthCritery, $currentMonthCritery);
+    ] = $this->normalizeCriterias($lastMonthCriteria, $currentMonthCriteria);
 
     $lastMonthAdditiveCritearia = $this->countAdditiveCriteria($lastMonthNormalizeCriteria);
     $currentMonthAdditiveCritearia = $this->countAdditiveCriteria($currentMonthNormalizeCriteria);
 
-
-    return [
-      'la' => $lastMonthCritery,
-      'ca' => $currentMonthCritery,
-      'ln' => $lastMonthNormalizeCriteria,
-      'cn' => $currentMonthNormalizeCriteria,
-      'Rlc' => $lastMonthAdditiveCritearia,
-      'Rcc' => $currentMonthAdditiveCritearia
+    $response = [
+      'lastMonthCritery' => $lastMonthCriteria,
+      'currentMonthCritery' => $currentMonthCriteria,
+      'lastMonthNormalizeCriteria' => $lastMonthNormalizeCriteria,
+      'currentMonthNormalizeCriteria' => $currentMonthNormalizeCriteria,
+      'lastMonthAdditiveCritearia' => $lastMonthAdditiveCritearia,
+      'currentMonthAdditiveCritearia' => $currentMonthAdditiveCritearia
     ];
-    $response = [];
-    return $response;
+
+    $fileData = (new CreatePerfomanceReport)->createPerfomanceReport($response);
+
+    return ['criterias' => $response, 'fileData' => $fileData];
   }
 
   private function countAdditiveCriteria(array $criterias)
