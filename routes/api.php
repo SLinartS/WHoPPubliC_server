@@ -39,4 +39,4 @@ Route::post('/tasks', [TaskController::class, 'addTask']);
 Route::delete('/tasks/{taskId}', [TaskController::class, 'deleteTask']);
 
 // ADDITIVE CRITERION
-Route::get('/additive-criterion', [AdditiveCriterionController::class, 'index']);
+Route::get('/perfomance-report', [AdditiveCriterionController::class, 'index']);

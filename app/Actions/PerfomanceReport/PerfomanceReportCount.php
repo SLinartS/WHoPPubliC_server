@@ -6,49 +6,141 @@ use DateTime;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-class AdditiveCriterionCount
+class PerfomanceReportCount
 {
-  public function __invoke(array $lastMonth, array $currentMonth)
-  {
-    $lastMonthCriteria = $this->countСriterias($lastMonth);
 
-    $currentMonthCriteria = $this->countСriterias($currentMonth);
+  public function __invoke(array $criterias)
+  {
+
+    $maxValues = $this->findMaxValues($criterias);
 
     [
-      'lastMonthNormalizeCriteria' => $lastMonthNormalizeCriteria,
-      'currentMonthNormalizeCriteria' => $currentMonthNormalizeCriteria
-    ] = $this->normalizeCriterias($lastMonthCriteria, $currentMonthCriteria);
+      'lastMonth' => $lastMonthNormalizeCriteria,
+      'currentMonth' => $currentMonthNormalizeCriteria
+    ] = $this->normalizeCriterias($criterias, $maxValues);
 
-    $lastMonthAdditiveCritearia = $this->countAdditiveCriteria($lastMonthNormalizeCriteria);
-    $currentMonthAdditiveCritearia = $this->countAdditiveCriteria($currentMonthNormalizeCriteria);
+    
+
+    $importance = [1, 0.7, 0.5, 1, 0.5];
+    $signs = [-1, -1, -1, -1, 1];
+
+    $lastMonthAdditiveCritearia = $this->countAdditiveCriteria($lastMonthNormalizeCriteria, $importance, $signs);
+    $currentMonthAdditiveCritearia = $this->countAdditiveCriteria($currentMonthNormalizeCriteria, $importance, $signs);
 
     $response = [
-      'lastMonthCritery' => $lastMonthCriteria,
-      'currentMonthCritery' => $currentMonthCriteria,
+      'lastMonthCritery' => $criterias['lastMonth'],
+      'currentMonthCritery' => $criterias['currentMonth'],
       'lastMonthNormalizeCriteria' => $lastMonthNormalizeCriteria,
       'currentMonthNormalizeCriteria' => $currentMonthNormalizeCriteria,
       'lastMonthAdditiveCritearia' => $lastMonthAdditiveCritearia,
       'currentMonthAdditiveCritearia' => $currentMonthAdditiveCritearia
     ];
 
-    $fileData = (new CreatePerfomanceReport)->createPerfomanceReport($response);
+    $fileData = (new PerfomanceReportExport)->exportPerfomanceReport($response, $importance, $signs, $maxValues);
 
-    return ['criterias' => $response, 'fileData' => $fileData];
+    return [
+      'response' => $response,
+      'fileData' => $fileData,
+      'maxValues' => $maxValues
+    ];
   }
 
-  private function countAdditiveCriteria(array $criterias)
+
+  private function findMaxValues(array $criterias)
+  {
+    $maxValues = [];
+
+    foreach ($criterias['lastMonth'] as $key => $criteria) {
+      $maxValues[$key] = max($criterias['lastMonth'][$key], $criterias['currentMonth'][$key]);
+    }
+
+    return $maxValues;
+  }
+
+
+  private function normalizeCriterias(array $criterias, array $maxValues)
+  {
+    $lastMonthNormalizeCriteria = [];
+    $currentMonthNormalizeCriteria = [];
+
+    foreach ($criterias['lastMonth'] as $key => $criteria) {
+      $lastMonthNormalizeCriteria[$key] = $criteria / $maxValues[$key];
+    }
+
+    foreach ($criterias['currentMonth'] as $key => $criteria) {
+      $currentMonthNormalizeCriteria[$key] = $criteria /  $maxValues[$key];
+    }
+
+    return [
+      'lastMonth' => $lastMonthNormalizeCriteria,
+      'currentMonth' => $currentMonthNormalizeCriteria
+    ];
+  }
+
+  private function countAdditiveCriteria(array $criterias, array $importance, array $signs)
   {
     $result = 0;
-    $multipliers = [1, 0.7, 0.5, 1, 0.5];
-    $signs = [-1, -1, -1, -1, 1];
     foreach ($criterias as $key => $criteria) {
       $index = array_search($key, array_keys($criterias));
-      $result += $multipliers[$index] * $signs[$index] * $criteria;
+      $result += $importance[$index] * $signs[$index] * $criteria;
     }
     return $result;
   }
 
-  private function normalizeCriterias(array $lastMonthCriteria, array $currentMontsCriteria)
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // TODO FIX
+
+  // public function BInvoke(array $lastMonth, array $currentMonth)
+  // {
+  //   $lastMonthCriteria = $this->countСriterias($lastMonth);
+
+  //   $currentMonthCriteria = $this->countСriterias($currentMonth);
+
+  //   [
+  //     'lastMonthNormalizeCriteria' => $lastMonthNormalizeCriteria,
+  //     'currentMonthNormalizeCriteria' => $currentMonthNormalizeCriteria
+  //   ] = $this->normalizeCriterias($lastMonthCriteria, $currentMonthCriteria);
+
+  //   $lastMonthAdditiveCritearia = $this->countAdditiveCriteria($lastMonthNormalizeCriteria);
+  //   $currentMonthAdditiveCritearia = $this->countAdditiveCriteria($currentMonthNormalizeCriteria);
+
+  //   $response = [
+  //     'lastMonthCritery' => $lastMonthCriteria,
+  //     'currentMonthCritery' => $currentMonthCriteria,
+  //     'lastMonthNormalizeCriteria' => $lastMonthNormalizeCriteria,
+  //     'currentMonthNormalizeCriteria' => $currentMonthNormalizeCriteria,
+  //     'lastMonthAdditiveCritearia' => $lastMonthAdditiveCritearia,
+  //     'currentMonthAdditiveCritearia' => $currentMonthAdditiveCritearia
+  //   ];
+
+  //   $rawData = [
+  //     'lastMonth' => $lastMonth,
+  //     'currentMonth'  => $currentMonth
+  //   ];
+  //   $fileData = (new CreatePerfomanceReport)->createPerfomanceReport($response, $rawData);
+
+  //   return [
+  //     'rawData' => $rawData,
+  //     'criterias' => $response,
+  //     'fileData' => $fileData
+  //   ];
+  // }
+
+
+
+  private function BnormalizeCriterias(array $lastMonthCriteria, array $currentMontsCriteria)
   {
     $lastMonthNormalizeCriteria = [];
     $currentMonthNormalizeCriteria = [];
