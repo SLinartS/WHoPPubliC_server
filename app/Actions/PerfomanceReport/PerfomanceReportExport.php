@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\AdditiveCriterion;
+namespace App\Actions\PerfomanceReport;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
@@ -11,137 +11,243 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class PerfomanceReportExport
 {
-  public function exportPerfomanceReport(array $additiveCriteriasValue, array $importance, array $signs, array $maxValues)
+  public function exportPerfomanceReport(array $criterias, array $normalizedCriterias, array $additiveCritearias, array $signs)
   {
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
 
     $this->setDefaultStyles($sheet, $spreadsheet);
 
-    $keysOfArray = array_keys($additiveCriteriasValue);
-    $keysOfCriterias = array_keys($additiveCriteriasValue[$keysOfArray[0]]);
+    $ratio =  $this->calculateRatio($criterias, $normalizedCriterias, $additiveCritearias);
+    $recomendations = $this->generateRecommendations($additiveCritearias);
 
-    $sheet->mergeCells('B3:B4');
+    $keysMonthDate = array_keys($criterias);
+    $keysOfCriterias = array_keys($criterias[$keysMonthDate[0]]);
 
-    $sheet->mergeCells('B8:B9');
+    $monthDateOffset = 2;
+    $columnOffset = 4;
 
-    $sheet->mergeCells('B10:B11');
+    for ($indexMonth = 0; $indexMonth < count($criterias); $indexMonth++) {
+      $sheet->mergeCells('B' .  $monthDateOffset . ':B' . $monthDateOffset + 3);
 
-    $stringArray = [
-      ['B3', 'Абсолютные значения'],
-      ['B8', 'Нормализованные значения'],
-      ['B10', 'Норм * знач * знак'],
-      ['C3', 'Прошлый месяц'],
-      ['C8', 'Прошлый месяц'],
-      ['C4', 'Текущий месяц'],
-      ['C9', 'Текущий месяц'],
-      ['C10', 'Текущий месяц'],
-      ['C11', 'Текущий месяц'],
-      ['C5', 'Максимальное значение'],
-      ['C6', 'Значимость'],
-      ['C7', 'Знак'],
-      ['D2', 'Просрочки задач распределения'],
-      ['E2', 'Просрочки задач отгурзки'],
-      ['F2', 'Просрочки внутрискладских задач'],
-      ['G2', 'Суммарные опоздания сотрудников'],
-      ['H2', 'Эффективность работы сотрудников'],
-      ['I2', 'Сравнительный рейтинг'],
-    ];
+      $sheet->setCellValue('B' . $monthDateOffset, substr($keysMonthDate[$indexMonth], 0, 7));
 
+      $titles = [
+        'Критерии',
+        'Значения',
+        'Отклонение от предыдущего месяца',
+        'Вывод'
+      ];
 
-    $this->setValueInCells($sheet, $stringArray, true);
+      $titleOfCriterias = [
+        'Посрочки задач распределения, часов',
+        'Посрочки задач отгрузки, часов',
+        'Посрочки внутрискладских задач, часов',
+        'Опоздания персонала, часов',
+        'Количество выполненных задач, штук'
+      ];
 
-    // $sheet->getDefaultRowDimension()->setRowHeight(45);
-    $sheet->getDefaultColumnDimension()->setWidth(20);
-
-    for ($row = 3; $row < 5; $row++) {
-      for ($column = 4; $column < 9; $column++) {
-
-        $cellValue = $additiveCriteriasValue[$keysOfArray[$row - 3]][$keysOfCriterias[$column - 4]];
-
-        $sheet->setCellValueByColumnAndRow($column, $row, $cellValue);
+      for ($indexTitleRow = 0; $indexTitleRow < 4; $indexTitleRow++) {
+        $sheet->setCellValue('C' . $indexTitleRow + $monthDateOffset, $titles[$indexTitleRow]);
       }
-    }
 
-    for ($column = 4; $column < 9; $column++) {
-      $keys = array_keys($maxValues);
-      $cellValue = $maxValues[$keys[$column - 4]];
-
-      $sheet->setCellValueByColumnAndRow($column, 5, $cellValue);
-    }
-
-    for ($column = 4; $column < 9; $column++) {
-
-      $cellValue = $importance[$column - 4];
-
-      $sheet->setCellValueByColumnAndRow($column, 6, $cellValue);
-    }
-
-    for ($column = 4; $column < 9; $column++) {
-
-      $cellValue = $signs[$column - 4];
-
-      $sheet->setCellValueByColumnAndRow($column, 7, $cellValue);
-    }
-
-    for ($row = 8; $row < 10; $row++) {
-      for ($column = 4; $column < 9; $column++) {
-
-        $cellValue = $additiveCriteriasValue[$keysOfArray[$row - 6]][$keysOfCriterias[$column - 4]];
-
-        $sheet->setCellValueByColumnAndRow($column, $row, $cellValue);
+      for ($indexRow = 0; $indexRow < 4; $indexRow++) {
+        for ($indexColumn = 0; $indexColumn < 5; $indexColumn++) {
+          switch ($indexRow) {
+            case 0:
+              $sheet->setCellValueByColumnAndRow(
+                $indexColumn + $columnOffset,
+                $indexRow + $monthDateOffset,
+                $titleOfCriterias[$indexColumn]
+              );
+              break;
+            case 1:
+              $this->setValueAndColorInCell(
+                $sheet,
+                $indexRow + $monthDateOffset,
+                $indexColumn,
+                $columnOffset,
+                $criterias[$keysMonthDate[$indexMonth]][$keysOfCriterias[$indexColumn]],
+                $signs,
+                false
+              );
+              break;
+            case 2:
+              $this->setValueAndColorInCell(
+                $sheet,
+                $indexRow + $monthDateOffset,
+                $indexColumn,
+                $columnOffset,
+                $ratio['criterias'][$keysMonthDate[$indexMonth]][$keysOfCriterias[$indexColumn]],
+                $signs,
+                true
+              );
+              break;
+          }
+        }
       }
+
+      $sheet->mergeCells('D' .  $monthDateOffset + 3 . ':H' . $monthDateOffset + 3);
+      $sheet->setCellValue('D' . $monthDateOffset + 3, $recomendations[$keysMonthDate[$indexMonth]]['text']);
+      $sheet->getStyle('D' . $monthDateOffset + 3)->getFill()
+        ->setFillType(Fill::FILL_SOLID)
+        ->getStartColor()->setARGB($recomendations[$keysMonthDate[$indexMonth]]['color']);;;
+
+      $sheet->getStyle('D' . $monthDateOffset + 3)->getFont()->setBold(true);
+      $sheet->getStyle('D' . $monthDateOffset + 3)->getFont()->setSize(16);
+
+      $monthDateOffset += 5;
     }
 
-    for ($row = 10; $row < 12; $row++) {
-      for ($column = 4; $column < 9; $column++) {
 
-        $cellValue = $additiveCriteriasValue[$keysOfArray[$row - 8]][$keysOfCriterias[$column - 4]] * $importance[$column - 4] * $signs[$column - 4];
-
-        $sheet->setCellValueByColumnAndRow($column, $row, $cellValue);
-      }
-    }
-
-    $sheet->setCellValueByColumnAndRow(9, 10, $additiveCriteriasValue[$keysOfArray[4]]);
-    $sheet->setCellValueByColumnAndRow(9, 11, $additiveCriteriasValue[$keysOfArray[5]]);
-
+    $filePath = __DIR__ . '\\..\\..\\..\\performanceReports\\perfomance-report-' . date('Y-m-d H-i-s') . '.xlsx';
+    $fileName = 'perfomance-report-' . date('Y-m-d H-i-s') . '.xlsx';
     $writer = new Xlsx($spreadsheet);
-    $writer->save(__DIR__ . '/../../../performanceReports/perfomance-report-' . date('Y-m-d H-i-s') . '.xlsx');
+    $writer->save($filePath);
+
+
+    return ['filePath' => $filePath, 'fileName' => $fileName];
   }
 
 
   private function setDefaultStyles(Worksheet $sheet, Spreadsheet $spreadsheet)
   {
     $standartRange = $sheet->getStyle('A1:O20');
-    $spreadsheet->getDefaultStyle()->getFont()->setName('Tahoma');
+
     $standartRange->getFont()->setSize(12);
     $standartRange->getAlignment()->setWrapText(true);
-    $standartRange->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-    $standartRange->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle('A1:O20')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+    $sheet->getStyle('A1:O20')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+    $sheet->getDefaultRowDimension()->setRowHeight(45);
+    $sheet->getDefaultColumnDimension()->setWidth(20);
   }
 
-  private function setValueInCells(Worksheet $sheet, array $values, bool $wrap)
+  private function setValueAndColorInCell(Worksheet $sheet, int $indexRow, int $indexColumn, int $columnOffset, string $value, array $signs, bool $percent)
   {
-    foreach ($values as $value) {
-      $sheet->setCellValue($value[0], $value[1]);
-      $cell = $sheet->getCell($value[0]);
-      if ($wrap) {
-        $cell->getStyle()->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffc924');
-        $cell->getStyle()->getFont()->setBold(true);
-        $sheet->getRowDimension(substr($value[0], 1))->setRowHeight(45);
+    $sign = (int) $value * $signs[$indexColumn];
 
-        $styleArray = [
-          'borders' => [
-            'allBorders' => [
-              'borderStyle' => Border::BORDER_THIN,
-              'color' => ['argb' => '000000'],
+    $cellStyle = $sheet->getCellByColumnAndRow($indexColumn + $columnOffset, $indexRow)->getStyle();
 
-            ],
-          ],
-        ];
-
-        $cell->getStyle()->applyFromArray($styleArray);
+    if ((int) $value !== 0) {
+      if ($sign < 0) {
+        $cellStyle->getFill()
+          ->setFillType(Fill::FILL_SOLID)
+          ->getStartColor()->setARGB('FF8785');;
+      } else {
+        $cellStyle->getFill()
+          ->setFillType(Fill::FILL_SOLID)
+          ->getStartColor()->setARGB('52FF89');;
       }
     }
+
+    $styleCellArray = [
+      'borders' => [
+        'outline' => [
+          'borderStyle' => Border::BORDER_THIN,
+          'color' => ['argb' => '000000'],
+        ],
+      ],
+    ];
+
+    $cellStyle->applyFromArray($styleCellArray);
+
+    $percentMark = '';
+    if ($percent) {
+      $percentMark = '%';
+    }
+
+    $sheet->setCellValueByColumnAndRow(
+      $indexColumn + $columnOffset,
+      $indexRow,
+      $value . $percentMark
+    );
+  }
+
+  private function calculateRatio(array $criterias, array $normalizedCriterias, array $additiveCritearias)
+  {
+
+    $compareMonthReports = [];
+
+
+    $keysOfMonth = array_keys($normalizedCriterias);
+    for ($indexMonth = 0; $indexMonth < count($normalizedCriterias); $indexMonth++) {
+
+      $keysOfCriteria = array_keys($normalizedCriterias[$keysOfMonth[$indexMonth]]);
+      for ($indexCriteria = 0; $indexCriteria < count($normalizedCriterias[$keysOfMonth[$indexMonth]]); $indexCriteria++) {
+
+        if ($indexMonth === 0) {
+          $compareMonthReports[$keysOfMonth[$indexMonth]][$keysOfCriteria[$indexCriteria]] = '0';
+        } else {
+          $compareMonthReports[$keysOfMonth[$indexMonth]][$keysOfCriteria[$indexCriteria]] =
+            round(100 *
+              ($normalizedCriterias[$keysOfMonth[$indexMonth]][$keysOfCriteria[$indexCriteria]] -
+                $normalizedCriterias[$keysOfMonth[$indexMonth - 1]][$keysOfCriteria[$indexCriteria]]) /
+              abs($normalizedCriterias[$keysOfMonth[$indexMonth - 1]][$keysOfCriteria[$indexCriteria]]), PHP_ROUND_HALF_DOWN);
+        }
+      }
+    }
+
+    $compareMonthReportsResult = [];
+
+    for ($indexMonth = 0; $indexMonth < count($additiveCritearias); $indexMonth++) {
+
+      $keysOfCriteria = array_keys($additiveCritearias);
+
+      if ($indexMonth === 0) {
+        $compareMonthReportsResult[$keysOfMonth[$indexMonth]] = '0';
+      } else {
+        $compareMonthReportsResult[$keysOfMonth[$indexMonth]] =
+          round(100 *
+            ($additiveCritearias[$keysOfMonth[$indexMonth]] -
+              $additiveCritearias[$keysOfMonth[$indexMonth - 1]]) /
+            abs($additiveCritearias[$keysOfMonth[$indexMonth - 1]]), PHP_ROUND_HALF_DOWN);
+      }
+    }
+
+    $ratio = [
+      'criterias' => $compareMonthReports,
+      'results' => $compareMonthReportsResult,
+    ];
+
+    return $ratio;
+  }
+
+  private function generateRecommendations(array $additiveCritearias)
+  {
+    $conclusion = [];
+
+    $answers = [
+      '0.5' => [
+        'text' => 'Прекрасные результаты',
+        'color' => '65FF47',
+      ],
+      '0' => [
+        'text' => 'Хорошие результаты',
+        'color' => 'C7FF99',
+      ],
+      '-0.5' => [
+        'text' => 'В пределах нормы',
+        'color' => 'FFFFFF',
+      ],
+      '-1' => [
+        'text' => 'Плохие результаты',
+        'color' => 'FF8785',
+      ],
+      '-1.5' => [
+        'text' => 'Ужасные результаты',
+        'color' => 'FF332E',
+      ],
+    ];
+
+    foreach ($additiveCritearias as $monthDateKey => $month) {
+      foreach ($answers as $score => $answer) {
+        if ($month <= $score) {
+          $conclusion[$monthDateKey] = $answer;
+        }
+      }
+    }
+
+    return $conclusion;
   }
 }
