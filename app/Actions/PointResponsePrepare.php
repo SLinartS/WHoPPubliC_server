@@ -17,7 +17,6 @@ class PointResponsePrepare
       $item = [
         'id' => $point->id,
         'title' => $point->title,
-        'active' => false
       ];
       if ($point->type_id === 1) {
         array_push($response['acceptance'], $item);

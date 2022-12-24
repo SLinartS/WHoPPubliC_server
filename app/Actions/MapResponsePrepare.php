@@ -53,7 +53,6 @@ class MapResponsePrepare
                   $lastIndexBlock = count($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks']) - 1;
                   array_push($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'], [
                     'id' => $floor->id,
-                    'active' => false,
                     'number' => $floor->number,
                     'capacity' => $floor->capacity,
                     'freeSpace' => $freeFloorSpace,
