@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\TaskResponsePrepare;
 use App\Http\Controllers\Utils\ProductUtils;
+use App\Http\Controllers\Utils\TaskFloorUtils;
 use App\Models\Task;
 use App\Models\TaskFloor;
 use Illuminate\Http\Request;
@@ -28,6 +29,21 @@ class TaskController extends Controller
         }
 
         $response = $taskResponsePrepare($tasks);
+
+        return response()->json($response, 200);
+    }
+
+    public function getOneTask($taskId, TaskResponsePrepare $taskResponsePrepare)
+    {
+        $task = Task::select('id', 'article', 'date_start', 'date_end', 'user_id')->where('id', $taskId)->first();
+
+        $productUtils = new ProductUtils;
+        $productIds = $productUtils->getProductIdsByTaskId($taskId);
+
+        $taskFloorUtils = new TaskFloorUtils;
+        $warehousePointIds = $taskFloorUtils->getFloorIdsByTaskId($taskId);
+
+        $response = $taskResponsePrepare->oneTask($task, $productIds, $warehousePointIds);
 
         return response()->json($response, 200);
     }
@@ -72,7 +88,6 @@ class TaskController extends Controller
                 } catch (Throwable $th) {
                     throw $th;
                 }
-
             } catch (Throwable $th) {
                 return response($th, 422);
             }
@@ -93,7 +108,7 @@ class TaskController extends Controller
     ) {
         try {
             $task = Task::select('id')->where('id', $taskId)->first();
-            
+
             if ($task) {
                 try {
                     $productIds = $productTaskController->deleteLinksByTaskId($taskId);

@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class TaskResponsePrepare
 {
@@ -36,6 +37,35 @@ class TaskResponsePrepare
         'Логин оператора',
       ];
     }
+
+    return $response;
+  }
+
+
+  public function oneTask(Model $task, array $productIds, array $warehousePointIds)
+  {
+    $formatedTask = [];
+    foreach ($task->toArray() as $key => $taskField) {
+      switch ($key) {
+        case "date_start":
+          $formatedTask['dateStart'] = $taskField;
+          break;
+        case "date_end":
+          $formatedTask['dateEnd'] = $taskField;
+          break;
+        case "user_id":
+          $formatedTask['user_id'] = $taskField;
+          break;
+        default:
+          $formatedTask[$key] = $taskField;
+      }
+    }
+
+    $response = [
+      'taskInfo' => $formatedTask,
+      'productIds' => $productIds,
+      'warehousePointIds' => $warehousePointIds,
+    ];
 
     return $response;
   }
