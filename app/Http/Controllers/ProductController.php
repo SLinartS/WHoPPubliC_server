@@ -22,7 +22,7 @@ class ProductController extends Controller
             $products = Product::select('id', 'article', 'title', 'author', 'number', 'print_date')
                 ->addSelect(['category' => Category::select('title')->whereColumn('id', 'category_id')])
                 ->get();
-            
+
 
             $idsProductWithLinkToTask = ProductTask::select('product_id', 'task_id')->get();
 
@@ -31,29 +31,6 @@ class ProductController extends Controller
             return response()->json($response, 200);
         } catch (\Throwable $th) {
             return response($th, 500);
-        }
-    }
-
-    public function getProductsOfTask($taskId,)
-    {
-        try {
-            $taskController = new TaskController;
-
-            $products = Product::select('id', 'article', 'title', 'author', 'year_of_publication', 'number', 'print_date')
-                ->addSelect(['category' => Category::select('title')->whereColumn('id', 'category_id')])
-                ->join('products_tasks as PT', 'id', 'PT.product_id')
-                ->where('PT.task_id', $taskId)
-                ->get();
-
-            $productResponsePrepare = new ProductResponsePrepare;
-            if (count($products) > 0) {
-                $response = $productResponsePrepare($products);
-
-                return response()->json($response, 200);
-            }
-            return response('Unknown tasks id', 404);
-        } catch (Throwable $th) {
-            return response($th, 422);
         }
     }
 
@@ -75,6 +52,7 @@ class ProductController extends Controller
             $product->publishing_house = $products['publishingHouse']['value'];
             $product->user_id = $request->userId;
             $product->category_id = $products['categoryId']['value'];
+            $product->is_active = true;
 
             $product->save();
 
