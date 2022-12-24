@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('products_tasks', function (Blueprint $table) {
             $table->foreignId('task_id')->constrained('tasks');
-            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('product_id')->unique()->constrained('products');
             $table->primary(['task_id', 'product_id']);
         });
     }

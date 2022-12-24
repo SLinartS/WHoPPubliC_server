@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\Collection;
 class ProductResponsePrepare
 {
 
-  public function __invoke(Collection $products)
+  public function __invoke(Collection $products, Collection $idsProductWithLinkToTask)
   {
     $response = [
       'data' => [],
-      'tableHeader' => []
+      'serviceInformation' => [],
+      'tableHeader' => [],
     ];
 
     foreach ($products as $product) {
+
       $item = [
         'id' => $product->id,
         'article' => $product->article,
@@ -23,9 +25,21 @@ class ProductResponsePrepare
         'category' => $product->category,
         'number' => $product->number,
         'printDate' => $product->print_date,
-
       ];
 
+      $isLinkedToTask = false;
+      $taskId = 0;
+      if ($idsProductWithLinkToTask->contains('product_id', $product->id)) {
+        $isLinkedToTask = true;
+        $taskId = $idsProductWithLinkToTask->firstWhere('product_id')['task_id'];
+      }
+      $serviceInformation = [
+        'productId' => $product->id,
+        'isLinkedToTask' => $isLinkedToTask,
+        'taskId' => $taskId
+      ];
+
+      array_push($response['serviceInformation'], $serviceInformation);
       array_push($response['data'], $item);
     }
 

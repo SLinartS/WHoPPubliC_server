@@ -18,13 +18,20 @@ class ProductController extends Controller
 {
     public function index(ProductResponsePrepare $productResponsePrepare)
     {
-        $products = Product::select('id', 'article', 'title', 'author', 'number', 'print_date')
-            ->addSelect(['category' => Category::select('title')->whereColumn('id', 'category_id')])
-            ->get();
+        try {
+            $products = Product::select('id', 'article', 'title', 'author', 'number', 'print_date')
+                ->addSelect(['category' => Category::select('title')->whereColumn('id', 'category_id')])
+                ->get();
+            
 
-        $response = $productResponsePrepare($products);
+            $idsProductWithLinkToTask = ProductTask::select('product_id', 'task_id')->get();
 
-        return response()->json($response, 200);
+            $response = $productResponsePrepare($products, $idsProductWithLinkToTask);
+
+            return response()->json($response, 200);
+        } catch (\Throwable $th) {
+            return response($th, 500);
+        }
     }
 
     public function getProductsOfTask($taskId,)

@@ -227,7 +227,7 @@ class DatabaseSeeder extends Seeder
                 ))
             )->create();
 
-        Product::factory()->count(10)
+        Product::factory()->count(15)
             ->state(
                 new Sequence(
                     ['number' => 100],

@@ -93,6 +93,7 @@ class TaskController extends Controller
     ) {
         try {
             $task = Task::select('id')->where('id', $taskId)->first();
+            
             if ($task) {
                 try {
                     $productIds = $productTaskController->deleteLinksByTaskId($taskId);
