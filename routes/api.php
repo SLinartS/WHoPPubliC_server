@@ -36,6 +36,7 @@ Route::get('/tasks/{type}', [TaskController::class, 'index']);
 Route::get('/taskinfo/{taskId}', [TaskController::class, 'getOneTask']);
 Route::post('/tasks', [TaskController::class, 'addTask']);
 Route::delete('/tasks/{taskId}', [TaskController::class, 'deleteTask']);
+Route::put('/tasks', [TaskController::class, 'updateTask']);
 
 // ADDITIVE CRITERION
 Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);

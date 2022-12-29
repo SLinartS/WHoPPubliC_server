@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\TaskResponsePrepare;
 use App\Http\Controllers\Utils\ProductUtils;
 use App\Http\Controllers\Utils\TaskFloorUtils;
+use App\Http\Controllers\Utils\TaskUtils;
 use App\Models\Task;
 use App\Models\TaskFloor;
 use Illuminate\Http\Request;
@@ -92,9 +93,62 @@ class TaskController extends Controller
                 return response($th, 422);
             }
 
-
-
             return response('The task has been added', 200);
+        } catch (Throwable $th) {
+            return response($th, 422);
+        }
+    }
+
+    public function updateTask(
+        Request $request,
+        TaskFloorController $taskFloorController,
+        ProductTaskController $productTaskController,
+        TaskUtils $taskUtils,
+    ) {
+        $fields = $request->fields;
+        $productIds = $request->productIds;
+        $taskId = $fields['id']['value'];
+        $warehousePointIds = $request->warehousePointIds;
+
+        try {
+            $task = Task::where('id', $taskId)->first();
+            $task->article = $fields['article']['value'];
+            $task->date_start = $fields['dateStart']['value'];
+            $task->date_end = $fields['dateEnd']['value'];
+            $task->is_active = false;
+            $task->is_available = true;
+            $task->user_id = $fields['userId']['value'];
+            $task->type_id = $fields['typeId']['value'];
+
+            $task->save();
+
+            $taskUtils->deletAllFloorLinks($taskId);
+            $taskUtils->deletAllProductLinks($taskId);
+
+            try {
+                $taskId = Task::select('id')->where('article', $fields['article']['value'])->first()['id'];
+
+                try {
+                    for ($i = 0; $i < count($productIds); $i++) {
+                        $error = $productTaskController->addLink($taskId, $productIds[$i]);
+                        if ($error) {
+                            throw new Exception($error);
+                        }
+                    }
+                } catch (\Throwable $th) {
+                    throw $th;
+                }
+
+                try {
+                    $taskFloorController->addLinks($taskId, $warehousePointIds);
+                } catch (Throwable $th) {
+                    throw $th;
+                }
+            } catch (Throwable $th) {
+                return response($th, 422);
+            }
+
+            return response('The task has been changed', 200);
         } catch (Throwable $th) {
             return response($th, 422);
         }
