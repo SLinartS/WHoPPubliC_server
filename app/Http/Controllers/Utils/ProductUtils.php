@@ -70,4 +70,13 @@ class ProductUtils extends Controller
             throw $th;
         }
     }
+
+    public function deletAllPointLinks(int $productId)
+    {
+        try {
+            ProductPoint::where('product_id', $productId)->delete();
+        } catch (Throwable $th) {
+            throw $th;
+        }
+    }
 }

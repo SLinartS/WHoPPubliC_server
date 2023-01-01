@@ -28,8 +28,10 @@ Route::get('/points', [PointController::class, 'index']);
 
 // PRODUCTS
 Route::get('/products', [ProductController::class, 'index']);
+Route::get('/productinfo/{productId}', [ProductController::class, 'getOneProduct']);
 Route::post('/products', [ProductController::class, 'addProducts']);
 Route::delete('/products/{productId}', [ProductController::class, 'deleteProduct']);
+Route::put('/products', [ProductController::class, 'updateProduct']);
 
 // TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);
