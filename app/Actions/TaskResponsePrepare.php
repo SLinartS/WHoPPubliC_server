@@ -17,16 +17,9 @@ class TaskResponsePrepare
 
     foreach ($tasks as $task) {
 
-      $deadline = ((strtotime($task->date_end) - strtotime($task->date_start)) / 3600);
+      $item = $this->formateTask($task);
 
-      array_push($response['data'], [
-        'id' => $task->id,
-        'article' => $task->article,
-        'deadlines' => $deadline . ' часов',
-        'dateStart' => $task->date_start,
-        'dateEnd' => $task->date_end,
-        'operatorLogin' => $task->user->name,
-      ]);
+      array_push($response['data'], $item);
 
       $response['tableHeader'] = [
         'ID',
@@ -44,22 +37,7 @@ class TaskResponsePrepare
 
   public function oneTask(Model $task, array $productIds, array $warehousePointIds)
   {
-    $formatedTask = [];
-    foreach ($task->toArray() as $key => $taskField) {
-      switch ($key) {
-        case "date_start":
-          $formatedTask['dateStart'] = $taskField;
-          break;
-        case "date_end":
-          $formatedTask['dateEnd'] = $taskField;
-          break;
-        case "user_id":
-          $formatedTask['user_id'] = $taskField;
-          break;
-        default:
-          $formatedTask[$key] = $taskField;
-      }
-    }
+    $formatedTask = $this->formateTask($task);
 
     $response = [
       'taskInfo' => $formatedTask,
@@ -68,5 +46,37 @@ class TaskResponsePrepare
     ];
 
     return $response;
+  }
+
+  private function formateTask(Model $task)
+  {
+    $deadline = ((strtotime($task->date_end) - strtotime($task->date_start)) / 3600);
+
+    return [
+      'id' => [
+        'value' => $task->id,
+        'alias' => 'ID'
+      ],
+      'article' => [
+        'value' => $task->article,
+        'alias' => 'Артикль'
+      ],
+      'deadlines' => [
+        'value' => $deadline . ' часов',
+        'alias' => 'Осталось времени'
+      ],
+      'dateStart' => [
+        'value' => $task->date_start,
+        'alias' => 'Дата начала'
+      ],
+      'dateEnd' => [
+        'value' => $task->date_end,
+        'alias' => 'Дата окончания'
+      ],
+      'operatorLogin' => [
+        'value' => $task->user->name,
+        'alias' => 'Логин оператора'
+      ],
+    ];
   }
 }

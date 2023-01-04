@@ -121,7 +121,7 @@ class ProductController extends Controller
         try {
             $fields = $request->formData;
             $productId = $fields['id']['value'];
-
+            
             $product = Product::where('id', $productId)->first();
             $product->article = $fields['article']['value'];
             $product->title = $fields['title']['value'];
