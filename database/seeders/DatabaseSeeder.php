@@ -235,7 +235,15 @@ class DatabaseSeeder extends Seeder
             )->create();
         ProductTask::factory()->count(10)->create();
 
-        Zone::factory()->count(3)->create();
+        Zone::factory()->count(3)
+            ->state(
+                new Sequence(
+                    ['number' => 1, 'letter' => 'A'],
+                    ['number' => 2, 'letter' => 'B'],
+                    ['number' => 3, 'letter' => 'C'],
+                )
+            )
+            ->create();
         Section::factory()->count(6)
             ->state(
                 new Sequence(
