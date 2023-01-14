@@ -41,7 +41,7 @@ class TaskController extends Controller
     try {
       $fields = $request->fields;
       $productIds = $request->productIds;
-      $floorIds = $request->warehousePointIds;
+      $floorIds = $request->floorIds;
 
       $servicesTask->create(
         $fields,
@@ -64,7 +64,7 @@ class TaskController extends Controller
     try {
       $fields = $request->fields;
       $productIds = $request->productIds;
-      $floorIds = $request->warehousePointIds;
+      $floorIds = $request->floorIds;
 
       $servicesTask->update(
         $fields,

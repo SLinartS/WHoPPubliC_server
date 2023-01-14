@@ -39,9 +39,7 @@ class Task
     $response = [
       'taskInfo' => $formatedTask,
       'productIds' => $productIds,
-      // TODO заменить warehousePointIds на floorIds
-      // на клиенте
-      'warehousePointIds' => $floorIds,
+      'floorIds' => $floorIds,
     ];
 
     return $response;
