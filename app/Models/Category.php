@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'categories';
+  public $timestamps = false;
 
-    use HasFactory;
+  protected $hidden = ['pivot'];
 
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'category_id', 'id');
-    }
+  protected $table = 'categories';
+
+  public function products()
+  {
+    return $this->hasMany(Product::class, 'category_id', 'id');
+  }
 }

@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'roles';
-    
-    use HasFactory;
+  public $timestamps = false;
 
-    public function users()
-    {
-        return $this->hasMany(User::class, 'role_id', 'id');
-    }
+  protected $hidden = ['pivot'];
+
+  protected $table = 'roles';
+
+  public function users()
+  {
+    return $this->hasMany(User::class, 'role_id', 'id');
+  }
 }

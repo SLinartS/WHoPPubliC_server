@@ -7,40 +7,41 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'products';
-    
-    use HasFactory;
+  public $timestamps = false;
 
-    public function locations()
-    {
-        return $this->hasMany(LocationHistory::class, 'product_id', 'id');
-    }
+  protected $hidden = ['pivot'];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+  protected $table = 'products';
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
-    }
+  public function locations()
+  {
+    return $this->hasMany(LocationHistory::class, 'product_id', 'id');
+  }
 
-    public function tasks()
-    {
-        return $this->belongsToMany(Task::class, 'products_tasks', 'product_id', 'task_id');
-    }
+  public function user()
+  {
+    return $this->belongsTo(User::class, 'user_id', 'id');
+  }
 
-    public function floors()
-    {
-        return $this->belongsToMany(Floor::class, 'products_floors', 'product_id', 'floor_id');
-    }
+  public function category()
+  {
+    return $this->belongsTo(Category::class, 'category_id', 'id');
+  }
 
-    public function points()
-    {
-        return $this->belongsToMany(Point::class, 'products_points', 'product_id', 'point_id');
-    }
+  public function tasks()
+  {
+    return $this->belongsToMany(Task::class, 'products_tasks', 'product_id', 'task_id');
+  }
+
+  public function floors()
+  {
+    return $this->belongsToMany(Floor::class, 'products_floors', 'product_id', 'floor_id');
+  }
+
+  public function points()
+  {
+    return $this->belongsToMany(Point::class, 'products_points', 'product_id', 'point_id');
+  }
 }

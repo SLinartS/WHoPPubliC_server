@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\ResponsePrepare;
 
 use Illuminate\Database\Eloquent\Collection;
 
-class PointResponsePrepare
+class Point
 {
   public function __invoke(Collection $points)
   {

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\ResponsePrepare;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductResponsePrepare
+class Product
 {
-
   public function __invoke(Collection $products, Collection $idsProductWithLinkToTask)
   {
     $response = [
@@ -16,7 +15,6 @@ class ProductResponsePrepare
     ];
 
     foreach ($products as $product) {
-
       $item = $this->formateProduct($product);
 
       $isLinkedToTask = false;
@@ -62,7 +60,6 @@ class ProductResponsePrepare
 
     return $response;
   }
-
 
   private function formateProduct(Model $product): array
   {

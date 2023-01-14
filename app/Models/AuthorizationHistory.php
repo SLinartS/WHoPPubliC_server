@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuthorizationHistory extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'authorization_history';
+  public $timestamps = false;
 
-    use HasFactory;
+  protected $hidden = ['pivot'];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+  protected $table = 'authorization_history';
+
+  public function user()
+  {
+    return $this->belongsTo(User::class, 'user_id', 'id');
+  }
 }

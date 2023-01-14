@@ -2,16 +2,10 @@
 
 namespace App\Actions\PerfomanceReport;
 
-use DateTime;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-
-class PerfomanceReportCount
+class Count
 {
-
   public function __invoke(array $criterias)
   {
-
     $maxValues = $this->findMaxValues($criterias);
 
     $normalizedCriterias =  $this->normalizeCriterias($criterias, $maxValues);
@@ -29,11 +23,10 @@ class PerfomanceReportCount
       'additiveCritearias' => $additiveCritearias
     ];
 
-    $fileData = (new PerfomanceReportExport)->exportPerfomanceReport($criterias, $normalizedCriterias, $additiveCritearias, $signs);
+    $fileData = (new Export())->exportPerfomanceReport($criterias, $normalizedCriterias, $additiveCritearias, $signs);
 
     return $fileData;
   }
-
 
   private function findMaxValues(array $criterias)
   {
@@ -41,7 +34,6 @@ class PerfomanceReportCount
 
     foreach ($criterias as $month) {
       foreach ($month as $key => $criteria) {
-
         if (!array_key_exists($key, $maxValues)) {
           $maxValues[$key] = $criteria;
         }
@@ -54,7 +46,6 @@ class PerfomanceReportCount
 
     return $maxValues;
   }
-
 
   private function normalizeCriterias(array $criterias, array $maxValues)
   {
@@ -75,7 +66,7 @@ class PerfomanceReportCount
     foreach ($criterias as $monthDateKey => $month) {
       $sum = 0;
       foreach ($month as $key => $criteria) {
-        $index = array_search($key, array_keys($month));
+        $index = array_search($key, array_keys($month), true);
         $sum += $importance[$index] * $signs[$index] * $criteria;
       }
       $additiveCritearias[$monthDateKey] = $sum;

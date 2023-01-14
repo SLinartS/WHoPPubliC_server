@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\ResponsePrepare;
 
-use App\Http\Controllers\Utils\FloorUtils;
+use App\Actions\Other\CountFreeFloorSpace;
 use Illuminate\Database\Eloquent\Collection;
 
-class MapResponsePrepare
+class Map
 {
-
   public function __invoke(
     Collection $zones,
     Collection $sections,
@@ -15,7 +14,7 @@ class MapResponsePrepare
     Collection $floors
   ) {
     $response = [];
-    $floorUtils = new FloorUtils;
+    $countFreeFloorSpace = new CountFreeFloorSpace();
 
     foreach ($zones as $zone) {
       $sections = $zone->sections;
@@ -48,7 +47,7 @@ class MapResponsePrepare
                 ]);
 
                 foreach ($floors as $floor) {
-                  $freeFloorSpace = $floorUtils->countFreeFloorSpace($floor->id);
+                  $freeFloorSpace = $countFreeFloorSpace($floor->id);
 
                   $lastIndexBlock = count($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks']) - 1;
                   array_push($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'], [

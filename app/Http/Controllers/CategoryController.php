@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\CategoryResponsePrepare;
-use App\Models\Category;
+use App\Services\Category as ServicesCategory;
+use Throwable;
 
 class CategoryController extends Controller
 {
-    public function index(CategoryResponsePrepare $categoryResponsePrepare)
-    {
+  public function index(ServicesCategory $categoryServices)
+  {
+    try {
+      $response = $categoryServices->index();
 
-        try {
-            $categories = Category::select('id', 'title')->get();
-            $response = $categoryResponsePrepare($categories);
-
-            return response()->json($response, 200);
-        } catch (\Throwable $th) {
-            response($th, 422);
-        }
+      return response()->json($response, 200);
+    } catch (Throwable $th) {
+      response($th, 500);
     }
+  }
 }

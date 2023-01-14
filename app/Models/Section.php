@@ -7,20 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'sections';
-    
-    use HasFactory;
+  public $timestamps = false;
 
-    public function blocks()
-    {
-        return $this->hasMany(Block::class, 'section_id', 'id');
-    }
+  protected $hidden = ['pivot'];
 
-    public function zone()
-    {
-        return $this->belongsTo(Zone::class, 'zone_id', 'id');
-    }
+  protected $table = 'sections';
+
+  public function blocks()
+  {
+    return $this->hasMany(Block::class, 'section_id', 'id');
+  }
+
+  public function zone()
+  {
+    return $this->belongsTo(Zone::class, 'zone_id', 'id');
+  }
 }

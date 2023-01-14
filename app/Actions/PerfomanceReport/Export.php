@@ -9,7 +9,7 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class PerfomanceReportExport
+class Export
 {
   public function exportPerfomanceReport(array $criterias, array $normalizedCriterias, array $additiveCritearias, array $signs)
   {
@@ -91,7 +91,9 @@ class PerfomanceReportExport
       $sheet->setCellValue('D' . $monthDateOffset + 3, $recomendations[$keysMonthDate[$indexMonth]]['text']);
       $sheet->getStyle('D' . $monthDateOffset + 3)->getFill()
         ->setFillType(Fill::FILL_SOLID)
-        ->getStartColor()->setARGB($recomendations[$keysMonthDate[$indexMonth]]['color']);;;
+        ->getStartColor()->setARGB($recomendations[$keysMonthDate[$indexMonth]]['color']);
+      ;
+      ;
 
       $sheet->getStyle('D' . $monthDateOffset + 3)->getFont()->setBold(true);
       $sheet->getStyle('D' . $monthDateOffset + 3)->getFont()->setSize(16);
@@ -108,7 +110,6 @@ class PerfomanceReportExport
 
     return ['filePath' => $filePath, 'fileName' => $fileName];
   }
-
 
   private function setDefaultStyles(Worksheet $sheet, Spreadsheet $spreadsheet)
   {
@@ -133,11 +134,13 @@ class PerfomanceReportExport
       if ($sign < 0) {
         $cellStyle->getFill()
           ->setFillType(Fill::FILL_SOLID)
-          ->getStartColor()->setARGB('FF8785');;
+          ->getStartColor()->setARGB('FF8785');
+        ;
       } else {
         $cellStyle->getFill()
           ->setFillType(Fill::FILL_SOLID)
-          ->getStartColor()->setARGB('52FF89');;
+          ->getStartColor()->setARGB('52FF89');
+        ;
       }
     }
 
@@ -166,16 +169,13 @@ class PerfomanceReportExport
 
   private function calculateRatio(array $criterias, array $normalizedCriterias, array $additiveCritearias)
   {
-
     $compareMonthReports = [];
 
 
     $keysOfMonth = array_keys($normalizedCriterias);
     for ($indexMonth = 0; $indexMonth < count($normalizedCriterias); $indexMonth++) {
-
       $keysOfCriteria = array_keys($normalizedCriterias[$keysOfMonth[$indexMonth]]);
       for ($indexCriteria = 0; $indexCriteria < count($normalizedCriterias[$keysOfMonth[$indexMonth]]); $indexCriteria++) {
-
         if ($indexMonth === 0) {
           $compareMonthReports[$keysOfMonth[$indexMonth]][$keysOfCriteria[$indexCriteria]] = '0';
         } else {
@@ -191,7 +191,6 @@ class PerfomanceReportExport
     $compareMonthReportsResult = [];
 
     for ($indexMonth = 0; $indexMonth < count($additiveCritearias); $indexMonth++) {
-
       $keysOfCriteria = array_keys($additiveCritearias);
 
       if ($indexMonth === 0) {

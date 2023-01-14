@@ -14,5 +14,6 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/tools/php-cs-fixer/vendor
 
 /performanceReports

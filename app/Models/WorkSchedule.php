@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class WorkSchedule extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'work_schedules';
+  public $timestamps = false;
 
-    use HasFactory;
+  protected $hidden = ['pivot'];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+  protected $table = 'work_schedules';
+
+  public function user()
+  {
+    return $this->belongsTo(User::class, 'user_id', 'id');
+  }
 }

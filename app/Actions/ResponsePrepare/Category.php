@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\ResponsePrepare;
 
 use Illuminate\Database\Eloquent\Collection;
 
-class CategoryResponsePrepare
+class Category
 {
-
   public function __invoke(Collection $categories)
   {
     $response = [];

@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Zone extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'zones';
-    
-    use HasFactory;
+  public $timestamps = false;
 
-    public function sections()
-    {
-        return $this->hasMany(Section::class, 'zone_id', 'id');
-    }
+  protected $hidden = ['pivot'];
+
+  protected $table = 'zones';
+
+  public function sections()
+  {
+    return $this->hasMany(Section::class, 'zone_id', 'id');
+  }
 }

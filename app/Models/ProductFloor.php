@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductFloor extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'products_floors';
-    
-    use HasFactory;
+  public $timestamps = false;
+
+  protected $hidden = ['pivot'];
+
+  protected $table = 'products_floors';
 }

@@ -7,30 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'tasks';
-    
-    use HasFactory;
+  public $timestamps = false;
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
+  protected $hidden = ['pivot'];
 
-    public function type()
-    {
-        return $this->belongsTo(TypeOfTask::class, 'type_id', 'id');
-    }
+  protected $table = 'tasks';
 
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'products_tasks', 'task_id', 'product_id');
-    }
+  public function user()
+  {
+    return $this->belongsTo(User::class, 'user_id', 'id');
+  }
 
-    public function floors()
-    {
-        return $this->belongsToMany(Floor::class, 'tasks_floors', 'task_id', 'floor_id');
-    }
+  public function type()
+  {
+    return $this->belongsTo(TypeOfTask::class, 'type_id', 'id');
+  }
+
+  public function products()
+  {
+    return $this->belongsToMany(Product::class, 'products_tasks', 'task_id', 'product_id');
+  }
+
+  public function floors()
+  {
+    return $this->belongsToMany(Floor::class, 'tasks_floors', 'task_id', 'floor_id');
+  }
 }

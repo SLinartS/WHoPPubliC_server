@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class TypeOfTask extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'types_of_tasks';
+  public $timestamps = false;
 
-    use HasFactory;
+  protected $hidden = ['pivot'];
 
-    public function tasks()
-    {
-        return $this->hasMany(Task::class, 'type_id', 'id');
-    }
+  protected $table = 'types_of_tasks';
+
+  public function tasks()
+  {
+    return $this->hasMany(Task::class, 'type_id', 'id');
+  }
 }

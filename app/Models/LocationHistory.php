@@ -7,20 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class LocationHistory extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'location_history';
-    
-    use HasFactory;
+  public $timestamps = false;
 
-    public function floor()
-    {
-        return $this->belongsTo(Floor::class, 'floor_id', 'id');
-    }
+  protected $hidden = ['pivot'];
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
-    }
+  protected $table = 'location_history';
+
+  public function floor()
+  {
+    return $this->belongsTo(Floor::class, 'floor_id', 'id');
+  }
+
+  public function product()
+  {
+    return $this->belongsTo(Product::class, 'product_id', 'id');
+  }
 }

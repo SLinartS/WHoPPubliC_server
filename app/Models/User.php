@@ -8,36 +8,36 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'users';
-    
-    use HasFactory;
+  public $timestamps = false;
 
-    public function tasks()
-    {
-        return $this->hasMany(Task::class, 'user_id', 'id');
-    }
+  protected $hidden = ['pivot'];
 
-    public function work_schedules()
-    {
-        return $this->hasMany(WorkSchedule::class, 'user_id', 'id');
-    }
+  protected $table = 'users';
 
-    public function authorizations_history()
-    {
-        return $this->hasMany(AuthorizationHistory::class, 'user_id', 'id');
-    }
+  public function tasks()
+  {
+    return $this->hasMany(Task::class, 'user_id', 'id');
+  }
 
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'user_id', 'id');
-    }
+  public function work_schedules()
+  {
+    return $this->hasMany(WorkSchedule::class, 'user_id', 'id');
+  }
 
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'role_id', 'id');
-    }
+  public function authorizations_history()
+  {
+    return $this->hasMany(AuthorizationHistory::class, 'user_id', 'id');
+  }
 
+  public function products()
+  {
+    return $this->hasMany(Product::class, 'user_id', 'id');
+  }
+
+  public function role()
+  {
+    return $this->belongsTo(Role::class, 'role_id', 'id');
+  }
 }

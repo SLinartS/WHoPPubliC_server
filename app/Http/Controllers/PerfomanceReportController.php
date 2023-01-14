@@ -1,10 +1,8 @@
 <?php
 
-
-
 namespace App\Http\Controllers;
 
-use App\Actions\PerfomanceReport\PerfomanceReportCount;
+use App\Actions\PerfomanceReport\Count as PerfomanceReportCount;
 use App\Models\AuthorizationHistory;
 use App\Models\Task;
 use DateTime;
@@ -12,7 +10,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PerfomanceReportController extends Controller
 {
-
   public function index(PerfomanceReportCount $perfomanceReportCount)
   {
     $criterias = [];

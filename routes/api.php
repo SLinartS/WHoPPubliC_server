@@ -28,17 +28,17 @@ Route::get('/points', [PointController::class, 'index']);
 
 // PRODUCTS
 Route::get('/products', [ProductController::class, 'index']);
-Route::get('/productinfo/{productId}', [ProductController::class, 'getOneProduct']);
-Route::post('/products', [ProductController::class, 'addProducts']);
-Route::delete('/products/{productId}', [ProductController::class, 'deleteProduct']);
-Route::put('/products', [ProductController::class, 'updateProduct']);
+Route::get('/productinfo/{productId}', [ProductController::class, 'show']);
+Route::post('/products', [ProductController::class, 'store']);
+Route::delete('/products/{productId}', [ProductController::class, 'destroy']);
+Route::put('/products', [ProductController::class, 'update']);
 
 // TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);
-Route::get('/taskinfo/{taskId}', [TaskController::class, 'getOneTask']);
-Route::post('/tasks', [TaskController::class, 'addTask']);
-Route::delete('/tasks/{taskId}', [TaskController::class, 'deleteTask']);
-Route::put('/tasks', [TaskController::class, 'updateTask']);
+Route::get('/taskinfo/{taskId}', [TaskController::class, 'show']);
+Route::post('/tasks', [TaskController::class, 'create']);
+Route::delete('/tasks/{taskId}', [TaskController::class, 'destroy']);
+Route::put('/tasks', [TaskController::class, 'update']);
 
 // ADDITIVE CRITERION
 Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\ResponsePrepare;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-class TaskResponsePrepare
+class Task
 {
-
   public function __invoke(Collection $tasks)
   {
     $response = [
@@ -16,7 +15,6 @@ class TaskResponsePrepare
     ];
 
     foreach ($tasks as $task) {
-
       $item = $this->formateTask($task);
 
       array_push($response['data'], $item);
@@ -34,15 +32,16 @@ class TaskResponsePrepare
     return $response;
   }
 
-
-  public function oneTask(Model $task, array $productIds, array $warehousePointIds)
+  public function oneTask(Model $task, array $productIds, array $floorIds)
   {
     $formatedTask = $this->formateTask($task);
 
     $response = [
       'taskInfo' => $formatedTask,
       'productIds' => $productIds,
-      'warehousePointIds' => $warehousePointIds,
+      // TODO заменить warehousePointIds на floorIds
+      // на клиенте
+      'warehousePointIds' => $floorIds,
     ];
 
     return $response;

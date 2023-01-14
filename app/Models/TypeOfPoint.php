@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class TypeOfPoint extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'types_of_points';
+  public $timestamps = false;
 
-    use HasFactory;
+  protected $hidden = ['pivot'];
 
-    public function points()
-    {
-        return $this->hasMany(Point::class, 'type_id', 'id');
-    }
+  protected $table = 'types_of_points';
+
+  public function points()
+  {
+    return $this->hasMany(Point::class, 'type_id', 'id');
+  }
 }

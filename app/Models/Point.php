@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Point extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'points';
-    
-    use HasFactory;
+  public $timestamps = false;
 
-    public function products()
-    {
-        return $this->belongsToMany(Point::class, 'products_points', 'point_id', 'product_id');
-    }
+  protected $hidden = ['pivot'];
+
+  protected $table = 'points';
+
+  public function products()
+  {
+    return $this->belongsToMany(Point::class, 'products_points', 'point_id', 'product_id');
+  }
 }

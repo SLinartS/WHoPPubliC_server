@@ -344,8 +344,6 @@ class DatabaseSeeder extends Seeder
             )->create();
         LocationHistory::factory()->count(5)->create();
 
-
         ProductPoint::factory()->count(10)->create();
-        TaskFloor::factory()->count(10)->create();
     }
 }

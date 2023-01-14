@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductPoint extends Model
 {
-    public $timestamps = false;
-    protected $hidden = ['pivot'];
+  use HasFactory;
 
-    protected $table = 'products_points';
+  public $timestamps = false;
 
-    use HasFactory;
+  protected $hidden = ['pivot'];
 
+  protected $table = 'products_points';
 }
