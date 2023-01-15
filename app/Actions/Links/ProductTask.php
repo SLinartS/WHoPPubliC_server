@@ -19,26 +19,24 @@ class ProductTask
 
   public function deleteByTaskId(int $taskId): array
   {
-    $productIds = ModelsProductTask::select('product_id')->where('task_id', $taskId)->get();
-    $productIds = array_map(
-      function ($object) {
-        return $object['product_id'];
-      },
-      $productIds->toArray()
-    );
+    $productIds = ModelsProductTask::select('product_id')
+    ->where('task_id', $taskId)
+    ->get()
+    ->pluck('product_id')
+    ->toArray();
+
     ModelsProductTask::where('task_id', $taskId)->delete();
     return $productIds;
   }
 
   public function deleteByProductIds(array $productIds)
   {
-    $productIds = ModelsProductTask::select('product_id')->whereIn('product_id', $productIds)->get();
-    $productIds = array_map(
-      function ($object) {
-        return $object['product_id'];
-      },
-      $productIds->toArray()
-    );
+    $productIds = ModelsProductTask::select('product_id')
+    ->whereIn('product_id', $productIds)
+    ->get()
+    ->pluck('product_id')
+    ->toArray();
+
     ModelsProductTask::whereIn('product_id', $productIds)->delete();
     return $productIds;
   }

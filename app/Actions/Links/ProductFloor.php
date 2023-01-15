@@ -78,15 +78,10 @@ class ProductFloor
     $floorIds = [];
     if ($idsProductWithLinkToFloor->contains('product_id', $productId)) {
       $isLinkedToFloors = true;
-      $floorIds = $idsProductWithLinkToFloor->where('product_id', $productId);
-
-      $floorIds = array_map(
-        function ($object) {
-          return $object['floor_id'];
-        },
-        $floorIds->toArray()
-      );
-      $floorIds = array_values($floorIds);
+      $floorIds = $idsProductWithLinkToFloor
+        ->where('product_id', $productId)
+        ->pluck('floor_id')
+        ->toArray();
     }
 
     return ['isLinkedToFloors' => $isLinkedToFloors, 'floorIds' => $floorIds];
