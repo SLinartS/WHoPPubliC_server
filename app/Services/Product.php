@@ -32,9 +32,7 @@ class Product
       ->addSelect(['category_title' => ModelsCategory::select('title')->whereColumn('id', 'category_id')])
       ->get();
 
-    $idsProductWithLinkToTask = (new LinksProductTask())->getIdsProductAndIdsTask();
-
-    return (new ResponsePrepareProduct())($products, $idsProductWithLinkToTask);
+    return (new ResponsePrepareProduct())($products);
   }
 
     public function show(int $productId)
@@ -55,9 +53,8 @@ class Product
         ->addSelect(['point_id' => ProductPoint::select('point_id')->whereColumn('product_id', 'id')->limit(1)])
         ->where('id', $productId)
         ->first();
-      $idsProductWithLinkToTask = (new LinksProductTask())->getIdsProductAndIdsTask();
 
-      return (new ResponsePrepareProduct())->oneProduct($product, $idsProductWithLinkToTask);
+      return (new ResponsePrepareProduct())->oneProduct($product);
     }
 
   public function store(

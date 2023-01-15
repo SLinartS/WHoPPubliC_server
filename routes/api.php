@@ -6,6 +6,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\PerfomanceReportController;
 use App\Http\Controllers\PointController;
+use App\Http\Controllers\UtilsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,3 +43,6 @@ Route::put('/tasks', [TaskController::class, 'update']);
 
 // ADDITIVE CRITERION
 Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);
+
+// OTHER
+Route::get('/check-article/{type}/{article}', [UtilsController::class, 'checkArticle']);

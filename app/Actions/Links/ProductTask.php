@@ -61,4 +61,18 @@ class ProductTask
     $productsTasks = ModelsProductTask::select('product_id', 'task_id')->get();
     return $productsTasks;
   }
+
+  public function getTaskIdByProductId(int $productId)
+  {
+    $idsProductWithLinkToTask = $this->getIdsProductAndIdsTask();
+
+    $isLinkedToTask = false;
+    $taskId = 0;
+    if ($idsProductWithLinkToTask->contains('product_id', $productId)) {
+      $isLinkedToTask = true;
+      $taskId = $idsProductWithLinkToTask->firstWhere('product_id', $productId)['task_id'];
+    }
+
+    return ['isLinkedToTask' => $isLinkedToTask, 'taskId' => $taskId];
+  }
 }

@@ -2,12 +2,14 @@
 
 namespace App\Actions\ResponsePrepare;
 
+use App\Actions\Links\ProductFloor as LinksProductFloor;
+use App\Actions\Links\ProductTask as LinksProductTask;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Product
 {
-  public function __invoke(Collection $products, Collection $idsProductWithLinkToTask)
+  public function __invoke(Collection $products)
   {
     $response = [
       'data' => [],
@@ -17,12 +19,9 @@ class Product
     foreach ($products as $product) {
       $item = $this->formateProduct($product);
 
-      $isLinkedToTask = false;
-      $taskId = 0;
-      if ($idsProductWithLinkToTask->contains('product_id', $product->id)) {
-        $isLinkedToTask = true;
-        $taskId = $idsProductWithLinkToTask->firstWhere('product_id', $product->id)['task_id'];
-      }
+      ['isLinkedToTask' => $isLinkedToTask, 'taskId' => $taskId] = (new LinksProductTask())->getTaskIdByProductId($product->id);
+      ['isLinkedToFloors' => $isLinkedToFloors, 'floorIds' => $floorIds] = (new LinksProductFloor())->getFloorIdsByProductId($product->id);
+
       $serviceInformation = [
         'productId' => $product->id,
         'isLinkedToTask' => $isLinkedToTask,
@@ -36,16 +35,12 @@ class Product
     return $response;
   }
 
-  public function oneProduct(Model $product, Collection $idsProductWithLinkToTask)
+  public function oneProduct(Model $product)
   {
     $formatedProduct = [];
 
-    $isLinkedToTask = false;
-    $taskId = 0;
-    if ($idsProductWithLinkToTask->contains('product_id', $product->id)) {
-      $isLinkedToTask = true;
-      $taskId = $idsProductWithLinkToTask->firstWhere('product_id', $product->id)['task_id'];
-    }
+    ['isLinkedToTask' => $isLinkedToTask, 'taskId' => $taskId] = (new LinksProductTask())->getTaskIdByProductId($product->id);
+    ['isLinkedToFloors' => $isLinkedToFloors, 'floorIds' => $floorIds] = (new LinksProductFloor())->getFloorIdsByProductId($product->id);
 
     $formatedProduct = $this->formateProduct($product);
 
@@ -54,7 +49,9 @@ class Product
       'pointId' => $product->point_id,
       'serviceInformation' => [
         'isLinkedToTask' => $isLinkedToTask,
-        'taskId' => $taskId
+        'taskId' => $taskId,
+        'isLinkedFloors' => $isLinkedToFloors,
+        'floorIds' => $floorIds
       ]
     ];
 
