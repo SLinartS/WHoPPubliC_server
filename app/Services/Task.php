@@ -94,7 +94,7 @@ class Task
     }
 
     $linksProductFloor = new LinksProductFloor();
-    $linksProductFloor->deleteByProductIds([$productIds]);
+    $linksProductFloor->deleteByProductIds($productIds);
 
     $linksProductFloor->add($productIds, $floorIds);
   }
