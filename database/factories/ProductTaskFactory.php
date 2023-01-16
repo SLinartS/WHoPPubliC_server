@@ -20,8 +20,8 @@ class ProductTaskFactory extends Factory
     public function definition()
     {
         return [
-            'product_id' => fake()->unique()->numberBetween(1,15),
-            'task_id' => fake()->numberBetween(1,10)
+            'product_id' => fake()->numberBetween(1,30),
+            'task_id' => fake()->numberBetween(1,18)
         ];
     }
 }

@@ -24,7 +24,7 @@ class ProductFactory extends Factory
             'title' => fake()->sentence(3, true),
             'author' => fake()->name(),
             'year_of_publication' => fake()->year(),
-            'number' => fake()->numberBetween(100, 200),
+            'number' => fake()->numberBetween(100, 600),
             'print_date' => fake()->date(),
             'printing_house' => fake()->sentence(2),
             'publishing_house' => fake()->sentence(2),
