@@ -241,7 +241,7 @@ class DatabaseSeeder extends Seeder
           ))
         )->create();
 
-    Product::factory()->count(30)
+    Product::factory()->count(35)
         ->state(
           new Sequence(
             ['number' => 100],
@@ -371,7 +371,7 @@ class DatabaseSeeder extends Seeder
           )
         )->create();
 
-    ProductFloor::factory()->count(25)
+    ProductFloor::factory()->count(30)
         ->state(
           new Sequence(
             ['product_id' => 1, 'floor_id' => 1, 'occupied_space' => 100],
@@ -399,6 +399,11 @@ class DatabaseSeeder extends Seeder
             ['product_id' => 23, 'floor_id' => 31, 'occupied_space' => 100],
             ['product_id' => 24, 'floor_id' => 40, 'occupied_space' => 100],
             ['product_id' => 25, 'floor_id' => 41, 'occupied_space' => 100],
+            ['product_id' => 31, 'floor_id' => 15, 'occupied_space' => 100],
+            ['product_id' => 32, 'floor_id' => 15, 'occupied_space' => 100],
+            ['product_id' => 33, 'floor_id' => 14, 'occupied_space' => 100],
+            ['product_id' => 34, 'floor_id' => 13, 'occupied_space' => 100],
+            ['product_id' => 35, 'floor_id' => 12, 'occupied_space' => 100],
           )
         )->create();
     LocationHistory::factory()->count(5)->create();

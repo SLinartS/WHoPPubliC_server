@@ -3,6 +3,7 @@
 namespace App\Actions\ResponsePrepare;
 
 use App\Actions\Other\CountFreeFloorSpace;
+use App\Actions\Other\CountReservedFloorSpace;
 use Illuminate\Database\Eloquent\Collection;
 
 class Map
@@ -14,7 +15,6 @@ class Map
     Collection $floors
   ) {
     $response = [];
-    $countFreeFloorSpace = new CountFreeFloorSpace();
 
     foreach ($zones as $zone) {
       $sections = $zone->sections;
@@ -47,7 +47,8 @@ class Map
                 ]);
 
                 foreach ($floors as $floor) {
-                  $freeFloorSpace = $countFreeFloorSpace($floor->id);
+                  $freeFloorSpace = (new CountFreeFloorSpace())($floor->id);
+                  $reservedFloorSpace = (new CountReservedFloorSpace())($floor->id);
 
                   $lastIndexBlock = count($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks']) - 1;
                   array_push($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'], [
@@ -55,6 +56,7 @@ class Map
                     'number' => $floor->number,
                     'capacity' => $floor->capacity,
                     'freeSpace' => $freeFloorSpace,
+                    'reservedSpace' => $reservedFloorSpace,
                   ]);
                 }
               }

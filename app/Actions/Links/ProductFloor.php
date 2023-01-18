@@ -16,7 +16,6 @@ class ProductFloor
 
   public function add(array $productIds, array $floorIds)
   {
-    $otherCountFreeFloorSpace = new CountFreeFloorSpace();
     for ($productIndex = 0; $productIndex < count($productIds); $productIndex++) {
       $productId = $productIds[$productIndex];
       $initialNumberOfProduct = $numberOfProduct = Product::select('number')->where('id', $productId)->first()->number;
@@ -25,7 +24,7 @@ class ProductFloor
       $indexOfFloor = 0;
       while ($indexOfFloor < count($floorIds)) {
         $floorId = $floorIds[$indexOfFloor];
-        $freeSpaceOfFloor = $otherCountFreeFloorSpace($floorId);
+        $freeSpaceOfFloor = (new CountFreeFloorSpace())($floorId);
 
         if ($freeSpaceOfFloor === 0) {
           $indexOfFloor++;
