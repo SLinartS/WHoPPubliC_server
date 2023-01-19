@@ -86,4 +86,20 @@ class ProductController extends Controller
       return response()->json(['message' => $th->getMessage()], 500);
     }
   }
+
+  public function markAsMoved(
+    Request $request,
+    ServicesProduct $servicesProduct
+  ) {
+    try {
+      $productId = $request->productId;
+      $servicesProduct->markAsMoved($productId);
+
+      return response()->json([
+        'message' => 'The products has been marked as moved'
+      ], 200);
+    } catch (Throwable $th) {
+      return response()->json(['message' => $th->getMessage()], 500);
+    }
+  }
 }

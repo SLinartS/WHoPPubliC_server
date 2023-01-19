@@ -125,4 +125,10 @@ class Product
     LocationHistory::whereIn('product_id', $productIds)->delete();
     ModelsProduct::whereIn('id', $productIds)->delete();
   }
+
+  public function markAsMoved(int $productId)
+  {
+    (new LinksProductTask())->deleteByProductIds([$productId]);
+    (new LinksProductPoint())->deleteByProductId([$productId]);
+  }
 }
