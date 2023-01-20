@@ -9,24 +9,12 @@ class Task
 {
   public function __invoke(Collection $tasks)
   {
-    $response = [
-      'data' => [],
-      'tableHeader' => []
-    ];
+    $response = [];
 
     foreach ($tasks as $task) {
       $item = $this->formateTask($task);
 
-      array_push($response['data'], $item);
-
-      $response['tableHeader'] = [
-        'ID',
-        'Артикул',
-        'Осталось времени',
-        'Дата начала',
-        'Дата окончания',
-        'Логин оператора',
-      ];
+      array_push($response, $item);
     }
 
     return $response;
