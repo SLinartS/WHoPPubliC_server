@@ -79,7 +79,7 @@ class Product
 
     $productId = (new GetProductIdByArticle())($fields['article']['value']);
 
-    (new LinksProductPoint())->add($productId, $pointId);
+    (new LinksProductPoint())->add([$productId], [$pointId]);
   }
 
   public function update(
@@ -106,9 +106,9 @@ class Product
 
     $linksProductPoint = new LinksProductPoint();
 
-    $linksProductPoint->deleteByProductId([$productId]);
+    $linksProductPoint->deleteByProductIds([$productId]);
     $productId = (new GetProductIdByArticle())($fields['article']['value']);
-    $linksProductPoint->add($productId, $pointId);
+    $linksProductPoint->add([$productId], [$pointId]);
   }
 
   public function destroy(array $productIds)
@@ -119,9 +119,9 @@ class Product
       $tasksString = $productsTasks->implode('task_id', ', ');
       throw new Exception('Нельзя удалить продукт с которым связаны задачи: ' . $tasksString);
     }
-    (new LinksProductTask())->deleteByProductIds($productIds);
+    $linksProductTask->deleteByProductIds($productIds);
     (new LinksProductFloor())->deleteByProductIds($productIds);
-    (new LinksProductPoint())->deleteByProductId($productIds);
+    (new LinksProductPoint())->deleteByProductIds($productIds);
     LocationHistory::whereIn('product_id', $productIds)->delete();
     ModelsProduct::whereIn('id', $productIds)->delete();
   }
@@ -129,6 +129,7 @@ class Product
   public function markAsMoved(int $productId)
   {
     (new LinksProductTask())->deleteByProductIds([$productId]);
-    (new LinksProductPoint())->deleteByProductId([$productId]);
+    (new LinksProductPoint())->deleteByProductIds([$productId]);
+    (new LinksProductFloor())->setPositionAsActual($productId);
   }
 }

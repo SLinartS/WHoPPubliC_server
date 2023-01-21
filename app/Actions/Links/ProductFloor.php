@@ -55,34 +55,73 @@ class ProductFloor
     $productFloor->product_id = $productId;
     $productFloor->floor_id = $floorId;
     $productFloor->occupied_space = $occupiedSpace;
+    $productFloor->is_actual = false;
     $productFloor->save();
   }
 
-  public function deleteByProductIds(array $productIds)
+  public function deleteByProductIds(array $productIds, bool $isActual = null)
   {
-    ModelsProductFloor::whereIn('product_id', $productIds)->delete();
+    if ($isActual) {
+      ModelsProductFloor::whereIn('product_id', $productIds)
+        ->where('is_actual', $isActual)
+        ->delete();
+    } else {
+      ModelsProductFloor::whereIn('product_id', $productIds)->delete();
+    }
   }
 
   public function getProductIdsAndFloorIds()
   {
-    $productsFloors = ModelsProductFloor::select('product_id', 'floor_id')->get();
+    $productsFloors = ModelsProductFloor::select('product_id', 'floor_id', 'is_actual')->get();
     return $productsFloors;
   }
-
-  public function getFloorIdsByProductId(int $productId)
+  public function getFloorIdsInfoByProductId(int $productId)
   {
     $idsProductWithLinkToFloor = $this->getProductIdsAndFloorIds($productId);
 
     $isLinkedToFloors = false;
     $floorIds = [];
+    $actualFloorIds = [];
     if ($idsProductWithLinkToFloor->contains('product_id', $productId)) {
       $isLinkedToFloors = true;
       $floorIds = $idsProductWithLinkToFloor
         ->where('product_id', $productId)
         ->pluck('floor_id')
         ->toArray();
+      $actualFloorIds = $idsProductWithLinkToFloor
+        ->where('product_id', $productId)
+        ->where('is_actual', true)
+        ->pluck('floor_id')
+        ->toArray();
     }
 
-    return ['isLinkedToFloors' => $isLinkedToFloors, 'floorIds' => $floorIds];
+    return [
+      'isLinkedToFloors' => $isLinkedToFloors,
+      'floorIds' => $floorIds,
+      'actualFloorIds' => $actualFloorIds
+    ];
+  }
+
+  public function setPositionAsActual(int $productId)
+  {
+    $modelsProductFloor = ModelsProductFloor::where('id', $productId)->first();
+
+    $modelsProductFloor->is_actual = true;
+  }
+
+  public function getFloorIdsByProductIds(array $productIds)
+  {
+    $floorIds = ModelsProductFloor::select('floor_id')
+      ->whereIn('product_id', $productIds)
+      ->get();
+
+    $floorIds = array_map(
+      function ($object) {
+        return $object['floor_id'];
+      },
+      $floorIds->toArray()
+    );
+
+    return $floorIds;
   }
 }

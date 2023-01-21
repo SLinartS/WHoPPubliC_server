@@ -3,6 +3,7 @@
 namespace App\Actions\ResponsePrepare;
 
 use App\Actions\Links\ProductFloor as LinksProductFloor;
+use App\Actions\Links\ProductPoint as LinksProductPoint;
 use App\Actions\Links\ProductTask as LinksProductTask;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -20,12 +21,21 @@ class Product
       $item = $this->formateProduct($product);
 
       ['isLinkedToTask' => $isLinkedToTask, 'taskId' => $taskId] = (new LinksProductTask())->getTaskIdByProductId($product->id);
-      ['isLinkedToFloors' => $isLinkedToFloors, 'floorIds' => $floorIds] = (new LinksProductFloor())->getFloorIdsByProductId($product->id);
+      $pointIds = (new LinksProductPoint())->getPointIdsByProductIds([$product->id]);
+      [
+        'isLinkedToFloors' => $isLinkedToFloors,
+        'floorIds' => $floorIds,
+        'actualFloorIds' => $actualFloorIds
+      ] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product->id);
 
       $serviceInformation = [
         'productId' => $product->id,
         'isLinkedToTask' => $isLinkedToTask,
-        'taskId' => $taskId
+        'taskId' => $taskId,
+        'isLinkedToFloors' => $isLinkedToFloors,
+        'floorIds' => $floorIds,
+        'actualFloorIds' => $actualFloorIds,
+        'pointIds' => $pointIds
       ];
 
       array_push($response['serviceInformation'], $serviceInformation);
@@ -40,7 +50,11 @@ class Product
     $formatedProduct = [];
 
     ['isLinkedToTask' => $isLinkedToTask, 'taskId' => $taskId] = (new LinksProductTask())->getTaskIdByProductId($product->id);
-    ['isLinkedToFloors' => $isLinkedToFloors, 'floorIds' => $floorIds] = (new LinksProductFloor())->getFloorIdsByProductId($product->id);
+    [
+      'isLinkedToFloors' => $isLinkedToFloors,
+      'floorIds' => $floorIds,
+      'actualFloorIds' => $actualFloorIds
+    ] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product->id);
 
     $formatedProduct = $this->formateProduct($product);
 
@@ -50,8 +64,9 @@ class Product
       'serviceInformation' => [
         'isLinkedToTask' => $isLinkedToTask,
         'taskId' => $taskId,
-        'isLinkedFloors' => $isLinkedToFloors,
-        'floorIds' => $floorIds
+        'isLinkedToFloors' => $isLinkedToFloors,
+        'floorIds' => $floorIds,
+        'actualFloorIds' => $actualFloorIds
       ]
     ];
 

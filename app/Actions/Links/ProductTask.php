@@ -3,18 +3,18 @@
 namespace App\Actions\Links;
 
 use App\Models\ProductTask as ModelsProductTask;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
 class ProductTask
 {
-  public function add(string $taskId, string $productId)
+  public function add(array $productIds, string $taskId)
   {
-    $productTask = new ModelsProductTask();
-    $productTask->task_id = $taskId;
-    $productTask->product_id = $productId;
-
-    $productTask->save();
+    foreach ($productIds as $productId) {
+      $productTask = new ModelsProductTask();
+      $productTask->task_id = $taskId;
+      $productTask->product_id = $productId;
+      $productTask->save();
+    }
   }
 
   public function deleteByTaskId(int $taskId): array
@@ -58,6 +58,15 @@ class ProductTask
   {
     $productsTasks = ModelsProductTask::select('product_id', 'task_id')->get();
     return $productsTasks;
+  }
+
+  public function getProductIdsByTaskIds(array $taskIds): array
+  {
+    $productIds = ModelsProductTask::select('product_id')
+      ->whereIn('task_id', $taskIds)
+      ->get()->pluck('product_id')->toArray();
+
+    return $productIds;
   }
 
   public function getTaskIdByProductId(int $productId)

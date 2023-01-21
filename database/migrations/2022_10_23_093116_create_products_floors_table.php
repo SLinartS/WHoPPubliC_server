@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('floor_id')->constrained('floors');
             $table->integer('occupied_space');
+            $table->boolean('is_actual');
             $table->primary(['product_id', 'floor_id']);
         });
     }

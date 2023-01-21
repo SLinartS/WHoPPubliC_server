@@ -9,10 +9,9 @@ class CountReservedFloorSpace
 {
   public function __invoke(int $floorId)
   {
-    $productIds = ModelsProductPoint::select('product_id');
     $productsReservedSpaceOfFloor = ModelsProductFloor::select('product_id', 'occupied_space')
       ->where('floor_id', $floorId)
-      ->whereIn('product_id', $productIds)
+      ->where('is_actual', false)
       ->get();
 
     $reservedFloorSpace = 0;

@@ -42,11 +42,17 @@ class TaskController extends Controller
       $fields = $request->fields;
       $productIds = $request->productIds;
       $floorIds = $request->floorIds;
+      $pointIds = $request->pointIds;
+      $userId = $request->typeId;
+      $taskTypeId = $request->typeId;
 
       $servicesTask->create(
         $fields,
         $productIds,
         $floorIds,
+        $pointIds,
+        $userId,
+        $taskTypeId
       );
 
       return response()->json([
@@ -65,11 +71,17 @@ class TaskController extends Controller
       $fields = $request->fields;
       $productIds = $request->productIds;
       $floorIds = $request->floorIds;
+      $pointIds = $request->pointIds;
+      $userId = $request->typeId;
+      $taskTypeId = $request->typeId;
 
       $servicesTask->update(
         $fields,
         $productIds,
         $floorIds,
+        $pointIds,
+        $userId,
+        $taskTypeId
       );
 
       return response()->json([

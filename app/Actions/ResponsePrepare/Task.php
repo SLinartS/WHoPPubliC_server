@@ -20,7 +20,7 @@ class Task
     return $response;
   }
 
-  public function oneTask(Model $task, array $productIds, array $floorIds)
+  public function oneTask(Model $task, array $productIds, array $floorIds, array $pointIds)
   {
     $formatedTask = $this->formateTask($task);
 
@@ -28,6 +28,7 @@ class Task
       'taskInfo' => $formatedTask,
       'productIds' => $productIds,
       'floorIds' => $floorIds,
+      'pointIds' => $pointIds,
     ];
 
     return $response;

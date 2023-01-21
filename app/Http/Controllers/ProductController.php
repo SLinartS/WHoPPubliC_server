@@ -37,7 +37,7 @@ class ProductController extends Controller
     ServicesProduct $servicesProduct
   ) {
     try {
-      $fields = $request->formData;
+      $fields = $request->fields;
       $userId = $request->userId;
       $pointId = $request->pointId;
       $servicesProduct->store(
@@ -59,7 +59,7 @@ class ProductController extends Controller
     ServicesProduct $servicesProduct
   ) {
     try {
-      $fields = $request->formData;
+      $fields = $request->fields;
       $userId = $request->userId;
       $pointId = $request->pointId;
       $servicesProduct->update($fields, $userId, $pointId);
