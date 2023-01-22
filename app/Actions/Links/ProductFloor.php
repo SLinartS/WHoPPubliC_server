@@ -75,15 +75,14 @@ class ProductFloor
     $productsFloors = ModelsProductFloor::select('product_id', 'floor_id', 'is_actual')->get();
     return $productsFloors;
   }
+
   public function getFloorIdsInfoByProductId(int $productId)
   {
     $idsProductWithLinkToFloor = $this->getProductIdsAndFloorIds($productId);
 
-    $isLinkedToFloors = false;
     $floorIds = [];
     $actualFloorIds = [];
     if ($idsProductWithLinkToFloor->contains('product_id', $productId)) {
-      $isLinkedToFloors = true;
       $floorIds = $idsProductWithLinkToFloor
         ->where('product_id', $productId)
         ->pluck('floor_id')
@@ -95,11 +94,7 @@ class ProductFloor
         ->toArray();
     }
 
-    return [
-      'isLinkedToFloors' => $isLinkedToFloors,
-      'floorIds' => $floorIds,
-      'actualFloorIds' => $actualFloorIds
-    ];
+    return [ 'floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds ];
   }
 
   public function setPositionAsActual(int $productId)

@@ -20,19 +20,13 @@ class Product
     foreach ($products as $product) {
       $item = $this->formateProduct($product);
 
-      ['isLinkedToTask' => $isLinkedToTask, 'taskId' => $taskId] = (new LinksProductTask())->getTaskIdByProductId($product->id);
+      $taskId = (new LinksProductTask())->getTaskIdByProductId($product->id);
       $pointIds = (new LinksProductPoint())->getPointIdsByProductIds([$product->id]);
-      [
-        'isLinkedToFloors' => $isLinkedToFloors,
-        'floorIds' => $floorIds,
-        'actualFloorIds' => $actualFloorIds
-      ] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product->id);
+      ['floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds ] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product->id);
 
       $serviceInformation = [
         'productId' => $product->id,
-        'isLinkedToTask' => $isLinkedToTask,
         'taskId' => $taskId,
-        'isLinkedToFloors' => $isLinkedToFloors,
         'floorIds' => $floorIds,
         'actualFloorIds' => $actualFloorIds,
         'pointIds' => $pointIds
@@ -49,12 +43,9 @@ class Product
   {
     $formatedProduct = [];
 
-    ['isLinkedToTask' => $isLinkedToTask, 'taskId' => $taskId] = (new LinksProductTask())->getTaskIdByProductId($product->id);
-    [
-      'isLinkedToFloors' => $isLinkedToFloors,
-      'floorIds' => $floorIds,
-      'actualFloorIds' => $actualFloorIds
-    ] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product->id);
+    $taskId = (new LinksProductTask())->getTaskIdByProductId($product->id);
+    $pointIds = (new LinksProductPoint())->getPointIdsByProductIds([$product->id]);
+    ['floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds ] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product->id);
 
     $formatedProduct = $this->formateProduct($product);
 
@@ -62,11 +53,10 @@ class Product
       'productInfo' => $formatedProduct,
       'pointId' => $product->point_id,
       'serviceInformation' => [
-        'isLinkedToTask' => $isLinkedToTask,
         'taskId' => $taskId,
-        'isLinkedToFloors' => $isLinkedToFloors,
         'floorIds' => $floorIds,
-        'actualFloorIds' => $actualFloorIds
+        'actualFloorIds' => $actualFloorIds,
+        'pointIds' => $pointIds
       ]
     ];
 

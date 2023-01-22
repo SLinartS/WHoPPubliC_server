@@ -73,13 +73,11 @@ class ProductTask
   {
     $idsProductWithLinkToTask = $this->getIdsProductAndIdsTask();
 
-    $isLinkedToTask = false;
     $taskId = 0;
     if ($idsProductWithLinkToTask->contains('product_id', $productId)) {
-      $isLinkedToTask = true;
       $taskId = $idsProductWithLinkToTask->firstWhere('product_id', $productId)['task_id'];
     }
 
-    return ['isLinkedToTask' => $isLinkedToTask, 'taskId' => $taskId];
+    return $taskId;
   }
 }
