@@ -21,8 +21,8 @@ class TaskFactory extends Factory
     {
         return [
             'article' => fake()->unique()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
-            'date_start' => fake()->date(),
-            'date_end' => fake()->date(),
+            'time_start' => fake()->date(),
+            'time_end' => fake()->date(),
             'time_completion' => fake()->date() . ' ' . fake()->time(),
             'is_active' => false,
             'is_available' => false,

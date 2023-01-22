@@ -36,7 +36,7 @@ class Task
 
   private function formateTask(Model $task)
   {
-    $deadline = ((strtotime($task->date_end) - strtotime($task->date_start)) / 3600);
+    $deadline = ((strtotime($task->time_end) - strtotime($task->time_start)) / 3600);
 
     return [
       'id' => [
@@ -51,12 +51,12 @@ class Task
         'value' => $deadline . ' часов',
         'alias' => 'Осталось времени'
       ],
-      'dateStart' => [
-        'value' => $task->date_start,
+      'timeStart' => [
+        'value' => $task->time_start,
         'alias' => 'Дата начала'
       ],
-      'dateEnd' => [
-        'value' => $task->date_end,
+      'timeEnd' => [
+        'value' => $task->time_end,
         'alias' => 'Дата окончания'
       ],
       'operatorLogin' => [

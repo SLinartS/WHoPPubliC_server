@@ -42,23 +42,23 @@ class PerfomanceReportController extends Controller
     $intervalData = [];
 
     $intervalData['placementTasks'] =
-      Task::selectRaw('TIMESTAMPDIFF(HOUR, date_end, time_completion) as time')
-      ->where('date_start', '>=', $intervalStart)
-      ->where('date_start', '<=', $intervalEnd)
+      Task::selectRaw('TIMESTAMPDIFF(HOUR, time_end, time_completion) as time')
+      ->where('time_start', '>=', $intervalStart)
+      ->where('time_start', '<=', $intervalEnd)
       ->where('type_id', 1)
       ->get()->sum('time');
 
     $intervalData['shipmentTasks'] =
-      Task::selectRaw('TIMESTAMPDIFF(HOUR, date_end, time_completion) as time')
-      ->where('date_start', '>=', $intervalStart)
-      ->where('date_start', '<=', $intervalEnd)
+      Task::selectRaw('TIMESTAMPDIFF(HOUR, time_end, time_completion) as time')
+      ->where('time_start', '>=', $intervalStart)
+      ->where('time_start', '<=', $intervalEnd)
       ->where('type_id', 2)
       ->get()->sum('time');
 
     $intervalData['intraWarehouseTasks'] =
-      Task::selectRaw('TIMESTAMPDIFF(HOUR, date_end, time_completion) as time')
-      ->where('date_start', '>=', $intervalStart)
-      ->where('date_start', '<=', $intervalEnd)
+      Task::selectRaw('TIMESTAMPDIFF(HOUR, time_end, time_completion) as time')
+      ->where('time_start', '>=', $intervalStart)
+      ->where('time_start', '<=', $intervalEnd)
       ->where('type_id', 3)
       ->get()->sum('time');
 
@@ -76,8 +76,8 @@ class PerfomanceReportController extends Controller
     $intervalData['authorizationHistory'] = $this->getSumOnlyFirstAuthOfDay($intervalData['authorizationHistory']);
 
     $intervalData['numberOfTasks'] = Task::select('id')
-      ->where('date_start', '>=', $intervalStart)
-      ->where('date_start', '<=', $intervalEnd)
+      ->where('time_start', '>=', $intervalStart)
+      ->where('time_start', '<=', $intervalEnd)
       ->get()->count('id');
 
     return $intervalData;

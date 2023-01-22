@@ -19,13 +19,13 @@ class Task
     $tasks = null;
     switch ($type) {
       case 'acceptance':
-        $tasks = ModelsTask::select('id', 'article', 'date_start', 'date_end', 'user_id')->where('type_id', 1)->get();
+        $tasks = ModelsTask::select('id', 'article', 'time_start', 'time_end', 'user_id')->where('type_id', 1)->get();
         break;
       case 'shipment':
-        $tasks = ModelsTask::select('id', 'article', 'date_start', 'date_end', 'user_id')->where('type_id', 2)->get();
+        $tasks = ModelsTask::select('id', 'article', 'time_start', 'time_end', 'user_id')->where('type_id', 2)->get();
         break;
       case 'intra':
-        $tasks = ModelsTask::select('id', 'article', 'date_start', 'date_end', 'user_id')->where('type_id', 3)->get();
+        $tasks = ModelsTask::select('id', 'article', 'time_start', 'time_end', 'user_id')->where('type_id', 3)->get();
         break;
       default:
         throw new Exception('Unknown tasks type');
@@ -36,7 +36,7 @@ class Task
 
   public function show(int $taskId)
   {
-    $task = ModelsTask::select('id', 'article', 'date_start', 'date_end', 'user_id')
+    $task = ModelsTask::select('id', 'article', 'time_start', 'time_end', 'user_id')
       ->where('id', $taskId)->first();
 
     $productIds = (new LinksProductTask())->getProductIdsByTaskIds([$taskId]);
@@ -58,8 +58,8 @@ class Task
   ) {
     $task = new ModelsTask();
     $task->article = $fields['article']['value'];
-    $task->date_start = $fields['dateStart']['value'];
-    $task->date_end = $fields['dateEnd']['value'];
+    $task->time_start = $fields['timeStart']['value'];
+    $task->time_end = $fields['timeEnd']['value'];
     $task->is_active = false;
     $task->is_available = true;
     $task->user_id = $userId;
@@ -93,8 +93,8 @@ class Task
   ) {
     $task = ModelsTask::where('id', $fields['id']['value'])->first();
     $task->article = $fields['article']['value'];
-    $task->date_start = $fields['dateStart']['value'];
-    $task->date_end = $fields['dateEnd']['value'];
+    $task->time_start = $fields['timeStart']['value'];
+    $task->time_end = $fields['timeEnd']['value'];
     $task->is_active = false;
     $task->is_available = true;
     $task->user_id = $userId;
