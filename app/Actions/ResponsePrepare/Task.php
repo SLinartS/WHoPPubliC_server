@@ -20,14 +20,15 @@ class Task
     return $response;
   }
 
-  public function oneTask(Model $task, array $productIds, array $floorIds, array $pointIds)
+  public function oneTask(Model $task, array $productIds, Collection $floorInfo, array $pointIds)
   {
     $formatedTask = $this->formateTask($task);
+    $formatedFloorInfo = $this->formateFloorInfo($floorInfo);
 
     $response = [
       'taskInfo' => $formatedTask,
       'productIds' => $productIds,
-      'floorIds' => $floorIds,
+      'floorInfo' => $formatedFloorInfo,
       'pointIds' => $pointIds,
     ];
 
@@ -36,7 +37,7 @@ class Task
 
   private function formateTask(Model $task)
   {
-    $deadline = ((strtotime($task->time_end) - strtotime($task->time_start)) / 3600);
+    $deadline = round(((strtotime($task->time_end) - strtotime($task->time_start)) / 3600));
 
     return [
       'id' => [
@@ -64,5 +65,27 @@ class Task
         'alias' => 'Логин оператора'
       ],
     ];
+  }
+
+  private function formateFloorInfo(Collection $floors): array
+  {
+    $formatedFloors = [];
+
+    foreach ($floors as $floor) {
+      $floorIndex = array_search($floor->floor_id, array_column($formatedFloors, 'floorId'));
+      if ($floorIndex !== false) {
+        $formatedFloors[$floorIndex]['occupiedSpace'] += $floor->occupied_space;
+      } else {
+        array_push(
+          $formatedFloors,
+          [
+            'floorId' => $floor->floor_id,
+            'occupiedSpace' => $floor->occupied_space
+          ]
+        );
+      }
+    }
+
+    return $formatedFloors;
   }
 }

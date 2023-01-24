@@ -5,6 +5,7 @@ namespace App\Actions\Links;
 use App\Actions\Other\CountFreeFloorSpace;
 use App\Models\Product;
 use App\Models\ProductFloor as ModelsProductFloor;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductFloor
 {
@@ -99,7 +100,7 @@ class ProductFloor
 
   public function setPositionAsActual(int $productId)
   {
-    $modelsProductFloor = ModelsProductFloor::where('id', $productId)->first();
+    $modelsProductFloor = ModelsProductFloor::where('product_id', $productId)->first();
 
     $modelsProductFloor->is_actual = true;
   }
@@ -118,5 +119,15 @@ class ProductFloor
     );
 
     return $floorIds;
+  }
+
+  public function getFloorInfoByProductIds(array $productIds): Collection
+  {
+    $floorInfo = ModelsProductFloor::select('floor_id', 'occupied_space')
+      ->whereIn('product_id', $productIds)
+      ->get();
+
+
+    return $floorInfo;
   }
 }

@@ -41,11 +41,11 @@ class Task
 
     $productIds = (new LinksProductTask())->getProductIdsByTaskIds([$taskId]);
 
-    $floorIds = (new LinksProductFloor())->getFloorIdsByProductIds($productIds);
+    $floorInfo = (new LinksProductFloor())->getFloorInfoByProductIds($productIds);
 
     $pointIds = (new LinksProductPoint())->getPointIdsByProductIds($productIds);
 
-    return (new ResponsePrepareTask())->oneTask($task, $productIds, $floorIds, $pointIds);
+    return (new ResponsePrepareTask())->oneTask($task, $productIds, $floorInfo, $pointIds);
   }
 
   public function create(
