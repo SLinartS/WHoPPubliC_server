@@ -72,7 +72,7 @@ class Product
       ],
       'article' => [
         'value' =>  $product->article,
-        'alias' => "Артикль"
+        'alias' => "Артикул"
       ],
       'title' => [
         'value' =>  $product->title,

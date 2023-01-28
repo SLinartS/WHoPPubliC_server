@@ -46,7 +46,7 @@ class Task
       ],
       'article' => [
         'value' => $task->article,
-        'alias' => 'Артикль'
+        'alias' => 'Артикул'
       ],
       'deadlines' => [
         'value' => $deadline . ' часов',
@@ -72,7 +72,7 @@ class Task
     $formatedFloors = [];
 
     foreach ($floors as $floor) {
-      $floorIndex = array_search($floor->floor_id, array_column($formatedFloors, 'floorId'));
+      $floorIndex = array_search($floor->floor_id, array_column($formatedFloors, 'floorId'), true);
       if ($floorIndex !== false) {
         $formatedFloors[$floorIndex]['occupiedSpace'] += $floor->occupied_space;
       } else {
