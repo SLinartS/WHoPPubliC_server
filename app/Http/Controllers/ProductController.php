@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Services\Product as ServicesProduct;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Throwable;
 
 class ProductController extends Controller
 {
-  public function index(ServicesProduct $servicesProduct)
+  public function index(ServicesProduct $servicesProduct): JsonResponse | Response
   {
     try {
       $response = $servicesProduct->index();
@@ -22,7 +24,7 @@ class ProductController extends Controller
   public function show(
     int $productId,
     ServicesProduct $servicesProduct
-  ) {
+  ): JsonResponse | Response {
     try {
       $response = $servicesProduct->show($productId);
 
@@ -35,7 +37,7 @@ class ProductController extends Controller
   public function store(
     Request $request,
     ServicesProduct $servicesProduct
-  ) {
+  ): JsonResponse | Response {
     try {
       $fields = $request->fields;
       $userId = $request->userId;
@@ -57,7 +59,7 @@ class ProductController extends Controller
   public function update(
     Request $request,
     ServicesProduct $servicesProduct
-  ) {
+  ): JsonResponse | Response {
     try {
       $fields = $request->fields;
       $userId = $request->userId;
@@ -75,7 +77,7 @@ class ProductController extends Controller
   public function destroy(
     string $productId,
     ServicesProduct $servicesProduct
-  ) {
+  ): JsonResponse | Response {
     try {
       $servicesProduct->destroy([$productId]);
 
@@ -90,7 +92,7 @@ class ProductController extends Controller
   public function markAsMoved(
     Request $request,
     ServicesProduct $servicesProduct
-  ) {
+  ): JsonResponse | Response {
     try {
       $productId = $request->productId;
       $servicesProduct->markAsMoved($productId);

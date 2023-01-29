@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Services\Point as ServicesPoint;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Throwable;
 
 class PointController extends Controller
 {
-  public function index(ServicesPoint $servicesPoint)
+  public function index(ServicesPoint $servicesPoint): JsonResponse | Response
   {
     try {
       $response = $servicesPoint->index();
