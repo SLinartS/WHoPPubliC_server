@@ -77,10 +77,10 @@ class Map
     for ($iz = 0; $iz < count($response); $iz++) {
       usort($response[$iz]['sections'], fn ($a, $b) => $a['number'] - $b['number']);
 
-      for ($is = 0; $is < count($response[0]['sections']); $is++) {
+      for ($is = 0; $is < count($response[$iz]['sections']); $is++) {
         usort($response[$iz]['sections'][$is]['blocks'], fn ($a, $b) => $a['number'] - $b['number']);
 
-        for ($ib = 0; $ib < count($response[0]['sections'][0]['blocks']); $ib++) {
+        for ($ib = 0; $ib < count($response[$iz]['sections'][$is]['blocks']); $ib++) {
           usort($response[$iz]['sections'][$is]['blocks'][$ib]['floors'], fn ($a, $b) => $b['number'] - $a['number']);
         }
       }

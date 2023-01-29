@@ -25,6 +25,10 @@ Route::get('/categories', [CategoryController::class, 'index']);
 
 // MAP
 Route::get('/map', [MapController::class, 'index']);
+Route::put('/map', [MapController::class, 'update']);
+Route::delete('/map/{zoneId}', [MapController::class, 'destroy']);
+
+// POINTS
 Route::get('/points', [PointController::class, 'index']);
 
 // PRODUCTS
