@@ -1,0 +1,56 @@
+version: '3'
+services:
+
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/app/Dockerfile
+    container_name: app
+    restart: always
+    volumes:
+      - ./:/var/www
+      - ./docker/app/php/conf.d/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - internal
+
+  nginx:
+    image: nginx
+    restart: always
+    container_name: nginx
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/templates:/etc/nginx/templates
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - "80:80"
+    networks:
+      - internal
+
+  dbmysql:
+    image: mysql
+    container_name: dbmysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - internal
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
