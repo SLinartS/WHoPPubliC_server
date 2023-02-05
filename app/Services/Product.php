@@ -73,7 +73,6 @@ class Product
     $product->publishing_house = $fields['publishingHouse']['value'];
     $product->user_id = $userId;
     $product->category_id = $fields['categoryId']['value'];
-    $product->is_active = true;
 
     $product->save();
 
@@ -100,7 +99,6 @@ class Product
     $product->publishing_house = $fields['publishingHouse']['value'];
     $product->user_id = $userId;
     $product->category_id = $fields['categoryId']['value'];
-    $product->is_active = true;
 
     $product->save();
 

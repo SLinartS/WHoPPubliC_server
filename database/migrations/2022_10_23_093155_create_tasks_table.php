@@ -20,7 +20,6 @@ return new class extends Migration
             $table->dateTime('time_end');
             $table->dateTime('time_completion')->nullable();
             $table->boolean('is_active');
-            $table->boolean('is_available');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('type_id')->constrained('types_of_tasks');
         });

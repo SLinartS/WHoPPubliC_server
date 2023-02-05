@@ -23,7 +23,6 @@ return new class extends Migration
             $table->date('print_date');
             $table->string('printing_house', 100);
             $table->string('publishing_house', 100);
-            $table->boolean('is_active');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('category_id')->constrained('categories');
         });

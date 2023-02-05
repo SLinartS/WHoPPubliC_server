@@ -61,7 +61,6 @@ class Task
     $task->time_start = $fields['timeStart']['value'];
     $task->time_end = $fields['timeEnd']['value'];
     $task->is_active = false;
-    $task->is_available = true;
     $task->user_id = $userId;
     $task->type_id = $taskTypeId;
 
@@ -96,7 +95,6 @@ class Task
     $task->time_start = $fields['timeStart']['value'];
     $task->time_end = $fields['timeEnd']['value'];
     $task->is_active = false;
-    $task->is_available = true;
     $task->user_id = $userId;
     $task->type_id = $taskTypeId;
 

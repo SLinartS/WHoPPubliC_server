@@ -20,7 +20,8 @@ class RoleFactory extends Factory
     public function definition()
     {
         return [
-            'title' => fake()->unique()->word()
+            'title' => fake()->unique()->word(),
+            'alias' => fake()->word()
         ];
     }
 }

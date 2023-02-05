@@ -38,9 +38,9 @@ class DatabaseSeeder extends Seeder
     Role::factory()->count(3)
         ->state(
           (new Sequence(
-            ['title' => 'Администратор'],
-            ['title' => 'Оператор склада'],
-            ['title' => 'Работник склада'],
+            ['title' => 'admin', 'alias' => 'Администратор'],
+            ['title' => 'operator', 'alias' => 'Оператор склада'],
+            ['title' => 'worker', 'alias' => 'Работник склада'],
           ))
         )
         ->create();

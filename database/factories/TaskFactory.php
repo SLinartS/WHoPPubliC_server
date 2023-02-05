@@ -25,7 +25,6 @@ class TaskFactory extends Factory
             'time_end' => fake()->date(),
             'time_completion' => fake()->date() . ' ' . fake()->time(),
             'is_active' => false,
-            'is_available' => false,
             'user_id' => fake()->numberBetween(1, 1),
             'type_id' => fake()->numberBetween(1, 2),
         ];

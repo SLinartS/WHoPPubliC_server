@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaskController;
@@ -46,6 +47,13 @@ Route::get('/taskinfo/{taskId}', [TaskController::class, 'show']);
 Route::post('/tasks', [TaskController::class, 'create']);
 Route::delete('/tasks/{taskId}', [TaskController::class, 'destroy']);
 Route::put('/tasks', [TaskController::class, 'update']);
+
+// ACCOUNTS
+Route::get('/accounts', [AccountController::class, 'index']);
+Route::get('/accounts/{id}', [AccountController::class, 'show']);
+Route::post('/accounts', [AccountController::class, 'store']);
+Route::delete('/accounts/{id}', [AccountController::class, 'destroy']);
+Route::put('/accounts/{id}', [AccountController::class, 'update']);
 
 // ADDITIVE CRITERION
 Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);

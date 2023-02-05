@@ -61,7 +61,7 @@ class Task
         'alias' => 'Дата окончания'
       ],
       'operatorLogin' => [
-        'value' => $task->user->name,
+        'value' => $task->user->login,
         'alias' => 'Логин оператора'
       ],
     ];

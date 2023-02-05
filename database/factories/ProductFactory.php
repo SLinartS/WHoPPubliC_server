@@ -28,7 +28,6 @@ class ProductFactory extends Factory
             'print_date' => fake()->date(),
             'printing_house' => fake()->sentence(2),
             'publishing_house' => fake()->sentence(2),
-            'is_active' => true,
             'user_id' => fake()->numberBetween(1, 1),
             'category_id' => fake()->numberBetween(1, 5),
         ];
