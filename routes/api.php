@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\AccountController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\PerfomanceReportController;
 use App\Http\Controllers\PointController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UtilsController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,13 +25,17 @@ use Illuminate\Support\Facades\Route;
 // CATEGORIES
 Route::get('/categories', [CategoryController::class, 'index']);
 
+// POINTS
+Route::get('/points', [PointController::class, 'index']);
+
+// ROLES
+Route::get('/roles', [RoleController::class, 'index']);
+
+
 // MAP
 Route::get('/map', [MapController::class, 'index']);
 Route::put('/map', [MapController::class, 'update']);
 Route::delete('/map/{zoneId}', [MapController::class, 'destroy']);
-
-// POINTS
-Route::get('/points', [PointController::class, 'index']);
 
 // PRODUCTS
 Route::get('/products', [ProductController::class, 'index']);
@@ -49,11 +54,11 @@ Route::delete('/tasks/{taskId}', [TaskController::class, 'destroy']);
 Route::put('/tasks', [TaskController::class, 'update']);
 
 // ACCOUNTS
-Route::get('/accounts', [AccountController::class, 'index']);
-Route::get('/accounts/{id}', [AccountController::class, 'show']);
-Route::post('/accounts', [AccountController::class, 'store']);
-Route::delete('/accounts/{id}', [AccountController::class, 'destroy']);
-Route::put('/accounts/{id}', [AccountController::class, 'update']);
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
+Route::post('/users', [UserController::class, 'store']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
+Route::put('/users/{id}', [UserController::class, 'update']);
 
 // ADDITIVE CRITERION
 Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);

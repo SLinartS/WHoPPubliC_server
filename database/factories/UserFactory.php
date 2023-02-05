@@ -28,6 +28,7 @@ class UserFactory extends Factory
             'name' => fake()->firstName(),
             'surname' => fake()->lastName(),
             'patronymic' => fake()->lastName(),
+            'is_del' => false,
             'role_id' => fake()->numberBetween(1, 3),
         ];
     }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('name', 30);
             $table->string('surname', 30);
             $table->string('patronymic', 30);
+            $table->boolean('is_del');
             $table->foreignId('role_id')->constrained('roles');
         });
     }
