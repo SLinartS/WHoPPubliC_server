@@ -12,16 +12,24 @@ class UserController extends Controller
 {
   public function index(ServicesUser $servicesUser)
   {
-    $response = $servicesUser->index();
+    try {
+      $response = $servicesUser->index();
 
-    return response()->json($response, 200);
+      return response()->json($response, 200);
+    } catch (Throwable $th) {
+      return response($th, 500);
+    }
   }
 
   public function show(int $id, ServicesUser $servicesUser)
   {
-    $response = $servicesUser->show($id);
+    try {
+      $response = $servicesUser->show($id);
 
-    return response()->json($response, 200);
+      return response()->json($response, 200);
+    } catch (Throwable $th) {
+      return response($th, 500);
+    }
   }
 
   public function store(

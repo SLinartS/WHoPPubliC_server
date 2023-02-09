@@ -66,9 +66,7 @@ class Task
 
     $task->save();
 
-    $taskId = ModelsTask::select('id')->where('article', $fields['article']['value'])->first()['id'];
-
-    (new LinksProductTask())->add($productIds, $taskId);
+    (new LinksProductTask())->add($productIds, $task->id);
 
     switch($taskTypeId) {
       case 1:
@@ -90,7 +88,9 @@ class Task
     int $userId,
     int $taskTypeId
   ) {
-    $task = ModelsTask::where('id', $fields['id']['value'])->first();
+    $taskId = $fields['id']['value'];
+
+    $task = ModelsTask::where('id', $taskId)->first();
     $task->article = $fields['article']['value'];
     $task->time_start = $fields['timeStart']['value'];
     $task->time_end = $fields['timeEnd']['value'];
@@ -102,7 +102,6 @@ class Task
 
     $linksProductTask = new LinksProductTask();
     $linksProductTask->deleteByTaskId($fields['id']['value']);
-    $taskId = ModelsTask::select('id')->where('article', $fields['article']['value'])->first()['id'];
     $linksProductTask->add($productIds, $taskId);
 
 

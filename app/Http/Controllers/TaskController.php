@@ -11,15 +11,16 @@ use Throwable;
 class TaskController extends Controller
 {
   public function index(
-    string $type,
+    Request $request,
     ServicesTask $servicesTask
   ): JsonResponse | Response {
     try {
+      $type = $request->query('type');
       $response = $servicesTask->index($type);
 
       return response()->json($response, 200);
     } catch (Throwable $th) {
-      throw $th;
+      return response($th, 500);
     }
   }
 
@@ -32,7 +33,7 @@ class TaskController extends Controller
 
       return response()->json($response, 200);
     } catch (Throwable $th) {
-      throw $th;
+      return response($th, 500);
     }
   }
 

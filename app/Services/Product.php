@@ -76,9 +76,7 @@ class Product
 
     $product->save();
 
-    $productId = (new GetProductIdByArticle())($fields['article']['value']);
-
-    (new LinksProductPoint())->add([$productId], [$pointId]);
+    (new LinksProductPoint())->add([$product->id], [$pointId]);
   }
 
   public function update(

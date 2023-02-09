@@ -47,7 +47,7 @@ Route::put('/products', [ProductController::class, 'update']);
 Route::patch('/products/markAsMoved', [ProductController::class, 'markAsMoved']);
 
 // TASKS
-Route::get('/tasks/{type}', [TaskController::class, 'index']);
+Route::get('/tasks', [TaskController::class, 'index']);
 Route::get('/tasks/{taskId}', [TaskController::class, 'show']);
 Route::post('/tasks', [TaskController::class, 'create']);
 Route::delete('/tasks/{taskId}', [TaskController::class, 'destroy']);
