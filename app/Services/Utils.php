@@ -14,7 +14,7 @@ class Utils
 
     $result = '';
     for ($i = 0; $i < 5; $i++) {
-      $result .=  $characters[rand(0, $charactersLength)];
+      $result .=  $characters[rand(0, $charactersLength - 1)];
     }
 
     $isFindArticle = ModelsProduct::select('article')->where('article', $result)->first();
@@ -31,7 +31,7 @@ class Utils
 
     $result = '';
     for ($i = 0; $i < 5; $i++) {
-      $result .= $characters[rand(0, $charactersLength)];
+      $result .= $characters[rand(0, $charactersLength - 1)];
     }
 
     $isFindArticle = ModelsTask::select('article')->where('article', $result)->first();

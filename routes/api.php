@@ -41,8 +41,9 @@ Route::delete('/map/{zoneId}', [MapController::class, 'destroy']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{productId}', [ProductController::class, 'show']);
 Route::post('/products', [ProductController::class, 'store']);
-Route::delete('/products/{productId}', [ProductController::class, 'destroy']);
 Route::put('/products', [ProductController::class, 'update']);
+Route::delete('/products/{productId}', [ProductController::class, 'destroy']);
+
 
 Route::patch('/products/markAsMoved', [ProductController::class, 'markAsMoved']);
 
@@ -50,15 +51,17 @@ Route::patch('/products/markAsMoved', [ProductController::class, 'markAsMoved'])
 Route::get('/tasks', [TaskController::class, 'index']);
 Route::get('/tasks/{taskId}', [TaskController::class, 'show']);
 Route::post('/tasks', [TaskController::class, 'create']);
-Route::delete('/tasks/{taskId}', [TaskController::class, 'destroy']);
 Route::put('/tasks', [TaskController::class, 'update']);
+Route::delete('/tasks/{taskId}', [TaskController::class, 'destroy']);
+
 
 // ACCOUNTS
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/users', [UserController::class, 'store']);
-Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::put('/users/{id}', [UserController::class, 'update']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
 
 // ADDITIVE CRITERION
 Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);

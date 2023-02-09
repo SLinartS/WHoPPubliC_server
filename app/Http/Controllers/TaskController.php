@@ -46,8 +46,8 @@ class TaskController extends Controller
       $productIds = $request->productIds;
       $floorIds = $request->floorIds;
       $pointIds = $request->pointIds;
-      $userId = $request->typeId;
-      $taskTypeId = $request->typeId;
+      $userId = 1;
+      $taskType = $request->type;
 
       $servicesTask->create(
         $fields,
@@ -55,7 +55,7 @@ class TaskController extends Controller
         $floorIds,
         $pointIds,
         $userId,
-        $taskTypeId
+        $taskType
       );
 
       return response()->json([
@@ -75,8 +75,8 @@ class TaskController extends Controller
       $productIds = $request->productIds;
       $floorIds = $request->floorIds;
       $pointIds = $request->pointIds;
-      $userId = $request->typeId;
-      $taskTypeId = $request->typeId;
+      $userId = 1;
+      $taskType = $request->type;
 
       $servicesTask->update(
         $fields,
@@ -84,7 +84,7 @@ class TaskController extends Controller
         $floorIds,
         $pointIds,
         $userId,
-        $taskTypeId
+        $taskType
       );
 
       return response()->json([

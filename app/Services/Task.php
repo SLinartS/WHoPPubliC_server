@@ -6,8 +6,7 @@ use App\Services\Product as ServicesProduct;
 use App\Actions\Links\ProductFloor as LinksProductFloor;
 use App\Actions\Links\ProductTask as LinksProductTask;
 use App\Actions\Links\ProductPoint as LinksProductPoint;
-use App\Actions\Other\GetFloorIdsByProductIds;
-use App\Actions\Other\GetProductIdsByTaskId;
+use App\Actions\Other\GetTaskTypeIdByTaskType;
 use App\Actions\ResponsePrepare\Task as ResponsePrepareTask;
 use App\Models\Task as ModelsTask;
 use Exception;
@@ -54,8 +53,10 @@ class Task
     array $floorIds,
     array $pointIds,
     int $userId,
-    int $taskTypeId
+    string $taskType
   ) {
+    $taskTypeId = (new GetTaskTypeIdByTaskType)($taskType);
+
     $task = new ModelsTask();
     $task->article = $fields['article']['value'];
     $task->time_start = $fields['timeStart']['value'];
@@ -86,8 +87,10 @@ class Task
     array $floorIds,
     array $pointIds,
     int $userId,
-    int $taskTypeId
+    string $taskType
   ) {
+    $taskTypeId = (new GetTaskTypeIdByTaskType)($taskType);
+
     $taskId = $fields['id']['value'];
 
     $task = ModelsTask::where('id', $taskId)->first();

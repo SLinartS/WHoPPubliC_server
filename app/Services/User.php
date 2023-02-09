@@ -43,6 +43,7 @@ class User
     $user->surname = $fields['surname']['value'];
     $user->patronymic = $fields['patronymic']['value'];
     $user->role_id = $fields['roleId']['value'];
+    $user->is_del = false;
 
     $user->save();
   }
@@ -62,6 +63,7 @@ class User
     $user->surname = $fields['surname']['value'];
     $user->patronymic = $fields['patronymic']['value'];
     $user->role_id = $fields['roleId']['value'];
+    $user->is_del = false;
 
     $user->save();
   }
