@@ -66,5 +66,6 @@ Route::delete('/users/{id}', [UserController::class, 'destroy']);
 // ADDITIVE CRITERION
 Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);
 
-// OTHER
+// GENERATE
 Route::get('/generate/article/{type}', [UtilsController::class, 'generateArticle']);
+Route::get('/generate/zoneletter', [UtilsController::class, 'generateZoneLetter']);

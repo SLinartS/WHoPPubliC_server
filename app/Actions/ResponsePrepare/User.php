@@ -104,7 +104,6 @@ class User
       ],
     ];
 
-
     return $response;
   }
 }

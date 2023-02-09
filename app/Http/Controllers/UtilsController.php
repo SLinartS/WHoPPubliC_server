@@ -9,18 +9,25 @@ use Illuminate\Http\JsonResponse;
 
 class UtilsController extends Controller
 {
-  public function generateArticle(string $type): JsonResponse
+  public function generateArticle(string $type, ServicesUtils $servicesUtils): JsonResponse
   {
     $response = [];
     switch ($type) {
       case 'product':
-        $response = (new ServicesUtils)->generateProductArticle();
+        $response = $servicesUtils->generateProductArticle();
         break;
       case 'task':
-        $response = (new ServicesUtils)->generateTaskArticle();
+        $response = $servicesUtils->generateTaskArticle();
         break;
       default:
     }
     return response()->json(['article' => $response], 200);
+  }
+
+  public function generateZoneLetter(ServicesUtils $servicesUtils): JsonResponse
+  {
+    $response = $servicesUtils->generateZoneLetter();
+
+    return response()->json(['letter' => $response], 200);
   }
 }
