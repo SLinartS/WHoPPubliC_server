@@ -4,26 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Product as ModelsProduct;
 use App\Models\Task as ModelsTask;
+use App\Services\Utils as ServicesUtils;
 use Illuminate\Http\JsonResponse;
 
 class UtilsController extends Controller
 {
-  public function checkArticle(string $type, string $article): JsonResponse
+  public function generateArticle(string $type): JsonResponse
   {
     $response = [];
     switch ($type) {
       case 'product':
-        $response = ModelsProduct::where('article', $article)->get();
+        $response = (new ServicesUtils)->generateProductArticle();
         break;
       case 'task':
-        $response = ModelsTask::where('article', $article)->get();
+        $response = (new ServicesUtils)->generateTaskArticle();
         break;
-
       default:
     }
-    if ($response->count() === 0) {
-      return response()->json(['isActionExist' => false]);
-    }
-    return response()->json(['isActionExist' => true]);
+    return response()->json(['article' => $response], 200);
   }
 }

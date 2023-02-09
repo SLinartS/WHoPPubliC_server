@@ -39,16 +39,16 @@ Route::delete('/map/{zoneId}', [MapController::class, 'destroy']);
 
 // PRODUCTS
 Route::get('/products', [ProductController::class, 'index']);
-Route::get('/productinfo/{productId}', [ProductController::class, 'show']);
+Route::get('/products/{productId}', [ProductController::class, 'show']);
 Route::post('/products', [ProductController::class, 'store']);
 Route::delete('/products/{productId}', [ProductController::class, 'destroy']);
 Route::put('/products', [ProductController::class, 'update']);
 
-Route::patch('/product/markAsMoved', [ProductController::class, 'markAsMoved']);
+Route::patch('/products/markAsMoved', [ProductController::class, 'markAsMoved']);
 
 // TASKS
 Route::get('/tasks/{type}', [TaskController::class, 'index']);
-Route::get('/taskinfo/{taskId}', [TaskController::class, 'show']);
+Route::get('/tasks/{taskId}', [TaskController::class, 'show']);
 Route::post('/tasks', [TaskController::class, 'create']);
 Route::delete('/tasks/{taskId}', [TaskController::class, 'destroy']);
 Route::put('/tasks', [TaskController::class, 'update']);
@@ -64,4 +64,4 @@ Route::put('/users/{id}', [UserController::class, 'update']);
 Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);
 
 // OTHER
-Route::get('/check-article/{type}/{article}', [UtilsController::class, 'checkArticle']);
+Route::get('/generate/article/{type}', [UtilsController::class, 'generateArticle']);
