@@ -10,23 +10,23 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TaskFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    protected $model = Task::class;
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = Task::class;
 
-    public function definition()
-    {
-        return [
-            'article' => fake()->unique()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
-            'time_start' => fake()->date(),
-            'time_end' => fake()->date(),
-            'time_completion' => fake()->date() . ' ' . fake()->time(),
-            'is_active' => false,
-            'user_id' => fake()->numberBetween(1, 1),
-            'type_id' => fake()->numberBetween(1, 2),
-        ];
-    }
+  public function definition()
+  {
+    return [
+        'article' => fake()->unique()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
+        'time_start' => fake()->date() . ' ' . fake()->time(),
+        'time_end' => fake()->date() . ' ' . fake()->time(),
+        'time_completion' => fake()->date() . ' ' . fake()->time(),
+        'is_active' => false,
+        'user_id' => fake()->numberBetween(1, 1),
+        'type_id' => fake()->numberBetween(1, 2),
+    ];
+  }
 }

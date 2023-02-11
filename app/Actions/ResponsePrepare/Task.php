@@ -53,11 +53,11 @@ class Task
         'alias' => 'Осталось времени'
       ],
       'timeStart' => [
-        'value' => $task->time_start,
+        'value' => $this->formateTaskTime($task->time_start),
         'alias' => 'Дата начала'
       ],
       'timeEnd' => [
-        'value' => $task->time_end,
+        'value' =>$this->formateTaskTime($task->time_end),
         'alias' => 'Дата окончания'
       ],
       'operatorLogin' => [
@@ -87,5 +87,12 @@ class Task
     }
 
     return $formatedFloors;
+  }
+
+  private function formateTaskTime(string $time)
+  {
+    $dateTime = strtotime($time);
+    $formatedTime = date('d.m.Y H:i', $dateTime);
+    return $formatedTime;
   }
 }

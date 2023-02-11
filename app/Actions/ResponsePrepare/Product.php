@@ -91,7 +91,7 @@ class Product
         'alias' => "Количество"
       ],
       'printDate' => [
-        'value' => $product->print_date,
+        'value' => $this->formateProductDate($product->print_date),
         'alias' => "Дата печати"
       ],
       'printingHouse' => [
@@ -111,5 +111,12 @@ class Product
         'alias' => "Категория"
       ],
     ];
+  }
+
+  private function formateProductDate(string $date)
+  {
+    $dateTime = strtotime($date);
+    $formatedTime = date('d.m.Y', $dateTime);
+    return $formatedTime;
   }
 }

@@ -62,13 +62,16 @@ class Product
     int $userId,
     int $pointId,
   ) {
+    $datePrintDate = strtotime($fields['printDate']['value']);
+    $formatedPrintDate = date('Y-m-d', $datePrintDate);
+
     $product = new ModelsProduct();
     $product->article = $fields['article']['value'];
     $product->title = $fields['title']['value'];
     $product->author = $fields['author']['value'];
     $product->year_of_publication = $fields['yearOfPublication']['value'];
     $product->number = $fields['number']['value'];
-    $product->print_date = $fields['printDate']['value'];
+    $product->print_date = $formatedPrintDate;
     $product->printing_house = $fields['printingHouse']['value'];
     $product->publishing_house = $fields['publishingHouse']['value'];
     $product->user_id = $userId;
@@ -86,13 +89,16 @@ class Product
   ) {
     $productId = $fields['id']['value'];
 
+    $datePrintDate = strtotime($fields['printDate']['value']);
+    $formatedPrintDate = date('Y-m-d', $datePrintDate);
+
     $product = ModelsProduct::where('id', $productId)->first();
     $product->article = $fields['article']['value'];
     $product->title = $fields['title']['value'];
     $product->author = $fields['author']['value'];
     $product->year_of_publication = $fields['yearOfPublication']['value'];
     $product->number = $fields['number']['value'];
-    $product->print_date = $fields['printDate']['value'];
+    $product->print_date = $formatedPrintDate;
     $product->printing_house = $fields['printingHouse']['value'];
     $product->publishing_house = $fields['publishingHouse']['value'];
     $product->user_id = $userId;
