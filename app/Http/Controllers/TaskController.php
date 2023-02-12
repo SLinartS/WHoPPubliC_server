@@ -84,7 +84,7 @@ class TaskController extends Controller
         $floorIds,
         $pointIds,
         $userId,
-        $taskType
+        $taskType,
       );
 
       return response()->json([

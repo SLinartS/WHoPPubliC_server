@@ -57,14 +57,14 @@ class Task
   ) {
     $taskTypeId = (new GetTaskTypeIdByTaskType())($taskType);
 
-    $dateTimeStart = strtotime($fields['timeStart']['value']);
+    $dateTimeStart = strtotime($fields['timeStart']);
     $formatedTimeStart = date('Y-m-d H:i:s', $dateTimeStart);
 
-    $dateTimeEnd = strtotime($fields['timeEnd']['value']);
+    $dateTimeEnd = strtotime($fields['timeEnd']);
     $formatedTimeEnd = date('Y-m-d H:i:s', $dateTimeEnd);
 
     $task = new ModelsTask();
-    $task->article = $fields['article']['value'];
+    $task->article = $fields['article'];
     $task->time_start = $formatedTimeStart;
     $task->time_end = $formatedTimeEnd;
     $task->is_active = false;
@@ -75,7 +75,7 @@ class Task
 
     (new LinksProductTask())->add($productIds, $task->id);
 
-    switch($taskTypeId) {
+    switch ($taskTypeId) {
       case 1:
       case 3:
         (new LinksProductFloor())->add($productIds, $floorIds);
@@ -96,33 +96,31 @@ class Task
     string $taskType
   ) {
     $taskTypeId = (new GetTaskTypeIdByTaskType())($taskType);
+    $taskId = $fields['id'];
 
-    $taskId = $fields['id']['value'];
-
-    $dateTimeStart = strtotime($fields['timeStart']['value']);
+    $dateTimeStart = strtotime($fields['timeStart']);
     $formatedTimeStart = date('Y-m-d H:i:s', $dateTimeStart);
 
-    $dateTimeEnd = strtotime($fields['timeEnd']['value']);
+    $dateTimeEnd = strtotime($fields['timeEnd']);
     $formatedTimeEnd = date('Y-m-d H:i:s', $dateTimeEnd);
 
     $task = ModelsTask::where('id', $taskId)->first();
-    $task->article = $fields['article']['value'];
+    $task->article = $fields['article'];
     $task->time_start = $formatedTimeStart;
     $task->time_end =  $formatedTimeEnd;
     $task->is_active = false;
     $task->user_id = $userId;
-    $task->type_id = $taskTypeId;
 
     $task->save();
 
     $linksProductTask = new LinksProductTask();
-    $linksProductTask->deleteByTaskId($fields['id']['value']);
+    $linksProductTask->deleteByTaskId($fields['id']);
     $linksProductTask->add($productIds, $taskId);
 
 
     $linksProductFloor = new LinksProductFloor();
     $linksProductPoint = new LinksProductPoint();
-    switch($taskTypeId) {
+    switch ($taskTypeId) {
       case 1:
         $linksProductFloor->deleteByProductIds($productIds);
         $linksProductFloor->add($productIds, $floorIds);

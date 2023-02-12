@@ -38,8 +38,10 @@ class UserController extends Controller
   ): JsonResponse | Response {
     try {
       $fields = $request->fields;
+      $workSchedules = $request->workSchedules;
       $servicesUser->store(
-        $fields
+        $fields,
+        $workSchedules,
       );
 
       return response()->json([
@@ -57,9 +59,11 @@ class UserController extends Controller
   ): JsonResponse | Response {
     try {
       $fields = $request->fields;
+      $workSchedules = $request->workSchedules;
       $servicesUser->update(
         $id,
-        $fields
+        $fields,
+        $workSchedules,
       );
 
       return response()->json([

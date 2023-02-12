@@ -10,26 +10,25 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class UserFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = User::class;
 
-    protected $model = User::class;
-
-    public function definition()
-    {
-        return [
-            'email' => fake()->safeEmail(),
-            'phone' => fake()->e164PhoneNumber(),
-            'login' => fake()->unique()->word(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'name' => fake()->firstName(),
-            'surname' => fake()->lastName(),
-            'patronymic' => fake()->lastName(),
-            'is_del' => false,
-            'role_id' => fake()->numberBetween(1, 3),
-        ];
-    }
+  public function definition()
+  {
+    return [
+      'email' => fake()->safeEmail(),
+      'phone' => fake()->numberBetween(10000000000, 99999999999),
+      'login' => fake()->unique()->word(),
+      'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+      'name' => fake()->firstName(),
+      'surname' => fake()->lastName(),
+      'patronymic' => fake()->lastName(),
+      'is_del' => false,
+      'role_id' => fake()->numberBetween(1, 3),
+    ];
+  }
 }
