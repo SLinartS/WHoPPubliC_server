@@ -15,11 +15,6 @@ class Product extends Model
 
   protected $table = 'products';
 
-  public function locations()
-  {
-    return $this->hasMany(LocationHistory::class, 'product_id', 'id');
-  }
-
   public function user()
   {
     return $this->belongsTo(User::class, 'user_id', 'id');

@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Actions\ResponsePrepare\Map as ResponsePrepareMap;
 use App\Models\Block as ModelsBlock;
 use App\Models\Floor as ModelsFloor;
-use App\Models\LocationHistory as ModelsLocationHistory;
 use App\Models\Section as ModelsSection;
 use App\Models\Zone as ModelsZone;
 use Illuminate\Database\Eloquent\Model;
@@ -127,9 +126,6 @@ class Map
         ->pluck('id')
         ->toArray();
 
-        ModelsLocationHistory::whereIn('floor_id', $floorIds)
-        ->delete();
-
         ModelsFloor::whereIn('id', $floorIds)->delete();
         ModelsBlock::whereIn('id', $blockIds)->delete();
         ModelsSection::where('id', $sectionDB->id)->delete();
@@ -145,16 +141,12 @@ class Map
           }
 
           if (!$blockDeletedId) {
-
             $floorIds = ModelsFloor::select('id', 'block_id')
             ->where('block_id', $blockDB->id)
             ->get()
             ->pluck('id')
             ->toArray();
-    
-            ModelsLocationHistory::whereIn('floor_id', $floorIds)
-            ->delete();
-    
+
             ModelsFloor::whereIn('id', $floorIds)->delete();
           } else {
             foreach ($blockDB->floors as $floorDB) {
@@ -167,15 +159,11 @@ class Map
               }
 
               if (!$floorDeletedId) {
-
                 $floorIds = ModelsFloor::select('id', 'block_id')
                 ->where('block_id', $blockDB->id)
                 ->get()
                 ->pluck('id')
                 ->toArray();
-        
-                ModelsLocationHistory::whereIn('floor_id', $floorIds)
-                ->delete();
 
                 ModelsFloor::select('id', 'block_id')
                 ->where('block_id', $blockDB->id)

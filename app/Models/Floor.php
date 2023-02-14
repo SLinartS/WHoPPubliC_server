@@ -15,11 +15,6 @@ class Floor extends Model
 
   protected $table = 'floors';
 
-  public function locations()
-  {
-    return $this->hasMany(LocationHistory::class, 'floor_id', 'id');
-  }
-
   public function block()
   {
     return $this->belongsTo(Block::class, 'block_id', 'id');

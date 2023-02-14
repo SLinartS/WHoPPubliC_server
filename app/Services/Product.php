@@ -8,7 +8,6 @@ use App\Actions\Links\ProductTask as LinksProductTask;
 use App\Actions\Other\GetProductIdByArticle;
 use App\Actions\ResponsePrepare\Product as ResponsePrepareProduct;
 use App\Models\Category as ModelsCategory;
-use App\Models\LocationHistory;
 use App\Models\Product as ModelsProduct;
 use App\Models\ProductPoint;
 use Exception;
@@ -124,7 +123,6 @@ class Product
     $linksProductTask->deleteByProductIds($productIds);
     (new LinksProductFloor())->deleteByProductIds($productIds);
     (new LinksProductPoint())->deleteByProductIds($productIds);
-    LocationHistory::whereIn('product_id', $productIds)->delete();
     ModelsProduct::whereIn('id', $productIds)->delete();
   }
 

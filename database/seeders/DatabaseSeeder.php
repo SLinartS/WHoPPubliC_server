@@ -8,7 +8,6 @@ use App\Models\AuthorizationHistory;
 use App\Models\Block;
 use App\Models\Category;
 use App\Models\Floor;
-use App\Models\LocationHistory;
 use App\Models\Point;
 use App\Models\Product;
 use App\Models\ProductFloor;
@@ -412,7 +411,6 @@ class DatabaseSeeder extends Seeder
             ['product_id' => 35, 'floor_id' => 12, 'occupied_space' => 100, 'is_actual' => true],
           )
         )->create();
-    LocationHistory::factory()->count(5)->create();
 
     ProductPoint::factory()->count(24)
         ->state(
