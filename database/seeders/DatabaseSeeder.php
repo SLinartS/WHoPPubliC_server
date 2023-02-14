@@ -43,7 +43,14 @@ class DatabaseSeeder extends Seeder
           ))
         )
         ->create();
-    User::factory()->count(10)->create();
+    User::factory()->count(10)
+        ->state(
+          (new Sequence(
+            ['login' => 'login'],
+            ['login' => 'login2'],
+          ))
+        )
+        ->create();
 
     for ($i = 1; $i <= 10; $i++) {
       WorkSchedule::factory()->count(7)

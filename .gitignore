@@ -17,3 +17,4 @@ yarn-error.log
 /tools/php-cs-fixer/vendor
 
 /performanceReports
+.VSCodeCounter

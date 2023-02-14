@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthorizationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -22,50 +23,54 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// CATEGORIES
-Route::get('/categories', [CategoryController::class, 'index']);
 
-// POINTS
-Route::get('/points', [PointController::class, 'index']);
+// AUTHORIZATION
+Route::post('/login', [AuthorizationController::class, 'login']);
+Route::get('/unauthenticated', function () {
+  return response('Unauthorized', 401);
+})->name('api.unauthenticated');
 
-// ROLES
-Route::get('/roles', [RoleController::class, 'index']);
+Route::middleware(['auth:sanctum'])->group(function () {
+  Route::get('/logout', [AuthorizationController::class, 'logout']);
 
+  Route::controller(MapController::class)->group(function () {
+    Route::get('/map', 'index');
+    Route::put('/map', 'update');
+    Route::delete('/map/{zoneId}', 'destroy');
+  });
 
-// MAP
-Route::get('/map', [MapController::class, 'index']);
-Route::put('/map', [MapController::class, 'update']);
-Route::delete('/map/{zoneId}', [MapController::class, 'destroy']);
+  Route::controller(ProductController::class)->group(function () {
+    Route::get('/products', 'index');
+    Route::get('/products/{productId}', 'show');
+    Route::post('/products', 'store');
+    Route::put('/products', 'update');
+    Route::delete('/products/{productId}', 'destroy');
 
-// PRODUCTS
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{productId}', [ProductController::class, 'show']);
-Route::post('/products', [ProductController::class, 'store']);
-Route::put('/products', [ProductController::class, 'update']);
-Route::delete('/products/{productId}', [ProductController::class, 'destroy']);
+    Route::patch('/products/markAsMoved', 'markAsMoved');
+  });
 
+  Route::controller(TaskController::class)->group(function () {
+    Route::get('/tasks', 'index');
+    Route::get('/tasks/{taskId}', 'show');
+    Route::post('/tasks', 'create');
+    Route::put('/tasks', 'update');
+    Route::delete('/tasks/{taskId}', 'destroy');
+  });
 
-Route::patch('/products/markAsMoved', [ProductController::class, 'markAsMoved']);
+  Route::controller(UserController::class)->group(function () {
+    Route::get('/users', 'index');
+    Route::get('/users/{id}', 'show');
+    Route::post('/users', 'store');
+    Route::put('/users/{id}', 'update');
+    Route::delete('/users/{id}', 'destroy');
+  });
 
-// TASKS
-Route::get('/tasks', [TaskController::class, 'index']);
-Route::get('/tasks/{taskId}', [TaskController::class, 'show']);
-Route::post('/tasks', [TaskController::class, 'create']);
-Route::put('/tasks', [TaskController::class, 'update']);
-Route::delete('/tasks/{taskId}', [TaskController::class, 'destroy']);
+  Route::get('/categories', [CategoryController::class, 'index']);
+  Route::get('/points', [PointController::class, 'index']);
+  Route::get('/roles', [RoleController::class, 'index']);
 
+  Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);
 
-// ACCOUNTS
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/users/{id}', [UserController::class, 'show']);
-Route::post('/users', [UserController::class, 'store']);
-Route::put('/users/{id}', [UserController::class, 'update']);
-Route::delete('/users/{id}', [UserController::class, 'destroy']);
-
-
-// ADDITIVE CRITERION
-Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);
-
-// GENERATE
-Route::get('/generate/article/{type}', [UtilsController::class, 'generateArticle']);
-Route::get('/generate/zoneletter', [UtilsController::class, 'generateZoneLetter']);
+  Route::get('/generate/article/{type}', [UtilsController::class, 'generateArticle']);
+  Route::get('/generate/zoneletter', [UtilsController::class, 'generateZoneLetter']);
+});
