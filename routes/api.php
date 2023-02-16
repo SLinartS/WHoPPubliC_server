@@ -25,14 +25,12 @@ use Illuminate\Support\Facades\Route;
 
 
 // AUTHORIZATION
+
 Route::post('/login', [AuthorizationController::class, 'login']);
-Route::get('/unauthenticated', function () {
-  return response('Unauthorized', 401);
-})->name('api.unauthenticated');
+Route::post('/refresh', [AuthorizationController::class, 'refresh']);
+Route::get('/logout', [AuthorizationController::class, 'logout']);
 
-Route::middleware(['auth:sanctum'])->group(function () {
-  Route::get('/logout', [AuthorizationController::class, 'logout']);
-
+Route::middleware(['jwt'])->group(function () {
   Route::controller(MapController::class)->group(function () {
     Route::get('/map', 'index');
     Route::put('/map', 'update');

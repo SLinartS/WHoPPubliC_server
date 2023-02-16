@@ -3,10 +3,13 @@
 namespace App\Services;
 
 use App\Models\Role as ModelsRole;
+use App\Models\Token as ModelsToken;
 use App\Models\User as ModelsUser;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use ReallySimpleJWT\Token as JWTToken;
 
 class Authorization
 {
@@ -27,21 +30,93 @@ class Authorization
       throw new Exception('invalid password or login');
     }
 
-    $credentials = $validator->validated();
-    $user = ModelsUser::where('login', $credentials['login'])->first();
-    if (!$user || !Hash::check($credentials['password'], $user->password)) {
+    $user = ModelsUser::where('login', $login)->first();
+
+    if (!Hash::check($password, $user->password)) {
       throw new Exception('invalid password or login');
     }
 
+    $access = (new Token())->createAccessToken($user->id);
+    $refresh = (new Token())->createRefreshToken($user->id);
+
+    $tokens = ModelsToken::where('user_id', $user->id)->first();
+    if (!$tokens) {
+      $tokens = new ModelsToken();
+    }
+
+    $tokens->user_id = $user->id;
+    $tokens->access = $access;
+    $tokens->refresh = $refresh;
+    $tokens->save();
+
+    return $this->getUserData($access, $refresh, $user);
+  }
+
+  public function logout(string $accessToken)
+  {
+    if (!$accessToken) {
+      throw new Exception('logout error');
+    }
+
+    ModelsToken::where('access', $accessToken)->delete();
+  }
+
+  public function refresh(string $refreshToken)
+  {
+    if (!$refreshToken) {
+      throw new Exception('token error');
+    }
+
+    if (!JWTToken::validate($refreshToken, env('JWT_REFRESH_SECRET'))) {
+      throw new Exception('token validate error');
+    }
+
+    if (!JWTToken::validateExpiration($refreshToken)) {
+      throw new Exception('token expired');
+    }
+
+    $token = ModelsToken::where('refresh', $refreshToken)->first();
+    if (!$token) {
+      throw new Exception('this token not found');
+    }
+
+    $user = ModelsUser::where('id', $token->user_id)->first();
+    if (!$user) {
+      throw new Exception('the user does not have a token');
+    }
+
+    $access = (new Token())->createAccessToken($user->id);
+    $refresh = (new Token())->createRefreshToken($user->id);
+
+    $tokens = ModelsToken::where('user_id', $user->id)->first();
+    if (!$tokens) {
+      $tokens = new ModelsToken();
+    }
+
+    $tokens->user_id = $user->id;
+    $tokens->access = $access;
+    $tokens->refresh = $refresh;
+    $tokens->save();
+
+    return $this->getUserData($access, $refresh, $user);
+  }
+
+  private function getUserData(string $access, string $refresh, Model $user)
+  {
     $role = ModelsRole::select('title', 'alias')->where('id', $user->role_id)->first();
 
     $response = [
-      'id' => $user->id,
-      'login' => $user->login,
-      'name' => $user->name,
-      'token' => $user->createToken($user->login)->plainTextToken,
-      'role' => $role->title,
-      'roleAlias' => $role->alias,
+      'userData' => [
+        'id' => $user->id,
+        'login' => $user->login,
+        'name' => $user->name,
+        'role' => $role->title,
+        'roleAlias' => $role->alias,
+      ],
+      'tokens' => [
+        'access' => $access,
+        'refresh' => $refresh,
+      ]
     ];
 
     return $response;
