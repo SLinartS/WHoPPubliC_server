@@ -28,7 +28,7 @@ class JWTMiddleware
         }
         return response()->json(['message' => 'token expired'], 401);
       }
-      return response()->json(['message' => 'token error', 'token' => $token], 401);
-    }
+    }   
+    return response()->json(['message' => 'token error', 'token' => $token], 401);
   }
 }

@@ -52,13 +52,13 @@ class Authorization
     return $this->getUserData($access, $refresh, $user);
   }
 
-  public function logout(string $accessToken)
+  public function logout(string $accessToken, int $userId)
   {
     if (!$accessToken) {
       throw new Exception('logout error');
     }
 
-    ModelsToken::where('access', $accessToken)->delete();
+    ModelsToken::where('user_id', $userId)->orWhere('access', $accessToken)->delete();
   }
 
   public function refresh(string $refreshToken)

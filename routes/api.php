@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthorizationController::class, 'login']);
 Route::post('/refresh', [AuthorizationController::class, 'refresh']);
-Route::get('/logout', [AuthorizationController::class, 'logout']);
+Route::post('/logout', [AuthorizationController::class, 'logout']);
 
 Route::middleware(['jwt'])->group(function () {
   Route::controller(MapController::class)->group(function () {

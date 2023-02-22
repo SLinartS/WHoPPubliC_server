@@ -16,7 +16,6 @@ use App\Models\ProductTask;
 use App\Models\Role;
 use App\Models\Section;
 use App\Models\Task;
-use App\Models\TaskFloor;
 use App\Models\TypeOfPoint;
 use App\Models\TypeOfTask;
 use App\Models\User;
@@ -48,6 +47,14 @@ class DatabaseSeeder extends Seeder
           (new Sequence(
             ['login' => 'login'],
             ['login' => 'login2'],
+            ['login' => 'login3'],
+            ['login' => 'login4'],
+            ['login' => 'login5'],
+            ['login' => 'login6'],
+            ['login' => 'login7'],
+            ['login' => 'login8'],
+            ['login' => 'login9'],
+            ['login' => 'login10'],
           ))
         )
         ->create();

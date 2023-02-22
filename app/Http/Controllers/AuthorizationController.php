@@ -40,12 +40,13 @@ class AuthorizationController extends Controller
   public function logout(Request $request, ServicesAuthorization $servicesAuthorization)
   {
     $accessToken = $request->header('Authorization');
+    $userId = $request->userId;
     try {
       if (!$accessToken) {
         throw new Exception('token not found');
       }
       $accessToken = substr($accessToken, 7);
-      $servicesAuthorization->logout($accessToken);
+      $servicesAuthorization->logout($accessToken, $userId);
       return response()->json(['message' => 'logged out']);
     } catch (\Throwable $th) {
       return response($th->getMessage(), 401);
