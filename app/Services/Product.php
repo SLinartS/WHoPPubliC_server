@@ -23,7 +23,7 @@ class Product
       'author',
       'year_of_publication',
       'number',
-      'print_date',
+      'year_of_printing',
       'printing_house',
       'publishing_house',
       'category_id'
@@ -43,7 +43,7 @@ class Product
         'author',
         'year_of_publication',
         'number',
-        'print_date',
+        'year_of_printing',
         'printing_house',
         'publishing_house',
         'category_id'
@@ -61,8 +61,8 @@ class Product
     int $userId,
     int $pointId,
   ) {
-    $datePrintDate = strtotime($fields['printDate']['value']);
-    $formatedPrintDate = date('Y-m-d', $datePrintDate);
+    $dateYearOfPrinting = strtotime($fields['yearOfPrinting']['value']);
+    $formattedYearOfPrinting = date('Y-m-d', $dateYearOfPrinting);
 
     $product = new ModelsProduct();
     $product->article = $fields['article']['value'];
@@ -70,7 +70,7 @@ class Product
     $product->author = $fields['author']['value'];
     $product->year_of_publication = $fields['yearOfPublication']['value'];
     $product->number = $fields['number']['value'];
-    $product->print_date = $formatedPrintDate;
+    $product->year_of_printing = $formattedYearOfPrinting;
     $product->printing_house = $fields['printingHouse']['value'];
     $product->publishing_house = $fields['publishingHouse']['value'];
     $product->user_id = $userId;
@@ -88,8 +88,8 @@ class Product
   ) {
     $productId = $fields['id']['value'];
 
-    $datePrintDate = strtotime($fields['printDate']['value']);
-    $formatedPrintDate = date('Y-m-d', $datePrintDate);
+    $dateYearOfPrinting = strtotime($fields['yearOfPrinting']['value']);
+    $formattedYearOfPrinting = date('Y-m-d', $dateYearOfPrinting);
 
     $product = ModelsProduct::where('id', $productId)->first();
     $product->article = $fields['article']['value'];
@@ -97,7 +97,7 @@ class Product
     $product->author = $fields['author']['value'];
     $product->year_of_publication = $fields['yearOfPublication']['value'];
     $product->number = $fields['number']['value'];
-    $product->print_date = $formatedPrintDate;
+    $product->year_of_printing = $formattedYearOfPrinting;
     $product->printing_house = $fields['printingHouse']['value'];
     $product->publishing_house = $fields['publishingHouse']['value'];
     $product->user_id = $userId;

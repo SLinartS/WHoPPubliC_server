@@ -22,13 +22,13 @@ class Task
 
   public function oneTask(Model $task, array $productIds, Collection $floorInfo, array $pointIds)
   {
-    $formatedTask = $this->formateTask($task);
-    $formatedFloorInfo = $this->formateFloorInfo($floorInfo);
+    $formattedTask = $this->formateTask($task);
+    $formattedFloorInfo = $this->formateFloorInfo($floorInfo);
 
     $response = [
-      'taskInfo' => $formatedTask,
+      'taskInfo' => $formattedTask,
       'productIds' => $productIds,
-      'floorInfo' => $formatedFloorInfo,
+      'floorInfo' => $formattedFloorInfo,
       'pointIds' => $pointIds,
     ];
 
@@ -69,15 +69,15 @@ class Task
 
   private function formateFloorInfo(Collection $floors): array
   {
-    $formatedFloors = [];
+    $formattedFloors = [];
 
     foreach ($floors as $floor) {
-      $floorIndex = array_search($floor->floor_id, array_column($formatedFloors, 'floorId'), true);
+      $floorIndex = array_search($floor->floor_id, array_column($formattedFloors, 'floorId'), true);
       if ($floorIndex !== false) {
-        $formatedFloors[$floorIndex]['occupiedSpace'] += $floor->occupied_space;
+        $formattedFloors[$floorIndex]['occupiedSpace'] += $floor->occupied_space;
       } else {
         array_push(
-          $formatedFloors,
+          $formattedFloors,
           [
             'floorId' => $floor->floor_id,
             'occupiedSpace' => $floor->occupied_space
@@ -86,13 +86,13 @@ class Task
       }
     }
 
-    return $formatedFloors;
+    return $formattedFloors;
   }
 
   private function formateTaskTime(string $time)
   {
     $dateTime = strtotime($time);
-    $formatedTime = date('d.m.Y H:i', $dateTime);
-    return $formatedTime;
+    $formattedTime = date('d.m.Y H:i', $dateTime);
+    return $formattedTime;
   }
 }

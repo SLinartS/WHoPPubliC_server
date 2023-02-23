@@ -41,16 +41,16 @@ class Product
 
   public function oneProduct(Model $product)
   {
-    $formatedProduct = [];
+    $formattedProduct = [];
 
     $taskId = (new LinksProductTask())->getTaskIdByProductId($product->id);
     $pointIds = (new LinksProductPoint())->getPointIdsByProductIds([$product->id]);
     ['floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds ] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product->id);
 
-    $formatedProduct = $this->formateProduct($product);
+    $formattedProduct = $this->formateProduct($product);
 
     $response = [
-      'productInfo' => $formatedProduct,
+      'productInfo' => $formattedProduct,
       'pointId' => $product->point_id,
       'serviceInformation' => [
         'taskId' => $taskId,
@@ -90,8 +90,8 @@ class Product
         'value' => $product->number,
         'alias' => "Количество"
       ],
-      'printDate' => [
-        'value' => $this->formateProductDate($product->print_date),
+      'yearOfPrinting' => [
+        'value' => $this->formateProductDate($product->year_of_printing),
         'alias' => "Дата печати"
       ],
       'printingHouse' => [
@@ -116,7 +116,7 @@ class Product
   private function formateProductDate(string $date)
   {
     $dateTime = strtotime($date);
-    $formatedTime = date('d.m.Y', $dateTime);
-    return $formatedTime;
+    $formattedTime = date('d.m.Y', $dateTime);
+    return $formattedTime;
   }
 }

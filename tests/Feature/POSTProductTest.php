@@ -37,7 +37,7 @@ class POSTProductTest extends TestCase
                                 "value" => fake()->numberBetween(300, 550),
                                 "errors" => []
                             ],
-                            "printDate" => [
+                            "yearOfPrinting" => [
                                 "value" => "2011-11-11",
                                 "errors" => []
                             ],
@@ -79,7 +79,7 @@ class POSTProductTest extends TestCase
                                 "value" => fake()->numberBetween(300, 550),
                                 "errors" => []
                             ],
-                            "printDate" => [
+                            "yearOfPrinting" => [
                                 "value" => "2011-11-11",
                                 "errors" => []
                             ],

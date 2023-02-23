@@ -127,7 +127,7 @@ class User
   private function formateUserTime(string $time)
   {
     $dateTime = strtotime($time);
-    $formatedTime = date('H:i', $dateTime);
-    return $formatedTime;
+    $formattedTime = date('H:i', $dateTime);
+    return $formattedTime;
   }
 }

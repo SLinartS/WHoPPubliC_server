@@ -16,7 +16,7 @@ class AuthorizationController extends Controller
 
       return response()->json($response, 200);
     } catch (Throwable $th) {
-      return response($th->getMessage(), 401);
+      return response($th->getMessage(), 404);
     }
   }
 
@@ -49,7 +49,7 @@ class AuthorizationController extends Controller
       $servicesAuthorization->logout($accessToken, $userId);
       return response()->json(['message' => 'logged out']);
     } catch (\Throwable $th) {
-      return response($th->getMessage(), 401);
+      return response($th->getMessage(), 500);
     }
   }
 }

@@ -58,15 +58,15 @@ class Task
     $taskTypeId = (new GetTaskTypeIdByTaskType())($taskType);
 
     $dateTimeStart = strtotime($fields['timeStart']);
-    $formatedTimeStart = date('Y-m-d H:i:s', $dateTimeStart);
+    $formattedTimeStart = date('Y-m-d H:i:s', $dateTimeStart);
 
     $dateTimeEnd = strtotime($fields['timeEnd']);
-    $formatedTimeEnd = date('Y-m-d H:i:s', $dateTimeEnd);
+    $formattedTimeEnd = date('Y-m-d H:i:s', $dateTimeEnd);
 
     $task = new ModelsTask();
     $task->article = $fields['article'];
-    $task->time_start = $formatedTimeStart;
-    $task->time_end = $formatedTimeEnd;
+    $task->time_start = $formattedTimeStart;
+    $task->time_end = $formattedTimeEnd;
     $task->is_active = false;
     $task->user_id = $userId;
     $task->type_id = $taskTypeId;
@@ -99,15 +99,15 @@ class Task
     $taskId = $fields['id'];
 
     $dateTimeStart = strtotime($fields['timeStart']);
-    $formatedTimeStart = date('Y-m-d H:i:s', $dateTimeStart);
+    $formattedTimeStart = date('Y-m-d H:i:s', $dateTimeStart);
 
     $dateTimeEnd = strtotime($fields['timeEnd']);
-    $formatedTimeEnd = date('Y-m-d H:i:s', $dateTimeEnd);
+    $formattedTimeEnd = date('Y-m-d H:i:s', $dateTimeEnd);
 
     $task = ModelsTask::where('id', $taskId)->first();
     $task->article = $fields['article'];
-    $task->time_start = $formatedTimeStart;
-    $task->time_end =  $formatedTimeEnd;
+    $task->time_start = $formattedTimeStart;
+    $task->time_end =  $formattedTimeEnd;
     $task->is_active = false;
     $task->user_id = $userId;
 

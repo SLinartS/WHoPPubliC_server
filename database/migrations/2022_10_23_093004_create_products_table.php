@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('author', 50);
             $table->integer('year_of_publication');
             $table->integer('number');
-            $table->date('print_date');
+            $table->date('year_of_printing');
             $table->string('printing_house', 100);
             $table->string('publishing_house', 100);
             $table->foreignId('user_id')->constrained('users');
