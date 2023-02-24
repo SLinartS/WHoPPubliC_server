@@ -11,12 +11,25 @@ use Illuminate\Support\Facades\Hash;
 
 class User
 {
-  public function index()
+  public function index(string | null $search)
   {
     $users = ModelsUser::select('id', 'email', 'phone', 'login', 'name', 'surname', 'patronymic', 'role_id', 'is_del')
       ->addSelect(['role' => ModelsRole::select('title')->whereColumn('id', 'role_id')])
-      ->where('is_del', false)
-      ->get();
+      ->where('is_del', false);
+
+
+    if ($search) {
+      $searchField = '%' . $search . '%';
+      $users = $users->where('email', 'like', $searchField)
+                    ->orWhere('phone', 'like', $searchField)
+                    ->orWhere('login', 'like', $searchField)
+                    ->orWhere('name', 'like', $searchField)
+                    ->orWhere('surname', 'like', $searchField)
+                    ->orWhere('patronymic', 'like', $searchField)
+                    ->get();
+    } else {
+      $users = $users->get();
+    }
 
     return (new ResponsePrepareUser())($users);
   }

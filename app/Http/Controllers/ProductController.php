@@ -10,10 +10,11 @@ use Throwable;
 
 class ProductController extends Controller
 {
-  public function index(ServicesProduct $servicesProduct): JsonResponse | Response
+  public function index(Request $request, ServicesProduct $servicesProduct): JsonResponse | Response
   {
     try {
-      $response = $servicesProduct->index();
+      $search = $request->query('search');
+      $response = $servicesProduct->index($search);
 
       return response()->json($response, 200);
     } catch (Throwable $th) {

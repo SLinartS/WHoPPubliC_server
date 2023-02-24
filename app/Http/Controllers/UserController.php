@@ -10,10 +10,11 @@ use Throwable;
 
 class UserController extends Controller
 {
-  public function index(ServicesUser $servicesUser)
+  public function index(Request $request, ServicesUser $servicesUser)
   {
     try {
-      $response = $servicesUser->index();
+      $search = $request->query('search');
+      $response = $servicesUser->index($search);
 
       return response()->json($response, 200);
     } catch (Throwable $th) {

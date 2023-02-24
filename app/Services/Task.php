@@ -13,21 +13,31 @@ use Exception;
 
 class Task
 {
-  public function index(string $type)
+  public function index(string $type, string | null $search)
   {
     $tasks = null;
     switch ($type) {
       case 'acceptance':
-        $tasks = ModelsTask::select('id', 'article', 'time_start', 'time_end', 'user_id')->where('type_id', 1)->get();
+        $tasks = ModelsTask::select('id', 'article', 'time_start', 'time_end', 'user_id')->where('type_id', 1);
         break;
       case 'shipment':
-        $tasks = ModelsTask::select('id', 'article', 'time_start', 'time_end', 'user_id')->where('type_id', 2)->get();
+        $tasks = ModelsTask::select('id', 'article', 'time_start', 'time_end', 'user_id')->where('type_id', 2);
         break;
       case 'intra':
-        $tasks = ModelsTask::select('id', 'article', 'time_start', 'time_end', 'user_id')->where('type_id', 3)->get();
+        $tasks = ModelsTask::select('id', 'article', 'time_start', 'time_end', 'user_id')->where('type_id', 3);
         break;
       default:
         throw new Exception('Unknown tasks type');
+    }
+
+    if ($search) {
+      $searchField = '%' . $search . '%';
+      $tasks = $tasks->where('article', 'like', $searchField)
+                    ->orWhere('time_start', 'like', $searchField)
+                    ->orWhere('time_end', 'like', $searchField)
+                    ->get();
+    } else {
+      $tasks = $tasks->get();
     }
 
     return (new ResponsePrepareTask())($tasks);

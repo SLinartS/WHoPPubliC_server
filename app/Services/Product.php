@@ -14,7 +14,7 @@ use Exception;
 
 class Product
 {
-  public function index()
+  public function index(string | null $search)
   {
     $products = ModelsProduct::select(
       'id',
@@ -28,8 +28,22 @@ class Product
       'publishing_house',
       'category_id'
     )
-      ->addSelect(['category_title' => ModelsCategory::select('title')->whereColumn('id', 'category_id')])
-      ->get();
+      ->addSelect(['category_title' => ModelsCategory::select('title')->whereColumn('id', 'category_id')]);
+
+    if ($search) {
+      $searchField = '%' . $search . '%';
+      $products = $products->where('article', 'like', $searchField)
+                          ->orWhere('title', 'like', $searchField)
+                          ->orWhere('author', 'like', $searchField)
+                          ->orWhere('year_of_publication', 'like', $searchField)
+                          ->orWhere('number', 'like', $searchField)
+                          ->orWhere('year_of_printing', 'like', $searchField)
+                          ->orWhere('printing_house', 'like', $searchField)
+                          ->orWhere('publishing_house', 'like', $searchField)
+                          ->get();
+    } else {
+      $products = $products->get();
+    }
 
     return (new ResponsePrepareProduct())($products);
   }

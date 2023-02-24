@@ -16,7 +16,8 @@ class TaskController extends Controller
   ): JsonResponse | Response {
     try {
       $type = $request->query('type');
-      $response = $servicesTask->index($type);
+      $search = $request->query('search');
+      $response = $servicesTask->index($type, $search);
 
       return response()->json($response, 200);
     } catch (Throwable $th) {
