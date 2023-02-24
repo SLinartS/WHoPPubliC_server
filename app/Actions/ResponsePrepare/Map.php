@@ -4,6 +4,7 @@ namespace App\Actions\ResponsePrepare;
 
 use App\Actions\Other\CountFreeFloorSpace;
 use App\Actions\Other\CountReservedFloorSpace;
+use App\Actions\Other\SearchProducts;
 use Illuminate\Database\Eloquent\Collection;
 
 class Map
@@ -12,7 +13,8 @@ class Map
     Collection $zones,
     Collection $sections,
     Collection $blocks,
-    Collection $floors
+    Collection $floors,
+    string | null $search
   ) {
     $response = [];
 
@@ -57,7 +59,14 @@ class Map
                     'capacity' => $floor->capacity,
                     'freeSpace' => $freeFloorSpace,
                     'reservedSpace' => $reservedFloorSpace,
+                    'productIds' => [],
                   ]);
+
+                  if ($search) {
+                    $productIds = (new SearchProducts())([$floor->id], $search);
+                    $responseFloorIndex = count($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors']) - 1;
+                    $response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'][$responseFloorIndex]['productIds'] = $productIds;
+                  }
                 }
               }
             }

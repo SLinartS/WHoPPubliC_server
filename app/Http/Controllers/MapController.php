@@ -11,10 +11,12 @@ use Throwable;
 class MapController extends Controller
 {
   public function index(
+    Request $request,
     ServicesMap $servicesMap,
   ): JsonResponse | Response {
     try {
-      $response = $servicesMap->index();
+      $search = $request->query('search');
+      $response = $servicesMap->index($search);
 
       return response()->json($response, 200);
     } catch (Throwable $th) {

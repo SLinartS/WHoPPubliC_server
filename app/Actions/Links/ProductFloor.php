@@ -105,18 +105,13 @@ class ProductFloor
     $modelsProductFloor->is_actual = true;
   }
 
-  public function getFloorIdsByProductIds(array $productIds)
+  public function getFloorIdsByProductIds(array $productIds): array
   {
     $floorIds = ModelsProductFloor::select('floor_id')
       ->whereIn('product_id', $productIds)
-      ->get();
-
-    $floorIds = array_map(
-      function ($object) {
-        return $object['floor_id'];
-      },
-      $floorIds->toArray()
-    );
+      ->get()
+      ->pluck('floor_id')
+      ->toArray();
 
     return $floorIds;
   }
@@ -127,7 +122,17 @@ class ProductFloor
       ->whereIn('product_id', $productIds)
       ->get();
 
-
     return $floorInfo;
+  }
+
+  public static function getProductIdsByFloorIds(array $floorIds): array
+  {
+    $productIds = ModelsProductFloor::select('product_id')
+      ->whereIn('floor_id', $floorIds)
+      ->get()
+      ->pluck('product_id')
+      ->toArray();
+
+    return $productIds;
   }
 }

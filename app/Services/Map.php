@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Map
 {
-  public function index()
+  public function index(string | null $search)
   {
     $zones = ModelsZone::select('id', 'number', 'letter')->get();
     $sections = ModelsSection::select('id', 'number', 'zone_id')->get();
@@ -22,7 +22,8 @@ class Map
       $zones,
       $sections,
       $blocks,
-      $floors
+      $floors,
+      $search
     );
   }
 
@@ -105,11 +106,11 @@ class Map
   {
     foreach ($zoneDB->sections as $sectionDB) {
       $sectionDeletedId = 0;
-      $findedSectionRequest = null;
+      $foundSectionRequest = null;
       foreach ($zoneRequest['sections'] as $sectionRequest) {
         if ($sectionDB->id === $sectionRequest['id']) {
           $sectionDeletedId = $sectionRequest['id'];
-          $findedSectionRequest = $sectionRequest;
+          $foundSectionRequest = $sectionRequest;
         }
       }
 
@@ -132,11 +133,11 @@ class Map
       } else {
         foreach ($sectionDB->blocks as $blockDB) {
           $blockDeletedId = 0;
-          $findedBlockRequest = null;
-          foreach ($findedSectionRequest['blocks'] as $blockRequest) {
+          $foundBlockRequest = null;
+          foreach ($foundSectionRequest['blocks'] as $blockRequest) {
             if ($blockDB->id === $blockRequest['id']) {
               $blockDeletedId = $blockRequest['id'];
-              $findedBlockRequest = $blockRequest;
+              $foundBlockRequest = $blockRequest;
             }
           }
 
@@ -151,7 +152,7 @@ class Map
           } else {
             foreach ($blockDB->floors as $floorDB) {
               $floorDeletedId = 0;
-              $floorsOfBlock = $findedBlockRequest['floors'];
+              $floorsOfBlock = $foundBlockRequest['floors'];
               foreach ($floorsOfBlock as $floorRequest) {
                 if ($floorDB->id === $floorRequest['id']) {
                   $floorDeletedId = $floorRequest['id'];
