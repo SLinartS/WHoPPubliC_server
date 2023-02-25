@@ -6,7 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MapController;
-use App\Http\Controllers\PerfomanceReportController;
+use App\Http\Controllers\PerformanceReportController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UtilsController;
@@ -67,7 +67,7 @@ Route::middleware(['jwt'])->group(function () {
   Route::get('/points', [PointController::class, 'index']);
   Route::get('/roles', [RoleController::class, 'index']);
 
-  Route::get('/perfomance-report', [PerfomanceReportController::class, 'index']);
+  Route::get('/performance-report', [PerformanceReportController::class, 'index']);
 
   Route::get('/generate/article/{type}', [UtilsController::class, 'generateArticle']);
   Route::get('/generate/zoneletter', [UtilsController::class, 'generateZoneLetter']);

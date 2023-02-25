@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\PerfomanceReport\Count as PerfomanceReportCount;
+use App\Actions\PerformanceReport\Count as PerformanceReportCount;
 use App\Models\AuthorizationHistory;
 use App\Models\Task;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
 
-class PerfomanceReportController extends Controller
+class PerformanceReportController extends Controller
 {
-  public function index(PerfomanceReportCount $perfomanceReportCount)
+  public function index(PerformanceReportCount $performanceReportCount)
   {
-    $criterias = [];
+    $criteriaList = [];
 
     $intervals = [
       ['2021-06-01', '2021-06-30'],
@@ -20,21 +20,21 @@ class PerfomanceReportController extends Controller
     ];
 
     foreach ($intervals as $interval) {
-      $criterias[$interval[0]] = $this->requestCriterias($interval);
+      $criteriaList[$interval[0]] = $this->requestCriteriaList($interval);
     }
 
-    $response = $perfomanceReportCount($criterias);
+    $response = $performanceReportCount($criteriaList);
 
     return response()->json(
       [
-        'message' => 'Perfomance report has been created',
+        'message' => 'Performance report has been created',
         'fileData' => $response,
       ],
       200
     );
   }
 
-  private function requestCriterias(array $interval): array
+  private function requestCriteriaList(array $interval): array
   {
     $intervalStart = $interval[0];
     $intervalEnd = $interval[1];
