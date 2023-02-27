@@ -15,17 +15,7 @@ class Count
 
     $additiveCriteriaList = $this->countAdditiveCriteriaList($normalizedCriteriaList, $importance, $signs);
 
-    $response = [
-      'criteriaList' => $criteriaList,
-      'normalizedCriteriaList' => $normalizedCriteriaList,
-      'importance' => $importance,
-      'signs' => $signs,
-      'additiveCriteriaList' => $additiveCriteriaList
-    ];
-
-    $fileData = (new Export())->exportPerformanceReport($criteriaList, $normalizedCriteriaList, $additiveCriteriaList, $signs);
-
-    return $fileData;
+    (new Export())->exportPerformanceReport($criteriaList, $normalizedCriteriaList, $additiveCriteriaList, $signs);
   }
 
   private function findMaxValues(array $criteriaList)

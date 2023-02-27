@@ -2,6 +2,7 @@
 
 namespace App\Actions\PerformanceReport;
 
+use App\Services\File as ServicesFile;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -101,14 +102,14 @@ class Export
       $monthDateOffset += 5;
     }
 
-
-    $filePath = __DIR__ . '\\..\\..\\..\\performanceReports\\performance-report-' . date('Y-m-d H-i-s') . '.xlsx';
-    $fileName = 'performance-report-' . date('Y-m-d H-i-s') . '.xlsx';
+    $fileTitle = 'performance-report-' . date('Y-m-d_H-i-s') . '.xlsx';
+    $filePath = __DIR__ . '\\..\\..\\..\\storage\\app\\public\\performance-reports\\' . $fileTitle;
     $writer = new Xlsx($spreadsheet);
     $writer->save($filePath);
 
+    (new ServicesFile())->saveInfo($fileTitle);
 
-    return ['filePath' => $filePath, 'fileName' => $fileName];
+    return ['fileTitle' => $fileTitle];
   }
 
   private function setDefaultStyles(Worksheet $sheet, Spreadsheet $spreadsheet)

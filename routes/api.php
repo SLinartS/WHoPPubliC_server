@@ -63,12 +63,17 @@ Route::middleware(['jwt'])->group(function () {
     Route::delete('/users/{id}', 'destroy');
   });
 
+  Route::controller(PerformanceReportController::class)->group(function () {
+    Route::get('/performance-report', 'index');
+    Route::post('/performance-report', 'store');
+    Route::get('/performance-report/{id}', 'download');
+    Route::delete('/performance-report/{id}', 'destroy');
+  });
+
   Route::get('/categories', [CategoryController::class, 'index']);
   Route::get('/points', [PointController::class, 'index']);
   Route::get('/roles', [RoleController::class, 'index']);
 
-  Route::get('/performance-report', [PerformanceReportController::class, 'index']);
-
   Route::get('/generate/article/{type}', [UtilsController::class, 'generateArticle']);
-  Route::get('/generate/zoneletter', [UtilsController::class, 'generateZoneLetter']);
+  Route::get('/generate/zone-letter', [UtilsController::class, 'generateZoneLetter']);
 });

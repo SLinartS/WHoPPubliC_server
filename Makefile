@@ -4,3 +4,5 @@ docmigrate:
 	docker-compose exec app php artisan migrate:fresh --seed
 migrate: 
 	php artisan migrate:fresh --seed
+link: 
+	php artisan storage:link

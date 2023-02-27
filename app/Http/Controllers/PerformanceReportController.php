@@ -5,12 +5,21 @@ namespace App\Http\Controllers;
 use App\Actions\PerformanceReport\Count as PerformanceReportCount;
 use App\Models\AuthorizationHistory;
 use App\Models\Task;
+use App\Services\File as ServicesFile;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 class PerformanceReportController extends Controller
 {
-  public function index(PerformanceReportCount $performanceReportCount)
+  public function index(Request $request, ServicesFile $servicesFile)
+  {
+    $search = $request->query('search');
+    $response = $servicesFile->index($search);
+    return $response;
+  }
+
+  public function store(PerformanceReportCount $performanceReportCount)
   {
     $criteriaList = [];
 
@@ -23,15 +32,27 @@ class PerformanceReportController extends Controller
       $criteriaList[$interval[0]] = $this->requestCriteriaList($interval);
     }
 
-    $response = $performanceReportCount($criteriaList);
+    $performanceReportCount($criteriaList);
 
     return response()->json(
       [
-        'message' => 'Performance report has been created',
-        'fileData' => $response,
+        'message' => 'Performance report has been created'
       ],
       200
     );
+  }
+
+  public function download(int $id, ServicesFile $servicesFile)
+  {
+    return $servicesFile->download($id);
+  }
+
+  public function destroy(int $id, ServicesFile $servicesFile)
+  {
+    return $servicesFile->destroy($id);
+    return response()->json([
+      'message' => 'The performance report has been deleted'
+    ], 200);
   }
 
   private function requestCriteriaList(array $interval): array
