@@ -54,11 +54,11 @@ class UserController extends Controller
   }
 
   public function update(
-    int $id,
     Request $request,
     ServicesUser $servicesUser
   ): JsonResponse | Response {
     try {
+      $id = $request->id;
       $fields = $request->fields;
       $workSchedules = $request->workSchedules;
       $servicesUser->update(

@@ -14,6 +14,10 @@ class AuthorizationController extends Controller
     try {
       $response = $servicesAuthorization->login($request->login, $request->password);
 
+      if (count($response['errors'])) {
+        return response()->json($response, 404);
+      }
+
       return response()->json($response, 200);
     } catch (Throwable $th) {
       return response($th->getMessage(), 404);
@@ -33,7 +37,7 @@ class AuthorizationController extends Controller
 
       return response()->json($response, 200);
     } catch (\Throwable $th) {
-      return response($th, 401);
+      return response($th, 500);
     }
   }
 

@@ -27,13 +27,13 @@ class Authorization
     );
 
     if ($validator->fails()) {
-      throw new Exception('invalid password or login');
+      return ['errors' => $validator->errors(), 'data' => []];
     }
 
     $user = ModelsUser::where('login', $login)->first();
 
-    if (!Hash::check($password, $user->password)) {
-      throw new Exception('invalid password or login');
+    if (!$user || !Hash::check($password, $user->password)) {
+      return ['errors' => ['login' => 'Неверный логин или пароль'], 'data' => []];
     }
 
     $access = (new Token())->createAccessToken($user->id);
@@ -49,7 +49,7 @@ class Authorization
     $tokens->refresh = $refresh;
     $tokens->save();
 
-    return $this->getUserData($access, $refresh, $user);
+    return ['errors' => [], 'data' => $this->getUserData($access, $refresh, $user)];
   }
 
   public function logout(string $accessToken, int $userId)
