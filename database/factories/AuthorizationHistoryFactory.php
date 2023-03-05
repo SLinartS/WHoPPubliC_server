@@ -10,19 +10,21 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AuthorizationHistoryFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    protected $model = AuthorizationHistory::class;
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = AuthorizationHistory::class;
 
-    public function definition()
-    {
-        return [
-            'time_authorization' => fake()->date() . ' ' . fake()->time(),
-            'user_id' => 1
-            
-        ];
-    }
+  public function definition()
+  {
+    return [
+        'time_authorization' => fake()->date() . ' ' . fake()->time(),
+        'current_start_time' => '08:00:00',
+        'current_end_time' => '20:00:00',
+        'user_id' => 1
+
+    ];
+  }
 }

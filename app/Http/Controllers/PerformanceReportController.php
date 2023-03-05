@@ -84,15 +84,13 @@ class PerformanceReportController extends Controller
       ->get()->sum('time');
 
     $intervalData['authorizationHistory'] =
-      AuthorizationHistory::select('authorization_history.user_id', 'authorization_history.time_authorization', 'work_schedules.start_time')
-      ->join('users', 'authorization_history.user_id', 'users.id')
-      ->join('work_schedules', 'users.id', 'work_schedules.user_id')
-      ->where('authorization_history.time_authorization', '>=', $intervalStart)
-      ->where('authorization_history.time_authorization', '<=', $intervalEnd)
-      ->whereRaw('DAYOFWEEK(authorization_history.time_authorization) = work_schedules.day_of_week')
-      ->orderBy('authorization_history.user_id', 'asc')
-      ->orderBy('authorization_history.time_authorization', 'asc')
-      ->get();
+    AuthorizationHistory::select('authorization_history.user_id', 'authorization_history.time_authorization', 'authorization_history.current_start_time')
+    ->join('users', 'authorization_history.user_id', 'users.id')
+    ->where('authorization_history.time_authorization', '>=', $intervalStart)
+    ->where('authorization_history.time_authorization', '<=', $intervalEnd)
+    ->orderBy('authorization_history.user_id', 'asc')
+    ->orderBy('authorization_history.time_authorization', 'asc')
+    ->get();
 
     $intervalData['authorizationHistory'] = $this->getSumOnlyFirstAuthOfDay($intervalData['authorizationHistory']);
 
@@ -125,7 +123,7 @@ class PerformanceReportController extends Controller
     $sumTimeOfDelays = 0;
     foreach ($filterAuthorizationHistory as $authorization) {
       $timeAuthorization = new DateTime($authorization['time_authorization']);
-      $startTime = new DateTime($authorization['start_time']);
+      $startTime = new DateTime($authorization['current_start_time']);
 
       $timeAuthorizationHour = (int) $timeAuthorization->format("H");
       $startTimeHour = (int) $startTime->format("H");
