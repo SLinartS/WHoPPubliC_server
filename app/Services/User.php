@@ -49,22 +49,22 @@ class User
     array $workSchedules,
   ) {
     $user = new ModelsUser();
-    $user->email = $fields['email'];
-    $user->phone = $fields['phone'];
-    $user->login = $fields['login'];
-    $user->password = Hash::make($fields['password']);
-    $user->name = $fields['name'];
-    $user->surname = $fields['surname'];
-    $user->patronymic = $fields['patronymic'];
-    $user->role_id = $fields['roleId'];
+    $user->email = $fields['email']['value'];
+    $user->phone = $fields['phone']['value'];
+    $user->login = $fields['login']['value'];
+    $user->password = Hash::make($fields['password']['value']);
+    $user->name = $fields['name']['value'];
+    $user->surname = $fields['surname']['value'];
+    $user->patronymic = $fields['patronymic']['value'];
+    $user->role_id = $fields['roleId']['value'];
     $user->is_del = false;
 
     $user->save();
 
     foreach ($workSchedules as $indexDayOfWeek => $workSchedule) {
       $schedule = new ModelsWorkSchedule();
-      $schedule->start_time = $workSchedule['startTime'];
-      $schedule->end_time = $workSchedule['endTime'];
+      $schedule->start_time = $workSchedule['startTime']['value'];
+      $schedule->end_time = $workSchedule['endTime']['value'];
       $schedule->day_of_week = $indexDayOfWeek;
       $schedule->user_id = $user->id;
       $schedule->save();
@@ -72,21 +72,22 @@ class User
   }
 
   public function update(
-    int $id,
     array $fields,
     array $workSchedules,
   ) {
+    $id = $fields['id']['value'];
+
     $user = ModelsUser::where('id', $id)->first();
-    $user->email = $fields['email'];
-    $user->phone = $fields['phone'];
-    $user->login = $fields['login'];
-    if (strlen($fields['password']) > 0) {
-      $user->password = $fields['password'];
+    $user->email = $fields['email']['value'];
+    $user->phone = $fields['phone']['value'];
+    $user->login = $fields['login']['value'];
+    if (strlen($fields['password']['value']) > 0) {
+      $user->password = $fields['password']['value'];
     }
-    $user->name = $fields['name'];
-    $user->surname = $fields['surname'];
-    $user->patronymic = $fields['patronymic'];
-    $user->role_id = $fields['roleId'];
+    $user->name = $fields['name']['value'];
+    $user->surname = $fields['surname']['value'];
+    $user->patronymic = $fields['patronymic']['value'];
+    $user->role_id = $fields['roleId']['value'];
     $user->is_del = false;
 
     $user->save();
@@ -95,8 +96,8 @@ class User
       $schedule = ModelsWorkSchedule::where('user_id', $id)
         ->where('day_of_week', $indexDayOfWeek)
         ->first();
-      $schedule->start_time = $workSchedule['startTime'];
-      $schedule->end_time = $workSchedule['endTime'];
+      $schedule->start_time = $workSchedule['startTime']['value'];
+      $schedule->end_time = $workSchedule['endTime']['value'];
       $schedule->save();
     }
   }
