@@ -218,36 +218,52 @@ class Export
     $conclusion = [];
 
     $answers = [
-      '0.5' => [
-        'text' => 'Прекрасные результаты',
-        'color' => '65FF47',
+      [
+        'start' => 0,
+        'end' => 0.25,
+        'text' => 'Ужасные результаты',
+        'color' => 'FF332E',
       ],
-      '0' => [
-        'text' => 'Хорошие результаты',
-        'color' => 'C7FF99',
-      ],
-      '-0.5' => [
-        'text' => 'В пределах нормы',
-        'color' => 'FFFFFF',
-      ],
-      '-1' => [
+      [
+        'start' => 0.26,
+        'end' => 0.44,
         'text' => 'Плохие результаты',
         'color' => 'FF8785',
       ],
-      '-1.5' => [
-        'text' => 'Ужасные результаты',
-        'color' => 'FF332E',
+      [
+        'start' => 0.45,
+        'end' => 0.55,
+        'text' => 'Нормальные результаты',
+        'color' => 'FFFFFF',
+      ],
+      [
+        'start' => 0.56,
+        'end' => 0.74,
+        'text' => 'Хорошие результаты',
+        'color' => 'C7FF99',
+      ],
+      [
+        'start' => 0.75,
+        'end' => 1,
+        'text' => 'Отличные результаты',
+        'color' => '65FF47',
       ],
     ];
 
     foreach ($additiveCriteriaList as $monthDateKey => $month) {
-      foreach ($answers as $score => $answer) {
-        if ($month <= $score) {
+      foreach ($answers as $answer) {
+        $normalizeMonth = $this->sigmoid($month);
+        if ($normalizeMonth >= $answer['start'] && $normalizeMonth <= $answer['end']) {
           $conclusion[$monthDateKey] = $answer;
         }
       }
     }
 
     return $conclusion;
+  }
+
+  private function sigmoid(float $number): float
+  {
+    return 1 / (1 + exp(-$number));
   }
 }
