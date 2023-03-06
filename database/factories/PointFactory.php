@@ -10,19 +10,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PointFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = Point::class;
 
-    protected $model = Point::class;
-
-    public function definition()
-    {
-        return [
-            'title' => fake()->word(),
-            'type_id' => fake()->numberBetween(1,2),
-        ];
-    }
+  public function definition()
+  {
+    return [
+        'title' => fake()->word(),
+        'type_id' => fake()->numberBetween(1, 2),
+    ];
+  }
 }

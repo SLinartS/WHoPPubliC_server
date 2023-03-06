@@ -10,19 +10,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SectionFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = Section::class;
 
-    protected $model = Section::class;
-
-    public function definition()
-    {
-        return [
-            'zone_id' => fake()->numberBetween(1,3),
-            'number' => fake()->numberBetween(1,6),
-        ];
-    }
+  public function definition()
+  {
+    return [
+        'zone_id' => fake()->numberBetween(1, 3),
+        'number' => fake()->numberBetween(1, 6),
+    ];
+  }
 }

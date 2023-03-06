@@ -10,18 +10,17 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TypeOfTaskFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = TypeOfTask::class;
 
-    protected $model = TypeOfTask::class;
-
-    public function definition()
-    {
-        return [
-            'type' => fake()->unique()->word()
-        ];
-    }
+  public function definition()
+  {
+    return [
+        'type' => fake()->unique()->word()
+    ];
+  }
 }

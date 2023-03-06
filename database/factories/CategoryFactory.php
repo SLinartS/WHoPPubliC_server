@@ -10,18 +10,17 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CategoryFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = Category::class;
 
-    protected $model = Category::class;
-
-    public function definition()
-    {
-        return [
-            'title' => fake()->unique()->word()
-        ];
-    }
+  public function definition()
+  {
+    return [
+        'title' => fake()->unique()->word()
+    ];
+  }
 }

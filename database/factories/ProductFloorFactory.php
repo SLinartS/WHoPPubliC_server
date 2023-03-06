@@ -10,21 +10,20 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProductFloorFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = ProductFloor::class;
 
-    protected $model = ProductFloor::class;
-
-    public function definition()
-    {
-        return [
-            'product_id' => fake()->numberBetween(1, 30),
-            'floor_id' => fake()->numberBetween(1, 48),
-            'occupied_space' => 100,
-            'is_actual' => true,
-        ];
-    }
+  public function definition()
+  {
+    return [
+        'product_id' => fake()->numberBetween(1, 30),
+        'floor_id' => fake()->numberBetween(1, 48),
+        'occupied_space' => 100,
+        'is_actual' => true,
+    ];
+  }
 }

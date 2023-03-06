@@ -10,18 +10,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProductTaskFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    protected $model = ProductTask::class;
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = ProductTask::class;
 
-    public function definition()
-    {
-        return [
-            'product_id' => fake()->numberBetween(1,30),
-            'task_id' => fake()->numberBetween(1,18)
-        ];
-    }
+  public function definition()
+  {
+    return [
+        'product_id' => fake()->numberBetween(1, 30),
+        'task_id' => fake()->numberBetween(1, 18)
+    ];
+  }
 }

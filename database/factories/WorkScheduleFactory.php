@@ -10,20 +10,20 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class WorkScheduleFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    protected $model = WorkSchedule::class;
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = WorkSchedule::class;
 
-    public function definition()
-    {
-        return [
-            'start_time' => '08:00:00',
-            'end_time' => '20:00:00',
-            'day_of_week' => 0,
-            'user_id' => 1
-        ];
-    }
+  public function definition()
+  {
+    return [
+        'start_time' => '08:00:00',
+        'end_time' => '20:00:00',
+        'day_of_week' => 0,
+        'user_id' => 1
+    ];
+  }
 }

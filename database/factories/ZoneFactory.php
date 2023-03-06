@@ -10,19 +10,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ZoneFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  protected $model = Zone::class;
 
-    protected $model = Zone::class;
-
-    public function definition()
-    {
-        return [
-            'number' => fake()->numberBetween(1,3),
-            'letter' => strtoupper(fake()->unique()->randomLetter()),
-        ];
-    }
+  public function definition()
+  {
+    return [
+        'number' => fake()->numberBetween(1, 3),
+        'letter' => strtoupper(fake()->unique()->randomLetter()),
+    ];
+  }
 }
