@@ -64,40 +64,46 @@ class PerformanceReportController extends Controller
 
     $intervalData['placementTasks'] =
       Task::selectRaw('TIMESTAMPDIFF(HOUR, time_end, time_completion) as time')
-      ->where('time_start', '>=', $intervalStart)
-      ->where('time_start', '<=', $intervalEnd)
-      ->where('type_id', 1)
-      ->get()->sum('time');
+        ->where('time_start', '>=', $intervalStart)
+        ->where('time_start', '<=', $intervalEnd)
+        ->where('type_id', 1)
+        ->get()->sum('time');
 
     $intervalData['shipmentTasks'] =
       Task::selectRaw('TIMESTAMPDIFF(HOUR, time_end, time_completion) as time')
-      ->where('time_start', '>=', $intervalStart)
-      ->where('time_start', '<=', $intervalEnd)
-      ->where('type_id', 2)
-      ->get()->sum('time');
+        ->where('time_start', '>=', $intervalStart)
+        ->where('time_start', '<=', $intervalEnd)
+        ->where('type_id', 2)
+        ->get()->sum('time');
 
     $intervalData['intraWarehouseTasks'] =
       Task::selectRaw('TIMESTAMPDIFF(HOUR, time_end, time_completion) as time')
-      ->where('time_start', '>=', $intervalStart)
-      ->where('time_start', '<=', $intervalEnd)
-      ->where('type_id', 3)
-      ->get()->sum('time');
+        ->where('time_start', '>=', $intervalStart)
+        ->where('time_start', '<=', $intervalEnd)
+        ->where('type_id', 3)
+        ->get()->sum('time');
 
     $intervalData['authorizationHistory'] =
-    AuthorizationHistory::select('authorization_history.user_id', 'authorization_history.time_authorization', 'authorization_history.current_start_time')
-    ->join('users', 'authorization_history.user_id', 'users.id')
-    ->where('authorization_history.time_authorization', '>=', $intervalStart)
-    ->where('authorization_history.time_authorization', '<=', $intervalEnd)
-    ->orderBy('authorization_history.user_id', 'asc')
-    ->orderBy('authorization_history.time_authorization', 'asc')
-    ->get();
+      AuthorizationHistory::select(
+        'authorization_history.user_id',
+        'authorization_history.time_authorization',
+        'authorization_history.current_start_time'
+      )
+        ->join('users', 'authorization_history.user_id', 'users.id')
+        ->where('authorization_history.time_authorization', '>=', $intervalStart)
+        ->where('authorization_history.time_authorization', '<=', $intervalEnd)
+        ->orderBy('authorization_history.user_id', 'asc')
+        ->orderBy('authorization_history.time_authorization', 'asc')
+        ->get();
 
-    $intervalData['authorizationHistory'] = $this->getSumOnlyFirstAuthOfDay($intervalData['authorizationHistory']);
+    $intervalData['authorizationHistory'] =
+      $this->getSumOnlyFirstAuthOfDay($intervalData['authorizationHistory']);
 
-    $intervalData['numberOfTasks'] = Task::select('id')
-      ->where('time_start', '>=', $intervalStart)
-      ->where('time_start', '<=', $intervalEnd)
-      ->get()->count('id');
+    $intervalData['numberOfTasks'] =
+      Task::select('id')
+        ->where('time_start', '>=', $intervalStart)
+        ->where('time_start', '<=', $intervalEnd)
+        ->get()->count('id');
 
     return $intervalData;
   }

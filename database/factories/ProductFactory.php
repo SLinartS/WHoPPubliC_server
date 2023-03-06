@@ -28,6 +28,7 @@ class ProductFactory extends Factory
         'year_of_printing' => fake()->date(),
         'printing_house' => fake()->sentence(2),
         'publishing_house' => fake()->sentence(2),
+        'image_url' => null,
         'user_id' => fake()->numberBetween(1, 1),
         'category_id' => fake()->numberBetween(1, 5),
     ];

@@ -90,6 +90,24 @@ class ProductController extends Controller
     }
   }
 
+  public function addImage(
+    Request $request,
+    ServicesProduct $servicesProduct
+  ) {
+    try {
+      $id = $request->id;
+      if ($request->hasFile('photo')) {
+        $file = $request->file('photo');
+        $servicesProduct->addImage($id, $file);
+      }
+      return response()->json([
+        'message' => 'The product image has been added'
+      ], 200);
+    } catch (Throwable $th) {
+      return response()->json(['message' => $th->getMessage()], 500);
+    }
+  }
+
   public function markAsMoved(
     Request $request,
     ServicesProduct $servicesProduct

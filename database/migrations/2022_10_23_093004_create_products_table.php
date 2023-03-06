@@ -22,6 +22,7 @@ return new class () extends Migration {
       $table->date('year_of_printing');
       $table->string('printing_house', 100);
       $table->string('publishing_house', 100);
+      $table->string('image_url', 100)->nullable();
       $table->foreignId('user_id')->constrained('users');
       $table->foreignId('category_id')->constrained('categories');
     });

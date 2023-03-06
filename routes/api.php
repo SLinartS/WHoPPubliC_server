@@ -44,6 +44,7 @@ Route::middleware(['jwt'])->group(function () {
     Route::put('/products', 'update');
     Route::delete('/products/{productId}', 'destroy');
 
+    Route::post('/products-add-image', 'addImage');
     Route::patch('/products/markAsMoved', 'markAsMoved');
   });
 

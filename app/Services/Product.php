@@ -11,6 +11,8 @@ use App\Models\Category as ModelsCategory;
 use App\Models\Product as ModelsProduct;
 use App\Models\ProductPoint;
 use Exception;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class Product
 {
@@ -59,6 +61,7 @@ class Product
         'number',
         'year_of_printing',
         'printing_house',
+        'image_url',
         'publishing_house',
         'category_id'
       )
@@ -138,6 +141,16 @@ class Product
     (new LinksProductFloor())->deleteByProductIds($productIds);
     (new LinksProductPoint())->deleteByProductIds($productIds);
     ModelsProduct::whereIn('id', $productIds)->delete();
+  }
+
+  public function addImage(int $id, UploadedFile $file)
+  {
+    $fileName = Storage::putFile('public/products', $file);
+    $url = Storage::url($fileName);
+
+    $product = ModelsProduct::where('id', $id)->first();
+    $product->image_url = $url;
+    $product->save();
   }
 
   public function markAsMoved(int $productId)

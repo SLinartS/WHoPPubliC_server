@@ -102,6 +102,10 @@ class Product
         'value' => $product->publishing_house,
         'alias' => "Издательство"
       ],
+      'imageUrl' => [
+        'value' => $product->image_url,
+        'alias' => "Image_url"
+      ],
       'categoryId' => [
         'value' => $product->category_id,
         'alias' => "Category_id"
