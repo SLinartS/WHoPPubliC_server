@@ -145,12 +145,14 @@ class Product
 
   public function addImage(int $id, UploadedFile $file)
   {
-    $fileName = Storage::putFile('public/products', $file);
-    $url = Storage::url($fileName);
+    $fileName = Storage::putFile('products', $file);
 
     $product = ModelsProduct::where('id', $id)->first();
-    $product->image_url = $url;
+    $lastImageUrl = $product->image_url;
+    $product->image_url = $fileName;
     $product->save();
+
+    Storage::delete($lastImageUrl);
   }
 
   public function markAsMoved(int $productId)

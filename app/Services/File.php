@@ -31,13 +31,13 @@ class File
   public function download(int $id)
   {
     $title = ModelsFile::select('title')->where('id', $id)->first()->title;
-    return Storage::download('public/performance-reports/' . $title, $title);
+    return Storage::download('performance-reports/' . $title, $title);
   }
 
   public function destroy(int $id)
   {
     $title = ModelsFile::select('title')->where('id', $id)->first()->title;
     ModelsFile::where('id', $id)->delete();
-    Storage::delete('public/performance-reports/' . $title);
+    Storage::delete('performance-reports/' . $title);
   }
 }

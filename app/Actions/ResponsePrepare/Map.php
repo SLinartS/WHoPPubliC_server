@@ -2,6 +2,7 @@
 
 namespace App\Actions\ResponsePrepare;
 
+use App\Actions\Links\ProductFloor;
 use App\Actions\Other\CountFreeFloorSpace;
 use App\Actions\Other\CountReservedFloorSpace;
 use App\Actions\Other\SearchProducts;
@@ -59,14 +60,22 @@ class Map
                     'capacity' => $floor->capacity,
                     'freeSpace' => $freeFloorSpace,
                     'reservedSpace' => $reservedFloorSpace,
+                    'isSearch' => false,
                     'productIds' => [],
                   ]);
 
+                  $responseFloorIndex = count($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors']) - 1;
+
                   if ($search) {
                     $productIds = (new SearchProducts())([$floor->id], $search);
-                    $responseFloorIndex = count($response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors']) - 1;
-                    $response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'][$responseFloorIndex]['productIds'] = $productIds;
+                    if (count($productIds)) {
+                      $response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'][$responseFloorIndex]['isSearch'] = true;
+                    }
+                  } else {
+                    $productIds = (new ProductFloor())->getProductIdsByFloorIds([$floor->id]);
                   }
+
+                  $response[$lastIndexZone]['sections'][$lastIndexSection]['blocks'][$lastIndexBlock]['floors'][$responseFloorIndex]['productIds'] = $productIds;
                 }
               }
             }

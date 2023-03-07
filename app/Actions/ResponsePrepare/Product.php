@@ -7,6 +7,7 @@ use App\Actions\Links\ProductPoint as LinksProductPoint;
 use App\Actions\Links\ProductTask as LinksProductTask;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Product
 {
@@ -103,7 +104,7 @@ class Product
         'alias' => "Издательство"
       ],
       'imageUrl' => [
-        'value' => $product->image_url,
+        'value' =>  ($product->image_url) ? Storage::url($product->image_url) : null,
         'alias' => "Image_url"
       ],
       'categoryId' => [
