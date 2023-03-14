@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product as ModelsProduct;
-use App\Models\Task as ModelsTask;
 use App\Services\Utils as ServicesUtils;
 use Illuminate\Http\JsonResponse;
 

@@ -10,8 +10,6 @@ class ProductPoint
   public function add(array $productIds, array $pointIds)
   {
     foreach ($productIds as $productId) {
-      // TODO сделать распределение товаров по точкам
-      // (добавить точкам вместимость)
       foreach ($pointIds as $pointId) {
       }
       $productFloor = new ModelsProductPoint();

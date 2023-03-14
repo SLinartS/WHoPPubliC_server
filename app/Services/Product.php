@@ -143,16 +143,18 @@ class Product
     ModelsProduct::whereIn('id', $productIds)->delete();
   }
 
-  public function addImage(int $id, UploadedFile $file)
+  public function addImage(int $id, string $article, UploadedFile $file)
   {
     $fileName = Storage::putFile('products', $file);
 
-    $product = ModelsProduct::where('id', $id)->first();
+    $product = ModelsProduct::where('id', $id)->orWhere('article', $article)->first();
     $lastImageUrl = $product->image_url;
     $product->image_url = $fileName;
     $product->save();
 
-    Storage::delete($lastImageUrl);
+    if ($lastImageUrl) {
+      Storage::delete($lastImageUrl);
+    }
   }
 
   public function markAsMoved(int $productId)

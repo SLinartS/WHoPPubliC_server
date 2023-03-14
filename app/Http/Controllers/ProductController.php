@@ -96,9 +96,10 @@ class ProductController extends Controller
   ) {
     try {
       $id = $request->id;
+      $article = $request->article;
       if ($request->hasFile('photo')) {
         $file = $request->file('photo');
-        $servicesProduct->addImage($id, $file);
+        $servicesProduct->addImage($id, $article, $file);
       }
       return response()->json([
         'message' => 'The product image has been added'
