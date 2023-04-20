@@ -14,8 +14,8 @@ return new class () extends Migration {
   {
     Schema::create('categories', function (Blueprint $table) {
       $table->id();
-      $table->string('title', 45)->unique();
-      $table->string('alias', 45);
+      $table->string('title', 50)->unique();
+      $table->string('alias', 50);
       $table->foreignId('product_type_id')->constrained('product_types');
     });
   }

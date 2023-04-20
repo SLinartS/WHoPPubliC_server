@@ -14,7 +14,7 @@ return new class () extends Migration {
   {
     Schema::create('points', function (Blueprint $table) {
       $table->id();
-      $table->string('title', 30);
+      $table->string('title', 20);
       $table->foreignId('type_id')->constrained('types_of_points');
     });
   }

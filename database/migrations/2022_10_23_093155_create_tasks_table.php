@@ -14,7 +14,7 @@ return new class () extends Migration {
   {
     Schema::create('tasks', function (Blueprint $table) {
       $table->id();
-      $table->string('article', 15)->unique();
+      $table->string('article', 6)->unique();
       $table->dateTime('time_start');
       $table->dateTime('time_end');
       $table->dateTime('time_completion')->nullable();
