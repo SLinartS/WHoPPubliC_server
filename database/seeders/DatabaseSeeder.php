@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\ProductFloor;
 use App\Models\ProductPoint;
 use App\Models\ProductTask;
+use App\Models\ProductTypes;
 use App\Models\Role;
 use App\Models\Section;
 use App\Models\Task;
@@ -242,6 +243,15 @@ class DatabaseSeeder extends Seeder
             ],
           ))
         )->create();
+
+    ProductTypes::factory()->count(3)
+    ->state(
+      (new Sequence(
+        ['title' => 'book', 'alias' => 'Книга'],
+        ['title' => 'magazine', 'alias' => 'Журнал'],
+        ['title' => 'booklet', 'alias' => 'Буклет'],
+      ))
+    )->create();
 
     Category::factory()->count(5)
         ->state(

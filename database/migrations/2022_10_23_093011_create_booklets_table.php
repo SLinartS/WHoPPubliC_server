@@ -12,21 +12,23 @@ return new class () extends Migration {
    */
   public function up()
   {
-    Schema::create('categories', function (Blueprint $table) {
+    Schema::create('booklets', function (Blueprint $table) {
       $table->id();
-      $table->string('title', 45)->unique();
-      $table->string('alias', 45);
-      $table->foreignId('product_type_id')->constrained('product_types');
+      $table->string('title', 100);
+      $table->string('author', 50);
+      $table->string('printing_house', 100);
+      $table->string('publishing_house', 100);
+      $table->foreignId('product_id')->constrained('products');
     });
   }
 
-  /**А
+  /**
    * Reverse the migrations.
    *
    * @return void
    */
   public function down()
   {
-    Schema::dropIfExists('categories');
+    Schema::dropIfExists('booklets');
   }
 };

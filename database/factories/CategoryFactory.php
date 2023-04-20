@@ -20,7 +20,9 @@ class CategoryFactory extends Factory
   public function definition()
   {
     return [
-        'title' => fake()->unique()->word()
+        'title' => fake()->unique()->word(),
+        'alias' => fake()->unique()->word(),
+        'product_type_id' => fake()->numberBetween(1, 3),
     ];
   }
 }

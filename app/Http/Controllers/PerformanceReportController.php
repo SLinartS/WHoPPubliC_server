@@ -32,11 +32,12 @@ class PerformanceReportController extends Controller
       $criteriaList[$interval[0]] = $this->requestCriteriaList($interval);
     }
 
-    $performanceReportCount($criteriaList);
+    $response = $performanceReportCount($criteriaList);
 
     return response()->json(
       [
-        'message' => 'Performance report has been created'
+        'message' => 'Performance report has been created',
+        'additiveCriteriaList' => $response,
       ],
       200
     );

@@ -14,6 +14,7 @@ class Category
       array_push($response, [
         'id' => $category->id,
         'title' => $category->title,
+        'productType' => $category->productType,
       ]);
     }
 
