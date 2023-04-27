@@ -9,8 +9,6 @@ class Product extends Model
 {
   use HasFactory;
 
-  public $timestamps = false;
-
   protected $hidden = ['pivot'];
 
   protected $table = 'products';

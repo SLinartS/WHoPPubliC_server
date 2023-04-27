@@ -15,16 +15,14 @@ return new class () extends Migration {
     Schema::create('products', function (Blueprint $table) {
       $table->id();
       $table->string('article', 6)->unique();
-      $table->string('title', 50);
-      $table->string('author', 50);
-      $table->integer('year_of_publication');
+      $table->string('title', 100);
       $table->integer('number');
-      $table->date('year_of_printing');
-      $table->string('printing_house', 80);
-      $table->string('publishing_house', 80);
       $table->string('image_url', 100)->nullable();
+      $table->string('note', 300)->nullable();
       $table->foreignId('user_id')->constrained('users');
       $table->foreignId('category_id')->constrained('categories');
+      $table->foreignId('product_type_id')->constrained('product_types');
+      $table->timestamps();
     });
   }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AudienceController;
 use App\Http\Controllers\AuthorizationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
@@ -8,6 +9,8 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\PerformanceReportController;
 use App\Http\Controllers\PointController;
+use App\Http\Controllers\ProductTypeController;
+use App\Http\Controllers\RegularityController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UtilsController;
 use Illuminate\Support\Facades\Route;
@@ -72,6 +75,9 @@ Route::middleware(['jwt'])->group(function () {
   });
 
   Route::get('/categories', [CategoryController::class, 'index']);
+  Route::get('/product-types', [ProductTypeController::class, 'index']);
+  Route::get('/regularities', [RegularityController::class, 'index']);
+  Route::get('/audiences', [AudienceController::class, 'index']);
   Route::get('/points', [PointController::class, 'index']);
   Route::get('/roles', [RoleController::class, 'index']);
 

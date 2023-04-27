@@ -7,9 +7,14 @@ use App\Actions\Links\ProductPoint as LinksProductPoint;
 use App\Actions\Links\ProductTask as LinksProductTask;
 use App\Actions\Other\GetProductIdByArticle;
 use App\Actions\ResponsePrepare\Product as ResponsePrepareProduct;
+use App\Models\Audience as ModelsAudience;
+use App\Models\Book as ModelsBook;
+use App\Models\Magazine as ModelsMagazine;
 use App\Models\Category as ModelsCategory;
 use App\Models\Product as ModelsProduct;
 use App\Models\ProductPoint;
+use App\Models\ProductType as ModelsProductType;
+use App\Models\Regularity as ModelsRegularity;
 use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -22,15 +27,15 @@ class Product
       'id',
       'article',
       'title',
-      'author',
-      'year_of_publication',
       'number',
-      'year_of_printing',
-      'printing_house',
-      'publishing_house',
-      'category_id'
+      'image_url',
+      'note',
+      'category_id',
+      'product_type_id'
     )
-      ->addSelect(['category_title' => ModelsCategory::select('title')->whereColumn('id', 'category_id')]);
+      ->addSelect(['category_alias' => ModelsCategory::select('alias')->whereColumn('id', 'category_id')])
+      ->addSelect(['type_alias' => ModelsProductType::select('alias')->whereColumn('id', 'product_type_id')]);
+
 
     if ($search) {
       $searchField = '%' . $search . '%';
@@ -47,7 +52,41 @@ class Product
       $products = $products->get();
     }
 
-    return (new ResponsePrepareProduct())($products);
+    $productsWithAdditionalInformation = [];
+    foreach ($products as $product) {
+      switch ($product['product_type_id']) {
+        case 1:
+          $additionalInformation = ModelsBook::select(
+            'product_id',
+            'author',
+            'year_of_publication',
+            'year_of_printing',
+            'printing_house',
+            'publishing_house'
+          )->where('product_id', $product->id)->first();
+
+          array_push($productsWithAdditionalInformation, array_merge($product->toArray(), $additionalInformation->toArray()));
+          break;
+        case 2:
+          $additionalInformation = ModelsMagazine::select(
+            'product_id',
+            'printing_house',
+            'publishing_house',
+            'date_of_printing',
+            'regularity_id',
+            'audience_id',
+          )
+          ->addSelect(['regularity_alias' => ModelsRegularity::select('alias')->whereColumn('id', 'regularity_id')])
+          ->addSelect(['audience_alias' => ModelsAudience::select('alias')->whereColumn('id', 'audience_id')])
+          ->where('product_id', $product->id)->first();
+
+          array_push($productsWithAdditionalInformation, array_merge($product->toArray(), $additionalInformation->toArray()));
+          break;
+        default:
+      }
+    }
+
+    return (new ResponsePrepareProduct())($productsWithAdditionalInformation);
   }
 
     public function show(int $productId)

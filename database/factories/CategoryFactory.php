@@ -22,7 +22,6 @@ class CategoryFactory extends Factory
     return [
         'title' => fake()->unique()->word(),
         'alias' => fake()->unique()->word(),
-        'product_type_id' => fake()->numberBetween(1, 3),
     ];
   }
 }

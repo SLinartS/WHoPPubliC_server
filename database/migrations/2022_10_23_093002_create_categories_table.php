@@ -16,7 +16,6 @@ return new class () extends Migration {
       $table->id();
       $table->string('title', 50)->unique();
       $table->string('alias', 50);
-      $table->foreignId('product_type_id')->constrained('product_types');
     });
   }
 

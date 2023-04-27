@@ -12,13 +12,10 @@ return new class () extends Migration {
    */
   public function up()
   {
-    Schema::create('booklets', function (Blueprint $table) {
+    Schema::create('audiences', function (Blueprint $table) {
       $table->id();
-      $table->string('title', 100);
-      $table->string('author', 50);
-      $table->string('printing_house', 100);
-      $table->string('publishing_house', 100);
-      $table->foreignId('product_id')->constrained('products');
+      $table->string('title', 50)->unique();
+      $table->string('alias', 50);
     });
   }
 
@@ -29,6 +26,6 @@ return new class () extends Migration {
    */
   public function down()
   {
-    Schema::dropIfExists('booklets');
+    Schema::dropIfExists('audiences');
   }
 };

@@ -12,14 +12,14 @@ return new class () extends Migration {
    */
   public function up()
   {
-    Schema::create('books', function (Blueprint $table) {
+    Schema::create('magazines', function (Blueprint $table) {
       $table->id();
-      $table->string('author', 50);
-      $table->integer('year_of_publication');
-      $table->integer('year_of_printing');
+      $table->foreignId('product_id')->constrained('products');
+      $table->date('date_of_printing');
       $table->string('printing_house', 80);
       $table->string('publishing_house', 80);
-      $table->foreignId('product_id')->constrained('products');
+      $table->foreignId('regularity_id')->constrained('regularities');
+      $table->foreignId('audience_id')->constrained('audiences');
     });
   }
 
@@ -30,6 +30,6 @@ return new class () extends Migration {
    */
   public function down()
   {
-    Schema::dropIfExists('books');
+    Schema::dropIfExists('magazines');
   }
 };

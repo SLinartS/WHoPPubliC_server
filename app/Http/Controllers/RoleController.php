@@ -10,10 +10,10 @@ use Throwable;
 
 class RoleController extends Controller
 {
-  public function index(ServicesRole $servicesRole): JsonResponse | Response
+  public function index(ServicesRole $service): JsonResponse | Response
   {
     try {
-      $response = $servicesRole->index();
+      $response = $service->index();
 
       return response()->json($response, 200);
     } catch (Throwable $th) {

@@ -9,10 +9,10 @@ use Throwable;
 
 class PointController extends Controller
 {
-  public function index(ServicesPoint $servicesPoint): JsonResponse | Response
+  public function index(ServicesPoint $service): JsonResponse | Response
   {
     try {
-      $response = $servicesPoint->index();
+      $response = $service->index();
 
       return response()->json($response, 200);
     } catch (Throwable $th) {

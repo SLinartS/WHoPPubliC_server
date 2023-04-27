@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Category as ServicesCategory;
+use App\Services\Audience as ServicesAudience;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Throwable;
 
-class CategoryController extends Controller
+class AudienceController extends Controller
 {
-  public function index(ServicesCategory $service): JsonResponse | Response
+  public function index(ServicesAudience $service): JsonResponse | Response
   {
     try {
       $response = $service->index();

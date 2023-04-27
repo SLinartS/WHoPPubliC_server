@@ -2,20 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Models\ProductTypes;
+use App\Models\ProductType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class ProductTypesFactory extends Factory
+class ProductTypeFactory extends Factory
 {
   /**
    * Define the model's default state.
    *
    * @return array<string, mixed>
    */
-  protected $model = ProductTypes::class;
+  protected $model = ProductType::class;
 
   public function definition()
   {

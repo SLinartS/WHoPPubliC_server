@@ -22,15 +22,12 @@ class ProductFactory extends Factory
     return [
         'article' => fake()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
         'title' => str_replace('.', '', fake()->sentence(3, true)),
-        'author' => fake()->name(),
-        'year_of_publication' => fake()->year(),
         'number' => fake()->numberBetween(100, 600),
-        'year_of_printing' => fake()->date(),
-        'printing_house' => str_replace('.', '', fake()->sentence(2)),
-        'publishing_house' => str_replace('.', '', fake()->sentence(2)),
         'image_url' => null,
+        'note' => fake()->sentence(),
         'user_id' => fake()->numberBetween(1, 1),
         'category_id' => fake()->numberBetween(1, 5),
+        'product_type_id' => fake()->numberBetween(1, 3),
     ];
   }
 }
