@@ -24,7 +24,7 @@ class Product
 
       $taskId = (new LinksProductTask())->getTaskIdByProductId($product['id']);
       $pointIds = (new LinksProductPoint())->getPointIdsByProductIds([$product['id']]);
-      ['floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds ] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product['id']);
+      ['floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product['id']);
 
       $serviceInformation = [
         'productId' => $product['id'],
@@ -47,7 +47,7 @@ class Product
 
     $taskId = (new LinksProductTask())->getTaskIdByProductId($product['id']);
     $pointIds = (new LinksProductPoint())->getPointIdsByProductIds([$product['id']]);
-    ['floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds ] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product['id']);
+    ['floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product['id']);
 
     // $formattedProduct = $this->formateProduct($product, 1);
 
@@ -85,7 +85,7 @@ class Product
         'alias' => "Количество"
       ],
       'imageUrl' => [
-        'value' =>  ($product['image_url']) ? Storage::url($product['image_url']) : null,
+        'value' => ($product['image_url']) ? Storage::url($product['image_url']) : null,
         'alias' => "Image_url"
       ],
       'note' => [
@@ -125,7 +125,7 @@ class Product
           ],
           'yearOfPrinting' => [
             'value' => $product['year_of_printing'],
-            'alias' => "Дата печати"
+            'alias' => "Год печати"
           ],
           'printingHouse' => [
             'value' => $product['printing_house'],
@@ -157,7 +157,7 @@ class Product
           ],
           'regularityAlias' => [
             'value' => $product['regularity_alias'],
-            'alias' => "Дата печати"
+            'alias' => "Регулярность"
           ],
           'audienceId' => [
             'value' => $product['audience_id'],
@@ -165,7 +165,7 @@ class Product
           ],
           'audienceAlias' => [
             'value' => $product['audience_alias'],
-            'alias' => "Дата печати"
+            'alias' => "Аудитория"
           ],
         ];
         break;

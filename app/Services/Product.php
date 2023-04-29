@@ -40,19 +40,19 @@ class Product
     if ($search) {
       $searchField = '%' . $search . '%';
       $products = $products->where('article', 'like', $searchField)
-                          ->orWhere('title', 'like', $searchField)
-                          ->orWhere('author', 'like', $searchField)
-                          ->orWhere('year_of_publication', 'like', $searchField)
-                          ->orWhere('number', 'like', $searchField)
-                          ->orWhere('year_of_printing', 'like', $searchField)
-                          ->orWhere('printing_house', 'like', $searchField)
-                          ->orWhere('publishing_house', 'like', $searchField)
-                          ->get();
+        ->orWhere('title', 'like', $searchField)
+        ->orWhere('author', 'like', $searchField)
+        ->orWhere('year_of_publication', 'like', $searchField)
+        ->orWhere('number', 'like', $searchField)
+        ->orWhere('year_of_printing', 'like', $searchField)
+        ->orWhere('printing_house', 'like', $searchField)
+        ->orWhere('publishing_house', 'like', $searchField)
+        ->get();
     } else {
       $products = $products->get();
     }
 
-    $productsWithAdditionalInformation = [];
+    $productsWithAddInfo = [];
     foreach ($products as $product) {
       switch ($product['product_type_id']) {
         case 1:
@@ -65,7 +65,7 @@ class Product
             'publishing_house'
           )->where('product_id', $product->id)->first();
 
-          array_push($productsWithAdditionalInformation, array_merge($product->toArray(), $additionalInformation->toArray()));
+          array_push($productsWithAddInfo, array_merge($product->toArray(), $additionalInformation->toArray()));
           break;
         case 2:
           $additionalInformation = ModelsMagazine::select(
@@ -76,41 +76,42 @@ class Product
             'regularity_id',
             'audience_id',
           )
-          ->addSelect(['regularity_alias' => ModelsRegularity::select('alias')->whereColumn('id', 'regularity_id')])
-          ->addSelect(['audience_alias' => ModelsAudience::select('alias')->whereColumn('id', 'audience_id')])
-          ->where('product_id', $product->id)->first();
+            ->addSelect(['regularity_alias' => ModelsRegularity::select('alias')->whereColumn('id', 'regularity_id')])
+            ->addSelect(['audience_alias' => ModelsAudience::select('alias')->whereColumn('id', 'audience_id')])
+            ->where('product_id', $product->id)->first();
 
-          array_push($productsWithAdditionalInformation, array_merge($product->toArray(), $additionalInformation->toArray()));
+          array_push($productsWithAddInfo, array_merge($product->toArray(), $additionalInformation->toArray()));
           break;
         default:
+          array_push($productsWithAddInfo, $product->toArray());
       }
     }
 
-    return (new ResponsePrepareProduct())($productsWithAdditionalInformation);
+    return (new ResponsePrepareProduct())($productsWithAddInfo);
   }
 
-    public function show(int $productId)
-    {
-      $product = ModelsProduct::select(
-        'id',
-        'article',
-        'title',
-        'author',
-        'year_of_publication',
-        'number',
-        'year_of_printing',
-        'printing_house',
-        'image_url',
-        'publishing_house',
-        'category_id'
-      )
-        ->addSelect(['category_title' => ModelsCategory::select('title')->whereColumn('id', 'category_id')])
-        ->addSelect(['point_id' => ProductPoint::select('point_id')->whereColumn('product_id', 'id')->limit(1)])
-        ->where('id', $productId)
-        ->first();
+  public function show(int $productId)
+  {
+    $product = ModelsProduct::select(
+      'id',
+      'article',
+      'title',
+      'author',
+      'year_of_publication',
+      'number',
+      'year_of_printing',
+      'printing_house',
+      'image_url',
+      'publishing_house',
+      'category_id'
+    )
+      ->addSelect(['category_title' => ModelsCategory::select('title')->whereColumn('id', 'category_id')])
+      ->addSelect(['point_id' => ProductPoint::select('point_id')->whereColumn('product_id', 'id')->limit(1)])
+      ->where('id', $productId)
+      ->first();
 
-      return (new ResponsePrepareProduct())->oneProduct($product);
-    }
+    return (new ResponsePrepareProduct())->oneProduct($product);
+  }
 
   public function store(
     array $fields,
