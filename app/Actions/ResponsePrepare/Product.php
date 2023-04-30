@@ -49,7 +49,7 @@ class Product
     $pointIds = (new LinksProductPoint())->getPointIdsByProductIds([$product['id']]);
     ['floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds] = (new LinksProductFloor())->getFloorIdsInfoByProductId($product['id']);
 
-    // $formattedProduct = $this->formateProduct($product, 1);
+    $formattedProduct = $this->formateProduct($product);
 
     $response = [
       'productInfo' => $formattedProduct,

@@ -92,23 +92,58 @@ class Product
 
   public function show(int $productId)
   {
+
     $product = ModelsProduct::select(
       'id',
       'article',
       'title',
-      'author',
-      'year_of_publication',
       'number',
-      'year_of_printing',
-      'printing_house',
       'image_url',
-      'publishing_house',
-      'category_id'
+      'note',
+      'category_id',
+      'product_type_id'
     )
-      ->addSelect(['category_title' => ModelsCategory::select('title')->whereColumn('id', 'category_id')])
+      ->addSelect(['category_alias' => ModelsCategory::select('alias')->whereColumn('id', 'category_id')])
+      ->addSelect(['type_alias' => ModelsProductType::select('alias')->whereColumn('id', 'product_type_id')])
       ->addSelect(['point_id' => ProductPoint::select('point_id')->whereColumn('product_id', 'id')->limit(1)])
       ->where('id', $productId)
-      ->first();
+      ->first()
+      ->toArray();
+
+    switch ($product['product_type_id']) {
+      case 1:
+        $additionalInformation = ModelsBook::select(
+          'product_id',
+          'author',
+          'year_of_publication',
+          'year_of_printing',
+          'printing_house',
+          'publishing_house'
+        )->where('product_id', $product['id'])
+          ->first()
+          ->toArray();
+
+        $product = array_merge($product, $additionalInformation);
+        break;
+      case 2:
+        $additionalInformation = ModelsMagazine::select(
+          'product_id',
+          'printing_house',
+          'publishing_house',
+          'date_of_printing',
+          'regularity_id',
+          'audience_id',
+        )
+          ->addSelect(['regularity_alias' => ModelsRegularity::select('alias')->whereColumn('id', 'regularity_id')])
+          ->addSelect(['audience_alias' => ModelsAudience::select('alias')->whereColumn('id', 'audience_id')])
+          ->where('product_id', $product['id'])
+          ->first()
+          ->toArray();
+
+        $product = array_merge($product, $additionalInformation);
+        break;
+    }
+
 
     return (new ResponsePrepareProduct())->oneProduct($product);
   }
