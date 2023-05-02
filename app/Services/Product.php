@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Actions\Links\ProductFloor as LinksProductFloor;
 use App\Actions\Links\ProductPoint as LinksProductPoint;
 use App\Actions\Links\ProductTask as LinksProductTask;
-use App\Actions\Other\GetProductIdByArticle;
 use App\Actions\ResponsePrepare\Product as ResponsePrepareProduct;
 use App\Models\Audience as ModelsAudience;
 use App\Models\Book as ModelsBook;
@@ -31,10 +30,10 @@ class Product
       'image_url',
       'note',
       'category_id',
-      'product_type_id'
+      'type_id'
     )
       ->addSelect(['category_alias' => ModelsCategory::select('alias')->whereColumn('id', 'category_id')])
-      ->addSelect(['type_alias' => ModelsProductType::select('alias')->whereColumn('id', 'product_type_id')]);
+      ->addSelect(['type_alias' => ModelsProductType::select('alias')->whereColumn('id', 'type_id')]);
 
 
     if ($search) {
@@ -54,7 +53,7 @@ class Product
 
     $productsWithAddInfo = [];
     foreach ($products as $product) {
-      switch ($product['product_type_id']) {
+      switch ($product['type_id']) {
         case 1:
           $additionalInformation = ModelsBook::select(
             'product_id',
@@ -101,16 +100,16 @@ class Product
       'image_url',
       'note',
       'category_id',
-      'product_type_id'
+      'type_id'
     )
       ->addSelect(['category_alias' => ModelsCategory::select('alias')->whereColumn('id', 'category_id')])
-      ->addSelect(['type_alias' => ModelsProductType::select('alias')->whereColumn('id', 'product_type_id')])
+      ->addSelect(['type_alias' => ModelsProductType::select('alias')->whereColumn('id', 'type_id')])
       ->addSelect(['point_id' => ProductPoint::select('point_id')->whereColumn('product_id', 'id')->limit(1)])
       ->where('id', $productId)
       ->first()
       ->toArray();
 
-    switch ($product['product_type_id']) {
+    switch ($product['type_id']) {
       case 1:
         $additionalInformation = ModelsBook::select(
           'product_id',
@@ -153,24 +152,51 @@ class Product
     int $userId,
     int $pointId,
   ) {
-    $dateYearOfPrinting = strtotime($fields['yearOfPrinting']['value']);
-    $formattedYearOfPrinting = date('Y-m-d', $dateYearOfPrinting);
+    $typeId = $fields['typeId']['value'];
 
     $product = new ModelsProduct();
     $product->article = $fields['article']['value'];
     $product->title = $fields['title']['value'];
-    $product->author = $fields['author']['value'];
-    $product->year_of_publication = $fields['yearOfPublication']['value'];
     $product->number = $fields['number']['value'];
-    $product->year_of_printing = $formattedYearOfPrinting;
-    $product->printing_house = $fields['printingHouse']['value'];
-    $product->publishing_house = $fields['publishingHouse']['value'];
+    $product->note = $fields['note']['value'];;
+    $product->type_id = $fields['typeId']['value'];
     $product->user_id = $userId;
     $product->category_id = $fields['categoryId']['value'];
 
     $product->save();
 
     (new LinksProductPoint())->add([$product->id], [$pointId]);
+
+    switch ($typeId) {
+      case 1:
+        $book = new ModelsBook();
+
+        $book->author = $fields['author']['value'];
+        $book->year_of_publication = $fields['yearOfPublication']['value'];
+        $book->year_of_printing = $fields['yearOfPrinting']['value'];
+        $book->printing_house = $fields['printingHouse']['value'];
+        $book->publishing_house = $fields['publishingHouse']['value'];
+        $book->product_id = $product->id;
+
+        $book->save();
+        break;
+      case 2:
+        $dateYearOfPrinting = strtotime($fields['dateOfPrinting']['value']);
+        $formattedYearOfPrinting = date('Y-m-d', $dateYearOfPrinting);
+
+        $magazine = new ModelsMagazine();
+
+        $magazine->date_of_printing = $formattedYearOfPrinting;
+        $magazine->printing_house = $fields['printingHouse']['value'];
+        $magazine->publishing_house = $fields['publishingHouse']['value'];
+        $magazine->regularity_id = $fields['regularityId']['value'];
+        $magazine->audience_id = $fields['audienceId']['value'];
+        $magazine->product_id = $product->id;
+
+        $magazine->save();
+        break;
+      default:
+    }
   }
 
   public function update(
@@ -179,19 +205,14 @@ class Product
     int $pointId,
   ) {
     $productId = $fields['id']['value'];
-
-    $dateYearOfPrinting = strtotime($fields['yearOfPrinting']['value']);
-    $formattedYearOfPrinting = date('Y-m-d', $dateYearOfPrinting);
+    $typeId = $fields['typeId']['value'];
 
     $product = ModelsProduct::where('id', $productId)->first();
     $product->article = $fields['article']['value'];
     $product->title = $fields['title']['value'];
-    $product->author = $fields['author']['value'];
-    $product->year_of_publication = $fields['yearOfPublication']['value'];
     $product->number = $fields['number']['value'];
-    $product->year_of_printing = $formattedYearOfPrinting;
-    $product->printing_house = $fields['printingHouse']['value'];
-    $product->publishing_house = $fields['publishingHouse']['value'];
+    $product->note = $fields['note']['value'];;
+    $product->type_id = $fields['typeId']['value'];
     $product->user_id = $userId;
     $product->category_id = $fields['categoryId']['value'];
 
@@ -200,8 +221,41 @@ class Product
     $linksProductPoint = new LinksProductPoint();
 
     $linksProductPoint->deleteByProductIds([$productId]);
-    $productId = (new GetProductIdByArticle())($fields['article']['value']);
     $linksProductPoint->add([$productId], [$pointId]);
+
+    ModelsBook::where('product_id', $productId)->delete();
+    ModelsMagazine::where('product_id', $productId)->delete();
+
+    switch ($typeId) {
+      case 1:
+        $book = new ModelsBook();
+
+        $book->author = $fields['author']['value'];
+        $book->year_of_publication = $fields['yearOfPublication']['value'];
+        $book->year_of_printing = $fields['yearOfPrinting']['value'];
+        $book->printing_house = $fields['printingHouse']['value'];
+        $book->publishing_house = $fields['publishingHouse']['value'];
+        $book->product_id = $product->id;
+
+        $book->save();
+        break;
+      case 2:
+        $dateYearOfPrinting = strtotime($fields['dateOfPrinting']['value']);
+        $formattedYearOfPrinting = date('Y-m-d', $dateYearOfPrinting);
+
+        $magazine = new ModelsMagazine();
+
+        $magazine->date_of_printing = $formattedYearOfPrinting;
+        $magazine->printing_house = $fields['printingHouse']['value'];
+        $magazine->publishing_house = $fields['publishingHouse']['value'];
+        $magazine->regularity_id = $fields['regularityId']['value'];
+        $magazine->audience_id = $fields['audienceId']['value'];
+        $magazine->product_id = $product->id;
+
+        $magazine->save();
+        break;
+      default:
+    }
   }
 
   public function destroy(array $productIds)

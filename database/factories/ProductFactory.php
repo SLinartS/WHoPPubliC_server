@@ -20,14 +20,14 @@ class ProductFactory extends Factory
   public function definition()
   {
     return [
-        'article' => fake()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
-        'title' => str_replace('.', '', fake()->sentence(3, true)),
-        'number' => fake()->numberBetween(100, 600),
-        'image_url' => null,
-        'note' => fake()->sentence(),
-        'user_id' => fake()->numberBetween(1, 1),
-        'category_id' => fake()->numberBetween(1, 5),
-        'product_type_id' => fake()->numberBetween(1, 3),
+      'article' => fake()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
+      'title' => str_replace('.', '', fake()->sentence(3, true)),
+      'number' => fake()->numberBetween(100, 600),
+      'image_url' => null,
+      'note' => fake()->sentence(),
+      'user_id' => fake()->numberBetween(1, 1),
+      'category_id' => fake()->numberBetween(1, 5),
+      'type_id' => fake()->numberBetween(1, 3),
     ];
   }
 }

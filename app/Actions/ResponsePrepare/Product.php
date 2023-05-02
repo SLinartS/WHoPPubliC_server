@@ -5,10 +5,7 @@ namespace App\Actions\ResponsePrepare;
 use App\Actions\Links\ProductFloor as LinksProductFloor;
 use App\Actions\Links\ProductPoint as LinksProductPoint;
 use App\Actions\Links\ProductTask as LinksProductTask;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Arabic;
 
 class Product
 {
@@ -101,7 +98,7 @@ class Product
         'alias' => "Категория"
       ],
       'typeId' => [
-        'value' => $product['product_type_id'],
+        'value' => $product['type_id'],
         'alias' => "Product_type_id"
       ],
       'typeAlias' => [
@@ -112,7 +109,7 @@ class Product
 
     $additionalInformation = [];
 
-    switch ($product['product_type_id']) {
+    switch ($product['type_id']) {
       case 1:
         $additionalInformation = [
           'author' => [
