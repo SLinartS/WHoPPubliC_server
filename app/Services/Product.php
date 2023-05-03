@@ -22,30 +22,33 @@ class Product
 {
   public function index(string | null $search)
   {
-    $products = ModelsProduct::select(
-      'id',
-      'article',
-      'title',
-      'number',
-      'image_url',
-      'note',
-      'category_id',
-      'type_id'
-    )
-      ->addSelect(['category_alias' => ModelsCategory::select('alias')->whereColumn('id', 'category_id')])
-      ->addSelect(['type_alias' => ModelsProductType::select('alias')->whereColumn('id', 'type_id')]);
-
-
+    $searchField = null;
     if ($search) {
       $searchField = '%' . $search . '%';
+    }
+
+    $products = ModelsProduct::join('product_types', 'product_types.id', 'products.type_id')
+      ->join('categories', 'categories.id', 'products.category_id')
+      ->select(
+        'products.id',
+        'products.article',
+        'products.title',
+        'products.number',
+        'products.image_url',
+        'products.note',
+        'products.category_id',
+        'products.type_id',
+        'categories.alias as category_alias',
+        'product_types.alias as type_alias',
+      );
+
+    if ($searchField) {
       $products = $products->where('article', 'like', $searchField)
-        ->orWhere('title', 'like', $searchField)
-        ->orWhere('author', 'like', $searchField)
-        ->orWhere('year_of_publication', 'like', $searchField)
-        ->orWhere('number', 'like', $searchField)
-        ->orWhere('year_of_printing', 'like', $searchField)
-        ->orWhere('printing_house', 'like', $searchField)
-        ->orWhere('publishing_house', 'like', $searchField)
+        ->orWhere('products.title', 'like', $searchField)
+        ->orWhere('products.number', 'like', $searchField)
+        ->orWhere('products.note', 'like', $searchField)
+        ->orWhere('categories.alias', 'like', $searchField)
+        ->orWhere('product_types.alias', 'like', $searchField)
         ->get();
     } else {
       $products = $products->get();
@@ -62,9 +65,21 @@ class Product
             'year_of_printing',
             'printing_house',
             'publishing_house'
-          )->where('product_id', $product->id)->first();
+          )->where('product_id', $product->id);
 
-          array_push($productsWithAddInfo, array_merge($product->toArray(), $additionalInformation->toArray()));
+          if ($searchField) {
+            $additionalInformation->orWhere('author', 'like', $searchField)
+              ->orWhere('year_of_publication', 'like', $searchField)
+              ->orWhere('year_of_printing', 'like', $searchField)
+              ->orWhere('printing_house', 'like', $searchField)
+              ->orWhere('publishing_house', 'like', $searchField);
+          }
+
+          $additionalInformation = $additionalInformation->first();
+
+          if ($additionalInformation) {
+            array_push($productsWithAddInfo, array_merge($product->toArray(), $additionalInformation->toArray()));
+          }
           break;
         case 2:
           $additionalInformation = ModelsMagazine::select(
@@ -77,9 +92,21 @@ class Product
           )
             ->addSelect(['regularity_alias' => ModelsRegularity::select('alias')->whereColumn('id', 'regularity_id')])
             ->addSelect(['audience_alias' => ModelsAudience::select('alias')->whereColumn('id', 'audience_id')])
-            ->where('product_id', $product->id)->first();
+            ->where('product_id', $product->id);
 
-          array_push($productsWithAddInfo, array_merge($product->toArray(), $additionalInformation->toArray()));
+          if ($searchField) {
+            $additionalInformation->orWhere('printing_house', 'like', $searchField)
+              ->orWhere('publishing_house', 'like', $searchField)
+              ->orWhere('date_of_printing', 'like', $searchField)
+              ->orWhere('regularity_id', 'like', $searchField)
+              ->orWhere('audience_id', 'like', $searchField);
+          }
+
+          $additionalInformation = $additionalInformation->first();
+
+          if ($additionalInformation) {
+            array_push($productsWithAddInfo, array_merge($product->toArray(), $additionalInformation->toArray()));
+          }
           break;
         default:
           array_push($productsWithAddInfo, $product->toArray());
