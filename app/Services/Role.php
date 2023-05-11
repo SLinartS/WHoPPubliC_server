@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use App\Actions\ResponsePrepare\Role as ResponsePrepareRole;
+use App\Actions\ResponsePrepare\Option;
 use App\Models\Role as ModelsRole;
 
 class Role
 {
   public function index()
   {
-    $categories = ModelsRole::select('id', 'alias')->get();
+    $roles = ModelsRole::select('id', 'title', 'alias')->get();
 
-    return (new ResponsePrepareRole())($categories);
+    return (new Option())($roles);
   }
 }
