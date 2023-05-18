@@ -14,4 +14,9 @@ class Audience extends Model
   protected $hidden = ['pivot'];
 
   protected $table = 'audiences';
+
+  public function magazines()
+  {
+    return $this->hasMany(Magazine::class, 'audience_id', 'id');
+  }
 }

@@ -18,17 +18,22 @@ class JWTMiddleware
    */
   public function handle(Request $request, Closure $next)
   {
+    if ((bool)env('DONT_USE_JWT_AUTH')) {
+      return $next($request);
+    }
     $token = $request->header('Authorization');
     if ($token) {
       $token = substr($token, 7);
-      if (Token::validate($token, env('JWT_ACCESS_SECRET')) &&
-          ModelsToken::where('access', $token)->first()) {
+      if (
+        Token::validate($token, env('JWT_ACCESS_SECRET')) &&
+        ModelsToken::where('access', $token)->first()
+      ) {
         if (Token::validateExpiration($token)) {
           return $next($request);
         }
         return response()->json(['message' => 'token expired'], 401);
       }
-    }   
+    }
     return response()->json(['message' => 'token error', 'token' => $token], 401);
   }
 }

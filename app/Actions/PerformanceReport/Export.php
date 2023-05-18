@@ -92,9 +92,7 @@ class Export
       $sheet->setCellValue('D' . $monthDateOffset + 3, $recommendations[$keysMonthDate[$indexMonth]]['text']);
       $sheet->getStyle('D' . $monthDateOffset + 3)->getFill()
         ->setFillType(Fill::FILL_SOLID)
-        ->getStartColor()->setARGB($recommendations[$keysMonthDate[$indexMonth]]['color']);
-      ;
-      ;
+        ->getStartColor()->setARGB($recommendations[$keysMonthDate[$indexMonth]]['color']);;;
 
       $sheet->getStyle('D' . $monthDateOffset + 3)->getFont()->setBold(true);
       $sheet->getStyle('D' . $monthDateOffset + 3)->getFont()->setSize(16);
@@ -102,14 +100,7 @@ class Export
       $monthDateOffset += 5;
     }
 
-    $fileTitle = 'performance-report-' . date('Y-m-d_H-i-s') . '.xlsx';
-    $filePath = __DIR__ . '\\..\\..\\..\\storage\\app\\public\\performance-reports\\' . $fileTitle;
-    $writer = new Xlsx($spreadsheet);
-    $writer->save($filePath);
-
-    (new ServicesFile())->saveInfo($fileTitle);
-
-    return ['fileTitle' => $fileTitle];
+    return $spreadsheet;
   }
 
   private function setDefaultStyles(Worksheet $sheet, Spreadsheet $spreadsheet)
@@ -135,13 +126,11 @@ class Export
       if ($sign < 0) {
         $cellStyle->getFill()
           ->setFillType(Fill::FILL_SOLID)
-          ->getStartColor()->setARGB('FF8785');
-        ;
+          ->getStartColor()->setARGB('FF8785');;
       } else {
         $cellStyle->getFill()
           ->setFillType(Fill::FILL_SOLID)
-          ->getStartColor()->setARGB('52FF89');
-        ;
+          ->getStartColor()->setARGB('52FF89');;
       }
     }
 

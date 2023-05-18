@@ -19,4 +19,9 @@ class Point extends Model
   {
     return $this->belongsToMany(Point::class, 'products_points', 'point_id', 'product_id');
   }
+
+  public function type()
+  {
+    return $this->belongsTo(TypeOfPoint::class, 'type_id', 'id');
+  }
 }

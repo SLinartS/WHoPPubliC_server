@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class File extends Model
+class TypeOfFile extends Model
 {
   use HasFactory;
 
@@ -13,10 +13,10 @@ class File extends Model
 
   protected $hidden = ['pivot'];
 
-  protected $table = 'files';
+  protected $table = 'types_of_files';
 
-  public function type()
+  public function files()
   {
-    return $this->belongsTo(TypeOfFile::class, 'type_id', 'id');
+    return $this->hasMany(File::class, 'type_id', 'id');
   }
 }

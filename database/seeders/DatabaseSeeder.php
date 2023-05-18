@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
       PointSeeder::class,
       ProductPointSeeder::class,
       ProductTaskSeeder::class,
+      TypeOfFileSeeder::class,
       FileSeeder::class,
     ]);
   }

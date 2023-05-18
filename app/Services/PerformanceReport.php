@@ -1,59 +1,38 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
 use App\Actions\PerformanceReport\Count as PerformanceReportCount;
+use App\Actions\PerformanceReport\Export as PerformanceReportExport;
 use App\Models\AuthorizationHistory;
+use App\Models\Category as ModelsCategory;
+use App\Models\Product as ModelsProduct;
 use App\Models\Task;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Services\File as ServicesFile;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 
-class PerformanceReportController extends Controller
+class PerformanceReport
 {
-  public function index(Request $request, ServicesFile $servicesFile)
+  public function index()
   {
-    $search = $request->query('search');
-    $response = $servicesFile->index($search);
-    return $response;
   }
 
-  public function store(PerformanceReportCount $performanceReportCount)
+  public function store($intervals)
   {
     $criteriaList = [];
-
-    $intervals = [
-      ['2021-06-01', '2021-06-30'],
-      ['2021-07-01', '2021-07-31'],
-    ];
 
     foreach ($intervals as $interval) {
       $criteriaList[$interval[0]] = $this->requestCriteriaList($interval);
     }
 
-    $response = $performanceReportCount($criteriaList);
+    list($criteriaList, $normalizedCriteriaList, $additiveCriteriaList, $signs) = (new PerformanceReportCount)($criteriaList);
 
-    return response()->json(
-      [
-        'message' => 'Performance report has been created',
-        'additiveCriteriaList' => $response,
-      ],
-      200
-    );
-  }
+    $spreadsheet = (new PerformanceReportExport())->exportPerformanceReport($criteriaList, $normalizedCriteriaList, $additiveCriteriaList, $signs);
 
-  public function download(int $id, ServicesFile $servicesFile)
-  {
-    return $servicesFile->download($id);
-  }
-
-  public function destroy(int $id, ServicesFile $servicesFile)
-  {
-    return $servicesFile->destroy($id);
-    return response()->json([
-      'message' => 'The performance report has been deleted'
-    ], 200);
+    return $this->saveFile($spreadsheet);
   }
 
   private function requestCriteriaList(array $interval): array
@@ -65,24 +44,24 @@ class PerformanceReportController extends Controller
 
     $intervalData['placementTasks'] =
       Task::selectRaw('TIMESTAMPDIFF(HOUR, time_end, time_completion) as time')
-        ->where('time_start', '>=', $intervalStart)
-        ->where('time_start', '<=', $intervalEnd)
-        ->where('type_id', 1)
-        ->get()->sum('time');
+      ->where('time_start', '>=', $intervalStart)
+      ->where('time_start', '<=', $intervalEnd)
+      ->where('type_id', 1)
+      ->get()->sum('time');
 
     $intervalData['shipmentTasks'] =
       Task::selectRaw('TIMESTAMPDIFF(HOUR, time_end, time_completion) as time')
-        ->where('time_start', '>=', $intervalStart)
-        ->where('time_start', '<=', $intervalEnd)
-        ->where('type_id', 2)
-        ->get()->sum('time');
+      ->where('time_start', '>=', $intervalStart)
+      ->where('time_start', '<=', $intervalEnd)
+      ->where('type_id', 2)
+      ->get()->sum('time');
 
     $intervalData['intraWarehouseTasks'] =
       Task::selectRaw('TIMESTAMPDIFF(HOUR, time_end, time_completion) as time')
-        ->where('time_start', '>=', $intervalStart)
-        ->where('time_start', '<=', $intervalEnd)
-        ->where('type_id', 3)
-        ->get()->sum('time');
+      ->where('time_start', '>=', $intervalStart)
+      ->where('time_start', '<=', $intervalEnd)
+      ->where('type_id', 3)
+      ->get()->sum('time');
 
     $intervalData['authorizationHistory'] =
       AuthorizationHistory::select(
@@ -90,21 +69,21 @@ class PerformanceReportController extends Controller
         'authorization_history.time_authorization',
         'authorization_history.current_start_time'
       )
-        ->join('users', 'authorization_history.user_id', 'users.id')
-        ->where('authorization_history.time_authorization', '>=', $intervalStart)
-        ->where('authorization_history.time_authorization', '<=', $intervalEnd)
-        ->orderBy('authorization_history.user_id', 'asc')
-        ->orderBy('authorization_history.time_authorization', 'asc')
-        ->get();
+      ->join('users', 'authorization_history.user_id', 'users.id')
+      ->where('authorization_history.time_authorization', '>=', $intervalStart)
+      ->where('authorization_history.time_authorization', '<=', $intervalEnd)
+      ->orderBy('authorization_history.user_id', 'asc')
+      ->orderBy('authorization_history.time_authorization', 'asc')
+      ->get();
 
     $intervalData['authorizationHistory'] =
       $this->getSumOnlyFirstAuthOfDay($intervalData['authorizationHistory']);
 
     $intervalData['numberOfTasks'] =
       Task::select('id')
-        ->where('time_start', '>=', $intervalStart)
-        ->where('time_start', '<=', $intervalEnd)
-        ->get()->count('id');
+      ->where('time_start', '>=', $intervalStart)
+      ->where('time_start', '<=', $intervalEnd)
+      ->get()->count('id');
 
     return $intervalData;
   }
@@ -139,5 +118,17 @@ class PerformanceReportController extends Controller
     }
 
     return $sumTimeOfDelays;
+  }
+
+  private function saveFile(Spreadsheet $spreadsheet)
+  {
+    $fileTitle = 'performance-report-' . date('Y-m-d_H-i-s') . '.xlsx';
+    $filePath = __DIR__ . '\\..\\..\\storage\\app\\public\\reports\\performance\\' . $fileTitle;
+    $writer = new Xlsx($spreadsheet);
+    $writer->save($filePath);
+
+    (new ServicesFile())->saveInfo($fileTitle, 1);
+
+    return ['fileTitle' => $fileTitle];
   }
 }

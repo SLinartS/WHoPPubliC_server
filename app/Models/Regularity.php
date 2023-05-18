@@ -14,4 +14,9 @@ class Regularity extends Model
   protected $hidden = ['pivot'];
 
   protected $table = 'regularities';
+
+  public function magazines()
+  {
+    return $this->hasMany(Magazine::class, 'regularity_id', 'id');
+  }
 }

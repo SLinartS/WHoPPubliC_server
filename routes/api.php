@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AudienceController;
 use App\Http\Controllers\AuthorizationController;
+use App\Http\Controllers\BalanceReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MapController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\PointController;
 use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\RegularityController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TypeOfFileController;
 use App\Http\Controllers\UtilsController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,15 +70,16 @@ Route::middleware(['jwt'])->group(function () {
     Route::delete('/users/{id}', 'destroy');
   });
 
-  Route::controller(PerformanceReportController::class)->group(function () {
-    Route::get('/performance-report', 'index');
-    Route::post('/performance-report', 'store');
-    Route::get('/performance-report/{id}', 'download');
-    Route::delete('/performance-report/{id}', 'destroy');
+  Route::controller(FileController::class)->group(function () {
+    Route::get('/reports', 'index');
+    Route::post('/reports', 'store');
+    Route::get('/reports/{id}', 'download');
+    Route::delete('/reports/{id}', 'destroy');
   });
 
   Route::get('/categories', [CategoryController::class, 'index']);
   Route::get('/product-types', [ProductTypeController::class, 'index']);
+  Route::get('/file-types', [TypeOfFileController::class, 'index']);
   Route::get('/regularities', [RegularityController::class, 'index']);
   Route::get('/audiences', [AudienceController::class, 'index']);
   Route::get('/points', [PointController::class, 'index']);
