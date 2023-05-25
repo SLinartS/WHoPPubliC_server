@@ -42,8 +42,10 @@ class Product
         'product_types.alias as type_alias',
       );
 
+    $productsWithoutSearch = $products->get();
+
     if ($searchField) {
-      $products = $products->where('article', 'like', $searchField)
+      $products = $products->where('products.article', 'like', $searchField)
         ->orWhere('products.title', 'like', $searchField)
         ->orWhere('products.number', 'like', $searchField)
         ->orWhere('products.note', 'like', $searchField)
@@ -55,8 +57,8 @@ class Product
     }
 
     $productsWithAddInfo = [];
-    foreach ($products as $product) {
-      switch ($product['type_id']) {
+    foreach ($productsWithoutSearch as $product) {
+      switch ($product->type_id) {
         case 1:
           $additionalInformation = ModelsBook::select(
             'product_id',
@@ -67,8 +69,10 @@ class Product
             'publishing_house'
           )->where('product_id', $product->id);
 
+          $additionalInformationWithoutSearch = $additionalInformation->first();
+
           if ($searchField) {
-            $additionalInformation->orWhere('author', 'like', $searchField)
+            $additionalInformation->where('author', 'like', $searchField)
               ->orWhere('year_of_publication', 'like', $searchField)
               ->orWhere('year_of_printing', 'like', $searchField)
               ->orWhere('printing_house', 'like', $searchField)
@@ -79,37 +83,55 @@ class Product
 
           if ($additionalInformation) {
             array_push($productsWithAddInfo, array_merge($product->toArray(), $additionalInformation->toArray()));
+          } elseif ($products->contains('id', $additionalInformationWithoutSearch->product_id)) {
+            array_push($productsWithAddInfo, array_merge($product->toArray(), $additionalInformationWithoutSearch->toArray()));
           }
           break;
         case 2:
-          $additionalInformation = ModelsMagazine::select(
-            'product_id',
-            'printing_house',
-            'publishing_house',
-            'date_of_printing',
-            'regularity_id',
-            'audience_id',
-          )
-            ->addSelect(['regularity_alias' => ModelsRegularity::select('alias')->whereColumn('id', 'regularity_id')])
-            ->addSelect(['audience_alias' => ModelsAudience::select('alias')->whereColumn('id', 'audience_id')])
-            ->where('product_id', $product->id);
+          $additionalInformation = ModelsMagazine::join('regularities', 'regularities.id', 'magazines.regularity_id')
+            ->join('audiences', 'audiences.id', 'magazines.audience_id')
+            ->select(
+              'magazines.product_id',
+              'magazines.printing_house',
+              'magazines.publishing_house',
+              'magazines.date_of_printing',
+              'magazines.regularity_id',
+              'magazines.audience_id',
+              'regularities.alias as regularity_alias',
+              'audiences.alias as audience_alias',
+            )->where('magazines.product_id', $product->id);;
+
+          $additionalInformationWithoutSearch = $additionalInformation->first();
 
           if ($searchField) {
-            $additionalInformation->orWhere('printing_house', 'like', $searchField)
-              ->orWhere('publishing_house', 'like', $searchField)
-              ->orWhere('date_of_printing', 'like', $searchField)
-              ->orWhere('regularity_id', 'like', $searchField)
-              ->orWhere('audience_id', 'like', $searchField);
+            $additionalInformation->where('magazines.printing_house', 'like', $searchField)
+              ->orWhere('magazines.publishing_house', 'like', $searchField)
+              ->orWhere('magazines.date_of_printing', 'like', $searchField)
+              ->orWhere('regularities.alias', 'like', $searchField)
+              ->orWhere('audiences.alias', 'like', $searchField);
           }
 
           $additionalInformation = $additionalInformation->first();
 
           if ($additionalInformation) {
             array_push($productsWithAddInfo, array_merge($product->toArray(), $additionalInformation->toArray()));
+          } elseif ($products->contains('id', $additionalInformationWithoutSearch->product_id)) {
+            array_push($productsWithAddInfo, array_merge($product->toArray(), $additionalInformationWithoutSearch->toArray()));
           }
           break;
         default:
-          array_push($productsWithAddInfo, $product->toArray());
+      }
+    }
+
+    $productIds = [];
+
+    foreach ($productsWithAddInfo as $product) {
+      array_push($productIds, $product['id']);
+    }
+
+    foreach ($products->toArray() as $product) {
+      if (!in_array($product['id'], $productIds)) {
+        array_push($productsWithAddInfo, $product);
       }
     }
 
