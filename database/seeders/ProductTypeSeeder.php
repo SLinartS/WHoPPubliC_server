@@ -16,12 +16,12 @@ class ProductTypeSeeder extends Seeder
   public function run()
   {
     ProductType::factory()->count(3)
-    ->state(
-      (new Sequence(
-        ['title' => 'book', 'alias' => 'Книга'],
-        ['title' => 'magazine', 'alias' => 'Журнал'],
-        ['title' => 'other', 'alias' => 'Другое'],
-      ))
-    )->create();
+      ->state(
+        (new Sequence(
+          ['title' => 'book', 'alias' => 'Книга'],
+          ['title' => 'magazine', 'alias' => 'Журнал'],
+          ['title' => 'other', 'alias' => 'Другое'],
+        ))
+      )->create();
   }
 }

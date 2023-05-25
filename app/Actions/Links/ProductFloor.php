@@ -95,7 +95,7 @@ class ProductFloor
         ->toArray();
     }
 
-    return [ 'floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds ];
+    return ['floorIds' => $floorIds, 'actualFloorIds' => $actualFloorIds];
   }
 
   public function setPositionAsActual(int $productId)

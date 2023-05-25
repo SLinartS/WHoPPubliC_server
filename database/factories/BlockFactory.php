@@ -20,8 +20,8 @@ class BlockFactory extends Factory
   public function definition()
   {
     return [
-        'number' => fake()->numberBetween(1, 12),
-        'section_id' => fake()->numberBetween(1, 6),
+      'number' => fake()->numberBetween(1, 12),
+      'section_id' => fake()->numberBetween(1, 6),
     ];
   }
 }

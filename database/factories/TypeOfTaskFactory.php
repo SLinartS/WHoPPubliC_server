@@ -20,7 +20,7 @@ class TypeOfTaskFactory extends Factory
   public function definition()
   {
     return [
-        'type' => fake()->unique()->word()
+      'type' => fake()->unique()->word()
     ];
   }
 }

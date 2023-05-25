@@ -18,9 +18,9 @@ class RegularitySeeder extends Seeder
     Regularity::factory()->count(3)
     ->state(
       (new Sequence(
-        ['title' => 'Ежедневный'],
-        ['title' => 'Еженедельный'],
-        ['title' => 'Ежемесячный'],
+        ['alias' => 'Ежедневный'],
+        ['alias' => 'Еженедельный'],
+        ['alias' => 'Ежемесячный'],
       ))
     )->create();
   }

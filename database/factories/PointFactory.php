@@ -20,8 +20,8 @@ class PointFactory extends Factory
   public function definition()
   {
     return [
-        'title' => fake()->word(),
-        'type_id' => fake()->numberBetween(1, 2),
+      'title' => fake()->word(),
+      'type_id' => fake()->numberBetween(1, 2),
     ];
   }
 }

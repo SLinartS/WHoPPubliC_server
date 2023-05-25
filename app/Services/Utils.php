@@ -58,6 +58,4 @@ class Utils
     }
     return $result;
   }
-
-
 }

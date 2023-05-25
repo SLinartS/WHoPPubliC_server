@@ -21,12 +21,12 @@ class User
     if ($search) {
       $searchField = '%' . $search . '%';
       $users = $users->where('email', 'like', $searchField)
-                    ->orWhere('phone', 'like', $searchField)
-                    ->orWhere('login', 'like', $searchField)
-                    ->orWhere('name', 'like', $searchField)
-                    ->orWhere('surname', 'like', $searchField)
-                    ->orWhere('patronymic', 'like', $searchField)
-                    ->get();
+        ->orWhere('phone', 'like', $searchField)
+        ->orWhere('login', 'like', $searchField)
+        ->orWhere('name', 'like', $searchField)
+        ->orWhere('surname', 'like', $searchField)
+        ->orWhere('patronymic', 'like', $searchField)
+        ->get();
     } else {
       $users = $users->get();
     }

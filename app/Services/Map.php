@@ -83,19 +83,19 @@ class Map
   public function destroy(int $zoneId)
   {
     $sectionIds = ModelsSection::select('id', 'zone_id')
-    ->where('zone_id', $zoneId)
-    ->get()
-    ->pluck('id')
-    ->toArray();
+      ->where('zone_id', $zoneId)
+      ->get()
+      ->pluck('id')
+      ->toArray();
 
     $blockIds = ModelsBlock::select('id', 'section_id')
-    ->whereIn('section_id', $sectionIds)
-    ->get()
-    ->pluck('id')
-    ->toArray();
+      ->whereIn('section_id', $sectionIds)
+      ->get()
+      ->pluck('id')
+      ->toArray();
 
     ModelsFloor::select('id', 'block_id')
-    ->whereIn('block_id', $blockIds)->delete();
+      ->whereIn('block_id', $blockIds)->delete();
 
     ModelsBlock::whereIn('id', $blockIds)->delete();
     ModelsSection::whereIn('id', $sectionIds)->delete();
@@ -116,16 +116,16 @@ class Map
 
       if (!$sectionDeletedId) {
         $blockIds = ModelsBlock::select('id', 'section_id')
-        ->where('section_id', $sectionDB->id)
-        ->get()
-        ->pluck('id')
-        ->toArray();
+          ->where('section_id', $sectionDB->id)
+          ->get()
+          ->pluck('id')
+          ->toArray();
 
         $floorIds = ModelsFloor::select('id', 'block_id')
-        ->whereIn('block_id', $blockIds)
-        ->get()
-        ->pluck('id')
-        ->toArray();
+          ->whereIn('block_id', $blockIds)
+          ->get()
+          ->pluck('id')
+          ->toArray();
 
         ModelsFloor::whereIn('id', $floorIds)->delete();
         ModelsBlock::whereIn('id', $blockIds)->delete();
@@ -143,10 +143,10 @@ class Map
 
           if (!$blockDeletedId) {
             $floorIds = ModelsFloor::select('id', 'block_id')
-            ->where('block_id', $blockDB->id)
-            ->get()
-            ->pluck('id')
-            ->toArray();
+              ->where('block_id', $blockDB->id)
+              ->get()
+              ->pluck('id')
+              ->toArray();
 
             ModelsFloor::whereIn('id', $floorIds)->delete();
           } else {
@@ -161,15 +161,15 @@ class Map
 
               if (!$floorDeletedId) {
                 $floorIds = ModelsFloor::select('id', 'block_id')
-                ->where('block_id', $blockDB->id)
-                ->get()
-                ->pluck('id')
-                ->toArray();
+                  ->where('block_id', $blockDB->id)
+                  ->get()
+                  ->pluck('id')
+                  ->toArray();
 
                 ModelsFloor::select('id', 'block_id')
-                ->where('block_id', $blockDB->id)
-                ->where('id', $floorDB->id)
-                ->delete();
+                  ->where('block_id', $blockDB->id)
+                  ->where('id', $floorDB->id)
+                  ->delete();
               }
             }
           }

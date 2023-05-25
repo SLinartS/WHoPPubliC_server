@@ -20,10 +20,10 @@ class AuthorizationHistoryFactory extends Factory
   public function definition()
   {
     return [
-        'time_authorization' => fake()->date() . ' ' . fake()->time(),
-        'current_start_time' => '08:00:00',
-        'current_end_time' => '20:00:00',
-        'user_id' => 1
+      'time_authorization' => fake()->date() . ' ' . fake()->time(),
+      'current_start_time' => '08:00:00',
+      'current_end_time' => '20:00:00',
+      'user_id' => 1
 
     ];
   }

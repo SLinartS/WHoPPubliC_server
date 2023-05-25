@@ -20,13 +20,13 @@ class TaskFactory extends Factory
   public function definition()
   {
     return [
-        'article' => fake()->unique()->randomLetter() . fake()->randomNumber(2, true) . fake()->randomLetter(),
-        'time_start' => fake()->date() . ' ' . fake()->time(),
-        'time_end' => fake()->date() . ' ' . fake()->time(),
-        'time_completion' => fake()->date() . ' ' . fake()->time(),
-        'is_active' => false,
-        'user_id' => fake()->numberBetween(1, 1),
-        'type_id' => fake()->numberBetween(1, 2),
+      'article' => strtoupper(fake()->randomLetter()) . fake()->randomNumber(4, true) . strtoupper(fake()->randomLetter()),
+      'time_start' => fake()->date() . ' ' . fake()->time(),
+      'time_end' => fake()->date() . ' ' . fake()->time(),
+      'time_completion' => fake()->date() . ' ' . fake()->time(),
+      'is_active' => false,
+      'user_id' => fake()->numberBetween(1, 1),
+      'type_id' => fake()->numberBetween(1, 2),
     ];
   }
 }

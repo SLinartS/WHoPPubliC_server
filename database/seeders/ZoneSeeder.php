@@ -16,13 +16,13 @@ class ZoneSeeder extends Seeder
   public function run()
   {
     Zone::factory()->count(3)
-    ->state(
-      new Sequence(
-        ['number' => 1, 'letter' => 'A'],
-        ['number' => 2, 'letter' => 'B'],
-        ['number' => 3, 'letter' => 'C'],
+      ->state(
+        new Sequence(
+          ['number' => 1, 'letter' => 'A'],
+          ['number' => 2, 'letter' => 'B'],
+          ['number' => 3, 'letter' => 'C'],
+        )
       )
-    )
-    ->create();
+      ->create();
   }
 }

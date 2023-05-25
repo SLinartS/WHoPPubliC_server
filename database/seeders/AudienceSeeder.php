@@ -18,9 +18,9 @@ class AudienceSeeder extends Seeder
     Audience::factory()->count(3)
     ->state(
       (new Sequence(
-        ['title' => 'Дети'],
-        ['title' => 'Подростки'],
-        ['title' => 'Взрослые'],
+        ['alias' => 'Дети'],
+        ['alias' => 'Подростки'],
+        ['alias' => 'Взрослые'],
       ))
     )->create();
   }

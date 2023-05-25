@@ -20,10 +20,10 @@ class ProductTask
   public function deleteByTaskId(int $taskId): array
   {
     $productIds = ModelsProductTask::select('product_id')
-    ->where('task_id', $taskId)
-    ->get()
-    ->pluck('product_id')
-    ->toArray();
+      ->where('task_id', $taskId)
+      ->get()
+      ->pluck('product_id')
+      ->toArray();
 
     ModelsProductTask::where('task_id', $taskId)->delete();
     return $productIds;
@@ -32,10 +32,10 @@ class ProductTask
   public function deleteByProductIds(array $productIds)
   {
     $productIds = ModelsProductTask::select('product_id')
-    ->whereIn('product_id', $productIds)
-    ->get()
-    ->pluck('product_id')
-    ->toArray();
+      ->whereIn('product_id', $productIds)
+      ->get()
+      ->pluck('product_id')
+      ->toArray();
 
     ModelsProductTask::whereIn('product_id', $productIds)->delete();
     return $productIds;
@@ -45,7 +45,7 @@ class ProductTask
   {
     $productsTasks = ModelsProductTask::where('task_id', $taksId)->get();
     return
-    $productsTasks;
+      $productsTasks;
   }
 
   public function getByProductsIds(array $productIds): Collection

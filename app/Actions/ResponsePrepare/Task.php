@@ -57,7 +57,7 @@ class Task
         'alias' => 'Дата начала'
       ],
       'timeEnd' => [
-        'value' =>$this->formateTaskTime($task->time_end),
+        'value' => $this->formateTaskTime($task->time_end),
         'alias' => 'Дата окончания'
       ],
       'operatorLogin' => [

@@ -20,8 +20,8 @@ class ProductPointFactory extends Factory
   public function definition()
   {
     return [
-        'product_id' => fake()->numberBetween(1, 10),
-        'point_id' => fake()->numberBetween(1, 10),
+      'product_id' => fake()->numberBetween(1, 10),
+      'point_id' => fake()->numberBetween(1, 10),
     ];
   }
 }

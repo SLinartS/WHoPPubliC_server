@@ -16,11 +16,11 @@ class TypeOfPointSeeder extends Seeder
   public function run()
   {
     TypeOfPoint::factory()->count(2)
-    ->state(
-      (new Sequence(
-        ['type' => 'acceptance'],
-        ['type' => 'shipment']
-      ))
-    )->create();
+      ->state(
+        (new Sequence(
+          ['type' => 'acceptance'],
+          ['type' => 'shipment']
+        ))
+      )->create();
   }
 }

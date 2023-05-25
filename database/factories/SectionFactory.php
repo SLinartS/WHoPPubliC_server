@@ -20,8 +20,8 @@ class SectionFactory extends Factory
   public function definition()
   {
     return [
-        'zone_id' => fake()->numberBetween(1, 3),
-        'number' => fake()->numberBetween(1, 6),
+      'zone_id' => fake()->numberBetween(1, 3),
+      'number' => fake()->numberBetween(1, 6),
     ];
   }
 }

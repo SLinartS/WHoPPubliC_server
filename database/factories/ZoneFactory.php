@@ -20,8 +20,8 @@ class ZoneFactory extends Factory
   public function definition()
   {
     return [
-        'number' => fake()->numberBetween(1, 3),
-        'letter' => strtoupper(fake()->unique()->randomLetter()),
+      'number' => fake()->numberBetween(1, 3),
+      'letter' => strtoupper(fake()->unique()->randomLetter()),
     ];
   }
 }
