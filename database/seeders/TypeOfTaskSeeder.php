@@ -16,12 +16,12 @@ class TypeOfTaskSeeder extends Seeder
   public function run()
   {
     TypeOfTask::factory()->count(3)
-    ->state(
-      (new Sequence(
-        ['type' => 'acceptance'],
-        ['type' => 'shipment'],
-        ['type' => 'intro'],
-      ))
-    )->create();
+      ->state(
+        (new Sequence(
+          ['type' => 'acceptance'],
+          ['type' => 'shipment'],
+          ['type' => 'intra'],
+        ))
+      )->create();
   }
 }

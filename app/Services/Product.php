@@ -318,6 +318,8 @@ class Product
     $linksProductTask->deleteByProductIds($productIds);
     (new LinksProductFloor())->deleteByProductIds($productIds);
     (new LinksProductPoint())->deleteByProductIds($productIds);
+    ModelsBook::whereIn('product_id', $productIds)->delete();
+    ModelsMagazine::whereIn('product_id', $productIds)->delete();
     ModelsProduct::whereIn('id', $productIds)->delete();
   }
 

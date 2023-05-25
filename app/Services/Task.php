@@ -33,9 +33,9 @@ class Task
     if ($search) {
       $searchField = '%' . $search . '%';
       $tasks = $tasks->where('article', 'like', $searchField)
-                    ->orWhere('time_start', 'like', $searchField)
-                    ->orWhere('time_end', 'like', $searchField)
-                    ->get();
+        ->orWhere('time_start', 'like', $searchField)
+        ->orWhere('time_end', 'like', $searchField)
+        ->get();
     } else {
       $tasks = $tasks->get();
     }
@@ -87,10 +87,10 @@ class Task
 
     switch ($taskTypeId) {
       case 1:
-      case 3:
+      case 2:
         (new LinksProductFloor())->add($productIds, $floorIds);
         break;
-      case 2:
+      case 3:
         (new LinksProductPoint())->add($productIds, $pointIds);
         break;
       default:
@@ -135,11 +135,11 @@ class Task
         $linksProductFloor->deleteByProductIds($productIds);
         $linksProductFloor->add($productIds, $floorIds);
         break;
-      case 3:
+      case 2:
         $linksProductFloor->deleteByProductIds($productIds, false);
         $linksProductFloor->add($productIds, $floorIds);
         break;
-      case 2:
+      case 3:
         $linksProductPoint->deleteByProductIds($productIds);
         $linksProductPoint->add($productIds, $pointIds);
         break;
