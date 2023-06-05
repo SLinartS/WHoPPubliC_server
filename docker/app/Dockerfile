@@ -26,6 +26,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 RUN composer install
 
+RUN chmod -R 777 .
+
 EXPOSE 9000
 
 CMD ["php-fpm"]

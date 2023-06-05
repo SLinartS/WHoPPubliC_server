@@ -123,7 +123,7 @@ class PerformanceReport
   private function saveFile(Spreadsheet $spreadsheet)
   {
     $fileTitle = 'performance-report-' . date('Y-m-d_H-i-s') . '.xlsx';
-    $filePath = __DIR__ . '\\..\\..\\storage\\app\\public\\reports\\performance\\' . $fileTitle;
+    $filePath = __DIR__ . '/../../storage/app/public/reports/performance/' . $fileTitle;
     $writer = new Xlsx($spreadsheet);
     $writer->save($filePath);
 

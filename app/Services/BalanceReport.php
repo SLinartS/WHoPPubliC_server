@@ -56,7 +56,7 @@ class BalanceReport
   private function saveFile(Spreadsheet $spreadsheet)
   {
     $fileTitle = 'balance-report-' . date('Y-m-d_H-i-s') . '.xlsx';
-    $filePath = __DIR__ . '\\..\\..\\storage\\app\\public\\reports\\balance\\' . $fileTitle;
+    $filePath = __DIR__ . '/../../storage/app/public/reports/balance/' . $fileTitle;
     $writer = new Xlsx($spreadsheet);
     $writer->save($filePath);
 
