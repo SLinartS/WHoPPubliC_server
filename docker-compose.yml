@@ -10,7 +10,7 @@ services:
     volumes:
       - ./.env:/var/www/.env
       - ./public:/var/www/public
-      - ./storage:/var/www/storage/app/
+      - ./storage/app:/var/www/storage/app
       - ./docker/app/php/conf.d/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - internal
