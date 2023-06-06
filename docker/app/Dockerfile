@@ -24,10 +24,18 @@ COPY . /var/www
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN composer install
+RUN composer install --optimize-autoloader --no-dev
+
+RUN php artisan optimize:clear \
+  && php artisan key:generate \
+  && php artisan storage:link \
+  && php artisan config:cache \
+  && php artisan event:cache \
+  && php artisan route:cache \
+  && php artisan view:cache
 
 RUN chmod -R 777 .
 
-EXPOSE 9000
+EXPOSE 8080
 
 CMD ["php-fpm"]

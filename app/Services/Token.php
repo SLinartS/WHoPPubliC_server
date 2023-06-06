@@ -16,7 +16,7 @@ class Token
         'iss' => 'localhost'
       ];
 
-      $secret = env('JWT_ACCESS_SECRET');
+      $secret = config('app.jwt_access_secret');
 
       $token = JWTToken::customPayload($payload, $secret);
       return $token;
@@ -35,7 +35,7 @@ class Token
         'iss' => 'localhost'
       ];
 
-      $secret = env('JWT_REFRESH_SECRET');
+      $secret = config('app.jwt_refresh_secret');
 
       $token = JWTToken::customPayload($payload, $secret);
       return $token;

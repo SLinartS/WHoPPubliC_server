@@ -67,7 +67,7 @@ class Authorization
       throw new Exception('token error');
     }
 
-    if (!JWTToken::validate($refreshToken, env('JWT_REFRESH_SECRET'))) {
+    if (!JWTToken::validate($refreshToken, config('app.jwt_refresh_secret'))) {
       throw new Exception('token validate error');
     }
 
