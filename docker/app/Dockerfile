@@ -24,7 +24,7 @@ COPY . /var/www
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN composer install --optimize-autoloader --no-dev
+RUN composer install --optimize-autoloader
 
 RUN php artisan optimize:clear \
   && php artisan key:generate \

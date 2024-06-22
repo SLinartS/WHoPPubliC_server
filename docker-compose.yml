@@ -29,7 +29,7 @@ services:
       - internal
 
   dbmysql:
-    image: mysql
+    image: mysql:8.3
     container_name: dbmysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always

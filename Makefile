@@ -7,5 +7,7 @@ dmigrate:
 	docker compose exec app php artisan migrate:fresh --seed
 migrate: 
 	php artisan migrate:fresh --seed
+dlink: 
+	docker compose exec app php artisan storage:link
 link: 
 	php artisan storage:link
