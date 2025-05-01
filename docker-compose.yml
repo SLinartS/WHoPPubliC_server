@@ -8,6 +8,7 @@ services:
     container_name: app
     restart: always
     volumes:
+      - ./app:/var/www/app
       - ./.env:/var/www/.env
       - ./public:/var/www/public
       - ./storage/app:/var/www/storage/app
